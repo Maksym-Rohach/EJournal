@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EJournal", "EJournal\EJournal.csproj", "{CEF365F9-594B-442C-8513-58E31F3B892E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CEF365F9-594B-442C-8513-58E31F3B892E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEF365F9-594B-442C-8513-58E31F3B892E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEF365F9-594B-442C-8513-58E31F3B892E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEF365F9-594B-442C-8513-58E31F3B892E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5D25613-D3DF-453A-AD5F-712B99B8770E}
+	EndGlobalSection
+EndGlobal
