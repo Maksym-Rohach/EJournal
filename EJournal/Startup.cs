@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EJournal
-{
+{ 
     public class Startup
     {
         public Startup(IConfiguration configuration)
