@@ -31,6 +31,8 @@ namespace EJournal.Data.EfContext
             modelBuilder.ApplyConfiguration(new TeaherToSubjectConfiguration());
             modelBuilder.ApplyConfiguration(new AuditoriumConfiguration());
             modelBuilder.ApplyConfiguration(new JournalConfiguration());
+            modelBuilder.ApplyConfiguration(new LessonConfiguration());
+            modelBuilder.ApplyConfiguration(new JournalColumnConfiguration());
             //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }

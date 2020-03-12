@@ -1,10 +1,6 @@
 ﻿using EJournal.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EJournal.Data.Configurations
 {
@@ -13,6 +9,9 @@ namespace EJournal.Data.Configurations
         public void Configure(EntityTypeBuilder<Journal> builder)
         {
             builder.HasOne(e => e.Group)
+                .WithOne(e => e.Journal);
+
+            builder.HasMany(e => e.JournalColumns)
                 .WithOne(e => e.Journal);
         }
     }
