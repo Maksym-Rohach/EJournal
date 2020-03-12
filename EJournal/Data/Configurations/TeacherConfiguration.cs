@@ -15,6 +15,12 @@ namespace EJournal.Data.Configurations
                 .WithOne(e => e.Teacher)
                 .HasForeignKey<Teacher>(e => e.Id)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(e => e.Groups)
+                .WithOne(e => e.Teacher);
+
+            builder.HasMany(e => e.TeacherToSubjects)
+                .WithOne(e => e.Teacher);
         }
     }
 }

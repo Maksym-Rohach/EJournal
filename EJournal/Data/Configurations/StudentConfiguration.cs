@@ -1,10 +1,6 @@
 ﻿using EJournal.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EJournal.Data.Configurations
 {
@@ -16,6 +12,9 @@ namespace EJournal.Data.Configurations
                 .WithOne(e => e.Student)
                 .HasForeignKey<Student>(e => e.Id)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(e => e.GroupToStudents)
+                .WithOne(e => e.Student);
         }
     }
 }

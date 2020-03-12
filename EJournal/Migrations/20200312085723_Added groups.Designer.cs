@@ -4,14 +4,16 @@ using EJournal.Data.EfContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace EJournal.Migrations
 {
     [DbContext(typeof(EfDbContext))]
-    partial class EfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200312085723_Added groups")]
+    partial class Addedgroups
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,34 +168,6 @@ namespace EJournal.Migrations
                     b.ToTable("Teacher");
                 });
 
-            modelBuilder.Entity("EJournal.Data.Entities.TeacherToSubject", b =>
-                {
-                    b.Property<int>("SubjectId");
-
-                    b.Property<string>("TeacherId");
-
-                    b.HasKey("SubjectId", "TeacherId");
-
-                    b.HasIndex("TeacherId");
-
-                    b.ToTable("TeacherToSubject");
-                });
-
-            modelBuilder.Entity("EJournal.Data.Subject", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(64);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Subject");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.Property<int>("Id")
@@ -318,19 +292,6 @@ namespace EJournal.Migrations
                         .WithOne("Teacher")
                         .HasForeignKey("EJournal.Data.Entities.Teacher", "Id")
                         .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("EJournal.Data.Entities.TeacherToSubject", b =>
-                {
-                    b.HasOne("EJournal.Data.Subject", "Subject")
-                        .WithMany("TeacherToSubjects")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("EJournal.Data.Entities.Teacher", "Teacher")
-                        .WithMany("TeacherToSubjects")
-                        .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
