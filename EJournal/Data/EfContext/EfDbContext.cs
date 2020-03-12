@@ -33,6 +33,8 @@ namespace EJournal.Data.EfContext
             modelBuilder.ApplyConfiguration(new JournalConfiguration());
             modelBuilder.ApplyConfiguration(new LessonConfiguration());
             modelBuilder.ApplyConfiguration(new JournalColumnConfiguration());
+            modelBuilder.ApplyConfiguration(new MarkConfiguration());
+            modelBuilder.ApplyConfiguration(new MarkTypeConfiguration());
             //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }

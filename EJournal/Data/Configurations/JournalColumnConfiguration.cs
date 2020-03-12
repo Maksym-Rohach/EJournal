@@ -12,10 +12,10 @@ namespace EJournal.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(255);
 
-            //builder.HasMany(e => e.Marks)
-            //    .WithOne(e => e.JournalColumn)
-            //    .HasForeignKey(e => e.JournalColumnId)
-            //    .OnDelete(DeleteBehavior.Restrict);
+            builder.HasMany(e => e.Marks)
+                .WithOne(e => e.JournalColumn)
+                .HasForeignKey(e => e.JournalColumnId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(e => e.Lesson)
                 .WithOne(e => e.JournalColumn)

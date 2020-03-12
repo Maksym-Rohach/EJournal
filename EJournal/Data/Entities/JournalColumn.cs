@@ -1,4 +1,6 @@
-﻿namespace EJournal.Data.Entities
+﻿using System.Collections.Generic;
+
+namespace EJournal.Data.Entities
 {
     public class JournalColumn
     {
@@ -9,5 +11,7 @@
 
         public int JournalId { get; set; }
         public Journal Journal { get; set; }
+
+        public ICollection<Mark> Marks { get; set; }
     }
 }

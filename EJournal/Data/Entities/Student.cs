@@ -8,6 +8,8 @@ namespace EJournal.Data.Entities
         public string Id { get; set; }
 
         public DbUser User { get; set; }
+
         public ICollection<GroupToStudent> GroupToStudents { get; set; }
+        public ICollection<Mark> Marks { get; set; }
     }
 }
