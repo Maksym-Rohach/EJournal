@@ -18,6 +18,10 @@ namespace EJournal.Data.Configurations
             builder.HasOne(e => e.Teacher)
                 .WithMany(e => e.Groups)
                 .HasForeignKey(x => x.TeacherId);
+
+            builder.HasOne(x => x.Journal)
+                .WithOne(x => x.Group)
+                .HasForeignKey<Journal>(x => x.GroupId);
         }
     }
 }

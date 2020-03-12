@@ -29,6 +29,8 @@ namespace EJournal.Data.EfContext
             modelBuilder.ApplyConfiguration(new GroupToStudentConfiguration());
             modelBuilder.ApplyConfiguration(new SubjectConfiguration());
             modelBuilder.ApplyConfiguration(new TeaherToSubjectConfiguration());
+            modelBuilder.ApplyConfiguration(new AuditoriumConfiguration());
+            modelBuilder.ApplyConfiguration(new JournalConfiguration());
             //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }

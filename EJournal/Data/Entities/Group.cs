@@ -13,6 +13,8 @@ namespace EJournal.Data.Entities
         public string TeacherId { get; set; }
         public Teacher Teacher { get; set; }
 
+        public Journal Journal { get; set; }
+
         public ICollection<GroupToStudent> GroupToStudents { get; set; }
     }
 }
