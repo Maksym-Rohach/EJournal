@@ -1,4 +1,5 @@
 ﻿using EJournal.Data.Configurations;
+using EJournal.Data.Entities;
 using EJournal.Data.Entities.AppUeser;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,6 +16,19 @@ namespace EJournal.Data.EfContext
         {
 
         }
+
+        public DbSet<Auditorium> Auditoriums { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupToStudent> GroupsToStudents { get; set; }
+        public DbSet<Journal> Journals { get; set; }
+        public DbSet<JournalColumn> JournalColumns { get; set; }
+        public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<Mark> Marks { get; set; }
+        public DbSet<MarkType> MarkTypes { get; set; }
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Subject> Subjects { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<TeacherToSubject> TeacherToSubjects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
