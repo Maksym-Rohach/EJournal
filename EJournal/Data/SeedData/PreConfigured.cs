@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
+using EJournal.Data.Entities;
 
 namespace EJournal.Data.SeedData
 {
@@ -163,80 +164,80 @@ namespace EJournal.Data.SeedData
                 await userManager.CreateAsync(user10, "Qwerty-1");
                 await userManager.AddToRoleAsync(user10, "Curator");
 
-                //TeacherProfile profile1 = new TeacherProfile
-                //{
-                //    Id = user1.Id,
-                //    Name = "Дем’янюк Віктор Володимирович",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth=new DateTime(1983,6,23),
-                //};
-                //TeacherProfile profile2 = new TeacherProfile
-                //{
-                //    Id = user2.Id,
-                //    Name = "Осадча Лариса Костянтинівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                
-                //TeacherProfile profile3 = new TeacherProfile
-                //{
-                //    Id = user3.Id,
-                //    Name = "Алексіюк Руслан Іванович",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1981, 3, 5),
-                //};
-                //TeacherProfile profile4 = new TeacherProfile
-                //{
-                //    Id = user4.Id,
-                //    Name = "Вокальчук Євген Лукашович",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //TeacherProfile profile5 = new TeacherProfile
-                //{
-                //    Id = user5.Id,
-                //    Name = "Чачіна Галина Сергіївна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1962, 2, 4),
-                //};
-                //TeacherProfile profile6 = new TeacherProfile
-                //{
-                //    Id = user6.Id,
-                //    Name = "Володько Маргарита Володимирівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //TeacherProfile profile7 = new TeacherProfile
-                //{
-                //    Id = user7.Id,
-                //    Name = "Власюк Юлія Іллівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1961, 7, 12),
-                //};
-                //TeacherProfile profile8 = new TeacherProfile
-                //{
-                //    Id = user8.Id,
-                //    Name = "Рейнська Вікторія Борисівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //TeacherProfile profile9 = new TeacherProfile
-                //{
-                //    Id = user9.Id,
-                //    Name = "Кондратюк Інна Володимирівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //TeacherProfile profile10 = new TeacherProfile
-                //{
-                //    Id = user10.Id,
-                //    Name = "Болтенко Надія Євгенівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //await context.UserProfiles.AddRangeAsync(profile1,profile2,profile3,profile4,
-                //profile5,profile6,profile7,profile8);
-                //await context.SaveChangesAsync();
+                Teacher profile1 = new Teacher
+                {
+                    Id = user1.Id,
+                    Name = "Дем’янюк Віктор Володимирович",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                Teacher profile2 = new Teacher
+                {
+                    Id = user2.Id,
+                    Name = "Осадча Лариса Костянтинівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+
+                Teacher profile3 = new Teacher
+                {
+                    Id = user3.Id,
+                    Name = "Алексіюк Руслан Іванович",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1981, 3, 5),
+                };
+                Teacher profile4 = new Teacher
+                {
+                    Id = user4.Id,
+                    Name = "Вокальчук Євген Лукашович",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                Teacher profile5 = new Teacher
+                {
+                    Id = user5.Id,
+                    Name = "Чачіна Галина Сергіївна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1962, 2, 4),
+                };
+                Teacher profile6 = new Teacher
+                {
+                    Id = user6.Id,
+                    Name = "Володько Маргарита Володимирівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                Teacher profile7 = new Teacher
+                {
+                    Id = user7.Id,
+                    Name = "Власюк Юлія Іллівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1961, 7, 12),
+                };
+                Teacher profile8 = new Teacher
+                {
+                    Id = user8.Id,
+                    Name = "Рейнська Вікторія Борисівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                Teacher profile9 = new Teacher
+                {
+                    Id = user9.Id,
+                    Name = "Кондратюк Інна Володимирівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                Teacher profile10 = new Teacher
+                {
+                    Id = user10.Id,
+                    Name = "Болтенко Надія Євгенівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                await context.Teachers.AddRangeAsync(profile1, profile2, profile3, profile4,
+                profile5, profile6, profile7, profile8);
+                await context.SaveChangesAsync();
 
                 //Faker<StudentProfile> estatesFaked = new Faker<StudentProfile>()
                 //            .RuleFor(t => t.Image, f => "unknown.jpg")
