@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using EJournal.Data.EfContext;
 using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Models;
+using EJournal.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,16 +23,23 @@ namespace EJournal.Controllers
         private readonly UserManager<DbUser> _userManager;
         private readonly SignInManager<DbUser> _signInManager;
         private readonly EfDbContext _context;
-        public AuthController(EfDbContext context, UserManager<DbUser> userManager, SignInManager<DbUser> sigInManager)
+        private readonly IJwtTokenService _jwtTokenService;
+        public AuthController(EfDbContext context, UserManager<DbUser> userManager, SignInManager<DbUser> sigInManager,
+            IJwtTokenService jwtTokenService)
         {
             _userManager = userManager;
             _signInManager = sigInManager;
             _context = context;
+            _jwtTokenService = jwtTokenService;
         }
 
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return "Введіть всі данні";
+            }
             var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
             if (user == null)
             {
@@ -45,26 +53,10 @@ namespace EJournal.Controllers
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
-            return await CreateTokenAsync(user);
+
+            return Ok(new {token=_jwtTokenService.CreateToken(user)});
         }
 
-        private async Task<string> CreateTokenAsync(DbUser user)
-        {
-            List<Claim> claims = new List<Claim>()
-            {
-                new Claim(ClaimTypes.Name,user.UserName),
-            };
-
-            var now = DateTime.UtcNow;
-            var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("secret-key-example"));
-            var signinCredentials = new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256);
-
-            var jwt = new JwtSecurityToken(
-                signingCredentials: signinCredentials,
-                expires: now.Add(TimeSpan.FromDays(1)),
-                claims: claims
-                );
-            return new JwtSecurityTokenHandler().WriteToken(jwt);
-        }
+        
     }
 }

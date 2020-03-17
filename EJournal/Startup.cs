@@ -1,5 +1,6 @@
 using EJournal.Data.EfContext;
 using EJournal.Data.Entities.AppUeser;
+using EJournal.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace EJournal
 { 
@@ -31,7 +34,8 @@ namespace EJournal
             {
                 configuration.RootPath = "ClientApp/build";
             });
-
+            services.AddScoped<IJwtTokenService, JwtTokenService>();
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("gachi-muchi-secret-key"));
             services.AddDbContext<EfDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EJornalDataBase")));
 
             services.AddIdentity<DbUser, DbRole>(options =>
