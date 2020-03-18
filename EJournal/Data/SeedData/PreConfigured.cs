@@ -164,101 +164,107 @@ namespace EJournal.Data.SeedData
                 await userManager.CreateAsync(user10, "Qwerty-1");
                 await userManager.AddToRoleAsync(user10, "Curator");
 
-                //Teacher profile1 = new Teacher
-                //{
-                //    Id = user1.Id,
-                //    FirstName = "Віктор",
-                //    LastName = "Дем’янюк",
-                //    MiddleName = "Володимирович",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //Teacher profile2 = new Teacher
-                //{
-                //    Id = user2.Id,
-                //    FirstName = "Лариса",
-                //    LastName = "Осадча",
-                //    MiddleName = "Костянтинівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
+                BaseProfile profile1 = new BaseProfile
+                {
+                    Id = user1.Id,
+                    Name = "Віктор",
+                    LastName = "Дем’янюк",
+                    Surname = "Володимирович",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                BaseProfile profile2 = new BaseProfile
+                {
+                    Id = user2.Id,
+                    Name = "Лариса",
+                    LastName = "Осадча",
+                    Surname = "Костянтинівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
 
-                //Teacher profile3 = new Teacher
-                //{
-                //    Id = user3.Id,
-                //    FirstName = "Руслан",
-                //    LastName = "Алексіюк",
-                //    MiddleName = "Іванович",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1981, 3, 5),
-                //};
-                //Teacher profile4 = new Teacher
-                //{
-                //    Id = user4.Id,
-                //    FirstName = "Євген",
-                //    LastName = "Вокальчук",
-                //    MiddleName = "Лукашович",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //Teacher profile5 = new Teacher
-                //{
-                //    Id = user5.Id,
-                //    Name = "Галина",
-                //    FirstName = "Чачіна",
-                //    MiddleName = "Сергіївна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1962, 2, 4),
-                //};
-                //Teacher profile6 = new Teacher
-                //{
-                //    Id = user6.Id,
-                //    Name = "Маргарита",
-                //    FirstName = "Володько",
-                //    MiddleName = "Володимирівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //Teacher profile7 = new Teacher
-                //{
-                //    Id = user7.Id,
-                //    FirstName = "Юлія",
-                //    LastName = "Власюк",
-                //    MiddleName = "Іллівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1961, 7, 12),
-                //};
-                //Teacher profile8 = new Teacher
-                //{
-                //    Id = user8.Id,
-                //    FirstName = "Вікторія",
-                //    LastName = "Рейнська",
-                //    MiddleName = "Борисівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //Teacher profile9 = new Teacher
-                //{
-                //    Id = user9.Id,
-                //    FirstName = "Інна",
-                //    LastName = "Кондратюк",
-                //    MiddleName = "Володимирівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //Teacher profile10 = new Teacher
-                //{
-                //    Id = user10.Id,
-                //    FirstName = "Надія",
-                //    LastName = "Болтенко",
-                //    MiddleName = "Євгенівна",
-                //    Address = "Pushkina 44, 12a",
-                //    DateOfBirth = new DateTime(1983, 6, 23),
-                //};
-                //await context.Teachers.AddRangeAsync(profile1, profile2, profile3, profile4,
-                //profile5, profile6, profile7, profile8);
-                //await context.SaveChangesAsync();
-
+                BaseProfile profile3 = new BaseProfile
+                {
+                    Id = user3.Id,
+                    Name = "Руслан",
+                    LastName = "Алексіюк",
+                    Surname = "Іванович",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1981, 3, 5),
+                };
+                BaseProfile profile4 = new BaseProfile
+                {
+                    Id = user4.Id,
+                    Name = "Євген",
+                    LastName = "Вокальчук",
+                    Surname = "Лукашович",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                BaseProfile profile5 = new BaseProfile
+                {
+                    Id = user5.Id,
+                    Name = "Галина",
+                    FirstName = "Чачіна",
+                    Surname = "Сергіївна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1962, 2, 4),
+                };
+                BaseProfile profile6 = new BaseProfile
+                {
+                    Id = user6.Id,
+                    Name = "Маргарита",
+                    FirstName = "Володько",
+                    Surname = "Володимирівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                BaseProfile profile7 = new BaseProfile
+                {
+                    Id = user7.Id,
+                    Name = "Юлія",
+                    LastName = "Власюк",
+                    Surname = "Іллівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1961, 7, 12),
+                };
+                BaseProfile profile8 = new BaseProfile
+                {
+                    Id = user8.Id,
+                    Name = "Вікторія",
+                    LastName = "Рейнська",
+                    Surname = "Борисівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                BaseProfile profile9 = new BaseProfile
+                {
+                    Id = user9.Id,
+                    Name = "Інна",
+                    LastName = "Кондратюк",
+                    Surname = "Володимирівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                BaseProfile profile10 = new BaseProfile
+                {
+                    Id = user10.Id,
+                    Name = "Надія",
+                    LastName = "Болтенко",
+                    Surname = "Євгенівна",
+                    Address = "Pushkina 44, 12a",
+                    DateOfBirth = new DateTime(1983, 6, 23),
+                };
+                await context.BaseProfiles.AddRangeAsync(profile1, profile2, profile3, profile4,
+                profile5, profile6, profile7, profile8,profile9,profile10);
+                await context.SaveChangesAsync();
+                await context.StudentProfiles.AddRangeAsync(new StudentProfile { Id=profile1.Id}, 
+                    new StudentProfile { Id = profile2.Id },new StudentProfile { Id = profile3.Id },
+                    new StudentProfile { Id = profile4.Id }, new StudentProfile { Id = profile5.Id },
+                    new StudentProfile { Id = profile6.Id }, new StudentProfile { Id = profile7.Id },
+                    new StudentProfile { Id = profile8.Id }, new StudentProfile { Id = profile9.Id },
+                    new StudentProfile { Id = profile10.Id });
+                await context.SaveChangesAsync();
                 //string[] middles =
                 //{
                 //    "Олександрович",
