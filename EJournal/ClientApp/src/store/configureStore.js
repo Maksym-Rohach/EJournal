@@ -6,6 +6,7 @@ import { createBrowserHistory } from 'history';
 ///reducers
 import {personsChartReducer} from '../views/adminViews/PersonsChart/reducer';
 import {commentsChartReducer} from '../views/adminViews/CommentsChart/reducer';
+import {loginReducer} from '../views/defaultViews/LoginPage/reducer';
 
 
 // Create browser history to use in the Redux store
@@ -15,7 +16,8 @@ export const history = createBrowserHistory({ basename: baseUrl });
 export default function configureStore(history, initialState) {
   const reducers = {
     persons: personsChartReducer,
-    comments: commentsChartReducer
+    comments: commentsChartReducer,
+    login: loginReducer
   };
 
   const middleware = [
