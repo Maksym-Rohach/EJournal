@@ -22,6 +22,15 @@ namespace EJournal.Data.Configurations
 
             builder.HasOne(e => e.Teacher)
                 .WithOne(e => e.BaseProfile);
+
+            builder.Property(e => e.Name)
+                .HasMaxLength(64);
+
+            builder.Property(e => e.Surname)
+                .HasMaxLength(64);
+
+            builder.Property(e => e.LastName)
+                .HasMaxLength(64);
         }
     }
 }
