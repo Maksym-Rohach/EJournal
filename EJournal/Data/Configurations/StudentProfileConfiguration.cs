@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EJournal.Data.Configurations
 {
-    public class StudentConfiguration : IEntityTypeConfiguration<Student>
+    public class StudentProfileConfiguration : IEntityTypeConfiguration<StudentProfile>
     {
-        public void Configure(EntityTypeBuilder<Student> builder)
+        public void Configure(EntityTypeBuilder<StudentProfile> builder)
         {
-            builder.HasOne(e => e.User)
+            builder.HasOne(e => e.BaseProfile)
                 .WithOne(e => e.Student)
-                .HasForeignKey<Student>(e => e.Id)
+                .HasForeignKey<StudentProfile>(e => e.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(e => e.GroupToStudents)
