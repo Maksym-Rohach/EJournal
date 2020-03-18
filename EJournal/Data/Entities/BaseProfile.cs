@@ -1,0 +1,20 @@
+﻿using EJournal.Data.Entities.AppUeser;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace EJournal.Data.Entities
+{
+    public class BaseProfile
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Surname { get; set; }
+        public string LastName { get; set; }
+
+        public DbUser DbUser { get; set; }
+        public TeacherProfile Teacher { get; set; }
+        public StudentProfile Student { get; set; }
+    }
+}
