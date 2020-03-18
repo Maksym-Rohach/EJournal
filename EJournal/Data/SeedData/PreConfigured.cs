@@ -87,7 +87,7 @@ namespace EJournal.Data.SeedData
                     Email = "emdeputyninja@gmail.com",
                     PhoneNumber = "+380505551541",
                 };
-                
+
                 DbUser user3 = new DbUser
                 {
                     UserName = "edeputy",
@@ -160,92 +160,131 @@ namespace EJournal.Data.SeedData
                 await userManager.CreateAsync(user8, "Qwerty-1");
                 await userManager.AddToRoleAsync(user8, "Curator");
                 await userManager.CreateAsync(user9, "Qwerty-1");
-                await userManager.AddToRoleAsync(user9, "Curator"); 
+                await userManager.AddToRoleAsync(user9, "Curator");
                 await userManager.CreateAsync(user10, "Qwerty-1");
                 await userManager.AddToRoleAsync(user10, "Curator");
 
-                Teacher profile1 = new Teacher
-                {
-                    Id = user1.Id,
-                    Name = "Дем’янюк Віктор Володимирович",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1983, 6, 23),
-                };
-                Teacher profile2 = new Teacher
-                {
-                    Id = user2.Id,
-                    Name = "Осадча Лариса Костянтинівна",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1983, 6, 23),
-                };
+                //Teacher profile1 = new Teacher
+                //{
+                //    Id = user1.Id,
+                //    FirstName = "Віктор",
+                //    LastName = "Дем’янюк",
+                //    MiddleName = "Володимирович",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1983, 6, 23),
+                //};
+                //Teacher profile2 = new Teacher
+                //{
+                //    Id = user2.Id,
+                //    FirstName = "Лариса",
+                //    LastName = "Осадча",
+                //    MiddleName = "Костянтинівна",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1983, 6, 23),
+                //};
 
-                Teacher profile3 = new Teacher
-                {
-                    Id = user3.Id,
-                    Name = "Алексіюк Руслан Іванович",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1981, 3, 5),
-                };
-                Teacher profile4 = new Teacher
-                {
-                    Id = user4.Id,
-                    Name = "Вокальчук Євген Лукашович",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1983, 6, 23),
-                };
-                Teacher profile5 = new Teacher
-                {
-                    Id = user5.Id,
-                    Name = "Чачіна Галина Сергіївна",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1962, 2, 4),
-                };
-                Teacher profile6 = new Teacher
-                {
-                    Id = user6.Id,
-                    Name = "Володько Маргарита Володимирівна",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1983, 6, 23),
-                };
-                Teacher profile7 = new Teacher
-                {
-                    Id = user7.Id,
-                    Name = "Власюк Юлія Іллівна",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1961, 7, 12),
-                };
-                Teacher profile8 = new Teacher
-                {
-                    Id = user8.Id,
-                    Name = "Рейнська Вікторія Борисівна",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1983, 6, 23),
-                };
-                Teacher profile9 = new Teacher
-                {
-                    Id = user9.Id,
-                    Name = "Кондратюк Інна Володимирівна",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1983, 6, 23),
-                };
-                Teacher profile10 = new Teacher
-                {
-                    Id = user10.Id,
-                    Name = "Болтенко Надія Євгенівна",
-                    Address = "Pushkina 44, 12a",
-                    DateOfBirth = new DateTime(1983, 6, 23),
-                };
-                await context.Teachers.AddRangeAsync(profile1, profile2, profile3, profile4,
-                profile5, profile6, profile7, profile8);
-                await context.SaveChangesAsync();
+                //Teacher profile3 = new Teacher
+                //{
+                //    Id = user3.Id,
+                //    FirstName = "Руслан",
+                //    LastName = "Алексіюк",
+                //    MiddleName = "Іванович",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1981, 3, 5),
+                //};
+                //Teacher profile4 = new Teacher
+                //{
+                //    Id = user4.Id,
+                //    FirstName = "Євген",
+                //    LastName = "Вокальчук",
+                //    MiddleName = "Лукашович",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1983, 6, 23),
+                //};
+                //Teacher profile5 = new Teacher
+                //{
+                //    Id = user5.Id,
+                //    Name = "Галина",
+                //    FirstName = "Чачіна",
+                //    MiddleName = "Сергіївна",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1962, 2, 4),
+                //};
+                //Teacher profile6 = new Teacher
+                //{
+                //    Id = user6.Id,
+                //    Name = "Маргарита",
+                //    FirstName = "Володько",
+                //    MiddleName = "Володимирівна",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1983, 6, 23),
+                //};
+                //Teacher profile7 = new Teacher
+                //{
+                //    Id = user7.Id,
+                //    FirstName = "Юлія",
+                //    LastName = "Власюк",
+                //    MiddleName = "Іллівна",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1961, 7, 12),
+                //};
+                //Teacher profile8 = new Teacher
+                //{
+                //    Id = user8.Id,
+                //    FirstName = "Вікторія",
+                //    LastName = "Рейнська",
+                //    MiddleName = "Борисівна",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1983, 6, 23),
+                //};
+                //Teacher profile9 = new Teacher
+                //{
+                //    Id = user9.Id,
+                //    FirstName = "Інна",
+                //    LastName = "Кондратюк",
+                //    MiddleName = "Володимирівна",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1983, 6, 23),
+                //};
+                //Teacher profile10 = new Teacher
+                //{
+                //    Id = user10.Id,
+                //    FirstName = "Надія",
+                //    LastName = "Болтенко",
+                //    MiddleName = "Євгенівна",
+                //    Address = "Pushkina 44, 12a",
+                //    DateOfBirth = new DateTime(1983, 6, 23),
+                //};
+                //await context.Teachers.AddRangeAsync(profile1, profile2, profile3, profile4,
+                //profile5, profile6, profile7, profile8);
+                //await context.SaveChangesAsync();
 
-                //Faker<StudentProfile> estatesFaked = new Faker<StudentProfile>()
-                //            .RuleFor(t => t.Image, f => "unknown.jpg")
-                //            .RuleFor(t => t.Address, f => Address.)
-                //            .RuleFor(t => t.Name, f => f.Name.FullName());
+                //string[] middles =
+                //{
+                //    "Олександрович",
+                //    "Валерійович",
+                //    "Дмитрович",
+                //    "Максимович",
+                //    "Петрович",
+                //    "Тарасович",
+                //    "Богданович",
+                //    "Миколайович",
+                //    "Олексійович",
+                //    "Ігорович",
+                //    "Іванович",
+                //    "В'ячеславович",
+                //    "Станіславович",
+                //    "Валентинович"
+                //};
+                //var rand = new Random();
+                //Faker<Student> estatesFaked = new Faker<Student>()
+                //            .RuleFor(t => t.Address, f => f.Address.StreetAddress)
+                //            .RuleFor(t => t.FirstName, f => f.Person.FirstName)
+                //            .RuleFor(t => t.LastName, f => f.Person.LastName)
+                //            .RuleFor(t => t.Middlename, f => middles[rand.Next(0, middles.Length)]);
 
                 //var profiles = estatesFaked.Generate(20);
-                //context.StudentProfile.AddRange(profiles);
+                //context.Students.AddRange(profiles);
                 //await context.SaveChangesAsync();
             }
             catch (Exception)
