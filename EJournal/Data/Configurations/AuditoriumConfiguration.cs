@@ -13,6 +13,10 @@ namespace EJournal.Data.Configurations
 
             builder.HasMany(e => e.Lessons)
                 .WithOne(e => e.Auditorium);
+
+            builder.Property(e => e.Name)
+                .HasMaxLength(64)
+                .IsRequired();
         }
     }
 }
