@@ -17,6 +17,6 @@ namespace EJournal.Data.Entities
         public virtual MarkType MarkType { get; set; }
 
         public string StudentId { get; set; }
-        public Student Student { get; set; }
+        public StudentProfile Student { get; set; }
     }
 }

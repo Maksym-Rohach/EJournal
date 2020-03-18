@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace EJournal.Data.Entities
 {
-    public class Student
+    public class StudentProfile
     {
         public string Id { get; set; }
 
-        public DbUser User { get; set; }
+        public BaseProfile BaseProfile { get; set; }
 
         public ICollection<GroupToStudent> GroupToStudents { get; set; }
         public ICollection<Mark> Marks { get; set; }

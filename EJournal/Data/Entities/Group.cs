@@ -11,7 +11,7 @@ namespace EJournal.Data.Entities
         public DateTime YearTo { get; set; }
 
         public string TeacherId { get; set; }
-        public Teacher Teacher { get; set; }
+        public TeacherProfile Teacher { get; set; }
 
         public Journal Journal { get; set; }
         public ICollection<Lesson> Lessons { get; set; }
