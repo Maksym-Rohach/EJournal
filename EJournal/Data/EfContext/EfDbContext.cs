@@ -25,9 +25,9 @@ namespace EJournal.Data.EfContext
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Mark> Marks { get; set; }
         public DbSet<MarkType> MarkTypes { get; set; }
-        public DbSet<StudentProfile> Students { get; set; }
+        public DbSet<StudentProfile> StudentProfiles { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<TeacherProfile> Teachers { get; set; }
+        public DbSet<TeacherProfile> TeacherProfiles { get; set; }
         public DbSet<TeacherToSubject> TeacherToSubjects { get; set; }
         public DbSet<BaseProfile> BaseProfiles { get; set; }
         public DbSet<Speciality> Specialities { get; set; }
