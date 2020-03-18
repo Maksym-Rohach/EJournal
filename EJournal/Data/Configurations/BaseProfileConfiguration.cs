@@ -34,6 +34,13 @@ namespace EJournal.Data.Configurations
             builder.Property(e => e.LastName)
                 .HasMaxLength(64)
                 .IsRequired();
+
+            builder.Property(e => e.Adress)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.Property(e => e.DateOfBirth)
+                .IsRequired();
         }
     }
 }
