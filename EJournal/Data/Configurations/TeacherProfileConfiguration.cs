@@ -4,16 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EJournal.Data.Configurations
 {
-    public class TeacherConfiguration : IEntityTypeConfiguration<Teacher>
+    public class TeacherProfileConfiguration : IEntityTypeConfiguration<TeacherProfile>
     {
-        public void Configure(EntityTypeBuilder<Teacher> builder)
+        public void Configure(EntityTypeBuilder<TeacherProfile> builder)
         {
             builder.Property(e => e.Degree)
                 .HasMaxLength(256);
 
-            builder.HasOne(e => e.User)
+            builder.HasOne(e => e.BaseProfile)
                 .WithOne(e => e.Teacher)
-                .HasForeignKey<Teacher>(e => e.Id)
+                .HasForeignKey<TeacherProfile>(e => e.Id)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(e => e.Groups)

@@ -25,17 +25,18 @@ namespace EJournal.Data.EfContext
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Mark> Marks { get; set; }
         public DbSet<MarkType> MarkTypes { get; set; }
-        public DbSet<Student> Students { get; set; }
+        public DbSet<StudentProfile> Students { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<TeacherProfile> Teachers { get; set; }
         public DbSet<TeacherToSubject> TeacherToSubjects { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.ApplyConfiguration(new TeacherConfiguration());
-            modelBuilder.ApplyConfiguration(new StudentConfiguration());
+            modelBuilder.ApplyConfiguration(new BaseProfileConfiguration());
+            modelBuilder.ApplyConfiguration(new TeacherProfileConfiguration());
+            modelBuilder.ApplyConfiguration(new StudentProfileConfiguration());
             modelBuilder.ApplyConfiguration(new DbUserRoleConfiguration());
             modelBuilder.ApplyConfiguration(new DbUserConfiguration());
             modelBuilder.ApplyConfiguration(new DbRoleConfiguration());
