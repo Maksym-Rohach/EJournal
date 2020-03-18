@@ -29,6 +29,8 @@ namespace EJournal.Data.EfContext
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<TeacherProfile> Teachers { get; set; }
         public DbSet<TeacherToSubject> TeacherToSubjects { get; set; }
+        public DbSet<BaseProfile> BaseProfiles { get; set; }
+        public DbSet<Speciality> Specialities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,7 +52,7 @@ namespace EJournal.Data.EfContext
             modelBuilder.ApplyConfiguration(new JournalColumnConfiguration());
             modelBuilder.ApplyConfiguration(new MarkConfiguration());
             modelBuilder.ApplyConfiguration(new MarkTypeConfiguration());
-            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfiguration(new SpecialityConfiguration());
         }
     }
 }
