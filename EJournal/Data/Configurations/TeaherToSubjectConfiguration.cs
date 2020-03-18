@@ -12,11 +12,13 @@ namespace EJournal.Data.Configurations
 
             builder.HasOne(e => e.Subject)
                 .WithMany(e => e.TeacherToSubjects)
-                .HasForeignKey(e => e.SubjectId);
+                .HasForeignKey(e => e.SubjectId)
+                .IsRequired();
 
             builder.HasOne(e => e.Teacher)
                 .WithMany(e => e.TeacherToSubjects)
-                .HasForeignKey(e => e.TeacherId);
+                .HasForeignKey(e => e.TeacherId)
+                .IsRequired();
         }
     }
 }
