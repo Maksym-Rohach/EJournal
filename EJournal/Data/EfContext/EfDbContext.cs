@@ -25,10 +25,12 @@ namespace EJournal.Data.EfContext
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Mark> Marks { get; set; }
         public DbSet<MarkType> MarkTypes { get; set; }
-        public DbSet<StudentProfile> Students { get; set; }
+        public DbSet<StudentProfile> StudentProfiles { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<TeacherProfile> Teachers { get; set; }
+        public DbSet<TeacherProfile> TeacherProfiles { get; set; }
         public DbSet<TeacherToSubject> TeacherToSubjects { get; set; }
+        public DbSet<BaseProfile> BaseProfiles { get; set; }
+        public DbSet<Speciality> Specialities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,7 +52,7 @@ namespace EJournal.Data.EfContext
             modelBuilder.ApplyConfiguration(new JournalColumnConfiguration());
             modelBuilder.ApplyConfiguration(new MarkConfiguration());
             modelBuilder.ApplyConfiguration(new MarkTypeConfiguration());
-            //modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            modelBuilder.ApplyConfiguration(new SpecialityConfiguration());
         }
     }
 }
