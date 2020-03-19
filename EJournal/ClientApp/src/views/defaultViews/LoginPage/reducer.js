@@ -4,7 +4,7 @@ import isEmpty from "lodash/isEmpty";
 import setAuthorizationToken from "../../../utils/setAuthorizationToken";
 import jwt from "jsonwebtoken";
 import redirectStatusCode from "../../../services/redirectStatusCode";
-import history from "../../../utils/history";
+import { push } from "connected-react-router";
 
 export const LOGIN_POST_STARTED = "login/LOGIN_POST_STARTED";
 export const LOGIN_POST_SUCCESS = "login/LOGIN_POST_SUCCESS";
@@ -75,9 +75,9 @@ export const login = model => {
         response => {
           dispatch(loginActions.success());
           loginByJWT(response.data, dispatch);
-          const pushUrl = getUrlToRedirect();
-          ////console.log("----PushUrl----", pushUrl);
-          history.push(pushUrl);
+          const pushUrl = getUrlToRedirect();   
+          console.log("QQQQQQQQQQQQQQQQQQ",pushUrl);     
+          dispatch(push(pushUrl));
         },
         err => {
           throw err;
@@ -85,7 +85,7 @@ export const login = model => {
       )
       .catch(err => {
         dispatch(loginActions.failed(err.response));
-        redirectStatusCode(err.response.status);
+        redirectStatusCode(err.response);
       });
   };
 };
@@ -94,31 +94,32 @@ function getUrlToRedirect() {
   var user = jwt.decode(localStorage.jwtToken);
   //let roles =[];
   let roles = user.roles;
+  console.log("QQQQQQQQQQQQQQQQQQ",user);
   let path = "";
   if (Array.isArray(roles)) {
     for (let i = 0; i < roles.length; i++) {
-      if (roles[i] == "Company") {
-        path = "/company/employees";
+      if (roles[i] == "Director") {
+        path = "/admin/persons";
         break;
-      } else if (roles[i] === "Broker") {
-        path = "/broker/profile";
+      } else if (roles[i] === "Student") {
+        path = "/student/profile";
         break;
-      } else if (roles[i] === "Client") {
-        path = "/client/profile";
+      } else if (roles[i] === "StudyRoomHead") {
+        path = "/manager/profile";
         break;
-      } else if (roles[i] === "Admin") {
-        path = "/admin/clients";
+      } else if (roles[i] === "Teacher") {
+        path = "/teacher/profile";
         break;
       }
     }
   } else {
-    if (roles == "Company") {
-      path = "/company/employees";
-    } else if (roles === "Broker") {
-      path = "/broker/profile";
-    } else if (roles === "Client") {
-      path = "/client/profile";
-    } else if (roles === "Admin") {
+    if (roles == "Teacher") {
+      path = "/teacher/profile";
+    } else if (roles === "Student") {
+      path = "/student/profile";
+    } else if (roles === "StudyRoomHead") {
+      path = "/manager/profile";
+    } else if (roles === "Director") {
       path = "/admin/clients";
     }
   }

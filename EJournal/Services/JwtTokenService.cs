@@ -36,12 +36,12 @@ namespace EJournal.Services
             List<Claim> claims = new List<Claim>()
             {
                 new Claim("id",user.Id),
-                new Claim(ClaimTypes.Name,user.UserName),
+                new Claim("name",user.UserName),
                 //new Claim("image",Image)
             };
             foreach(var el in roles)
             {
-                claims.Add(new Claim(ClaimTypes.Role, el));
+                claims.Add(new Claim("roles", el));
             }
 
             //var now = DateTime.UtcNow;
