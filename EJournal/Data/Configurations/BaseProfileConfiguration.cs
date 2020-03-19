@@ -24,13 +24,23 @@ namespace EJournal.Data.Configurations
                 .WithOne(e => e.BaseProfile);
 
             builder.Property(e => e.Name)
-                .HasMaxLength(64);
+                .HasMaxLength(64)
+                .IsRequired();
 
             builder.Property(e => e.Surname)
-                .HasMaxLength(64);
+                .HasMaxLength(64)
+                .IsRequired();
 
             builder.Property(e => e.LastName)
-                .HasMaxLength(64);
+                .HasMaxLength(64)
+                .IsRequired();
+
+            builder.Property(e => e.Adress)
+                .HasMaxLength(100)
+                .IsRequired();
+
+            builder.Property(e => e.DateOfBirth)
+                .IsRequired();
         }
     }
 }
