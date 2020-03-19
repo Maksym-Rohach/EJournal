@@ -15,7 +15,6 @@ namespace EJournal.Data.SeedData
     {
         public static void SeedRoles(RoleManager<DbRole> roleManager)
         {
-
             try
             {
                 if (!roleManager.Roles.Any())
@@ -71,11 +70,9 @@ namespace EJournal.Data.SeedData
             {
 
             }
-
         }
         public static async Task SeedUsers(UserManager<DbUser> userManager, EfDbContext context)
         {
-
             try
             {
                 if (!context.TeacherProfiles.Any())
@@ -86,14 +83,12 @@ namespace EJournal.Data.SeedData
                         Email = "beedirector@gmail.com",
                         PhoneNumber = "+380503334031",
                     };
-
                     DbUser user2 = new DbUser
                     {
                         UserName = "emdeputy",
                         Email = "emdeputyninja@gmail.com",
                         PhoneNumber = "+380505551541",
                     };
-
                     DbUser user3 = new DbUser
                     {
                         UserName = "edeputy",
@@ -190,7 +185,6 @@ namespace EJournal.Data.SeedData
                         Adress = "Pushkina 44, 12a",
                         DateOfBirth = new DateTime(1983, 6, 23),
                     };
-
                     BaseProfile profile3 = new BaseProfile
                     {
                         Id = user3.Id,
@@ -346,7 +340,6 @@ namespace EJournal.Data.SeedData
             {
 
             }
-
         }
     }
 }
