@@ -11,11 +11,8 @@ namespace EJournal.Data.Configurations
             builder.HasMany(e => e.UserRoles)
                 .WithOne(e => e.User);
 
-            builder.HasOne(e => e.Student)
-                .WithOne(e => e.User);
-
-            builder.HasOne(e => e.Teacher)
-                .WithOne(e => e.User);
+            builder.HasOne(e => e.BaseProfile)
+                .WithOne(e => e.DbUser);
         }
     }
 }

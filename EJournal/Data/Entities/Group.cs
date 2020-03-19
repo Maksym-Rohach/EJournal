@@ -11,11 +11,14 @@ namespace EJournal.Data.Entities
         public DateTime YearTo { get; set; }
 
         public string TeacherId { get; set; }
-        public Teacher Teacher { get; set; }
+        public TeacherProfile Teacher { get; set; }
 
+        public int SpecialityId { get; set; }
+        public Speciality Speciality { get; set; }
+        
         public Journal Journal { get; set; }
-        public ICollection<Lesson> Lessons { get; set; }
 
+        public ICollection<Lesson> Lessons { get; set; }
         public ICollection<GroupToStudent> GroupToStudents { get; set; }
     }
 }
