@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace EJournal.Controllers.AdminControllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Director")]
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
@@ -26,80 +26,86 @@ namespace EJournal.Controllers.AdminControllers
             _context = context;
             _userManager = userManager;
         }
-        [HttpPost("addStudent")]
-        public async Task<ActionResult<string>> AddStudent([FromBody] AddStudentModel model)
+
+        [HttpPost("adduser")]
+        public async Task<ActionResult<string>> AddUser([FromBody] AddUserModel model)
         {
             if (!ModelState.IsValid)
             {
-                return "Введіть всі дані";
+                return BadRequest("Введіть коректні дані");
             }
             try
             {
-                DbUser stud = new DbUser
+                DbUser user = new DbUser
                 {
                     UserName = model.UserName,
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
                 };
-                await _userManager.CreateAsync(stud, "Qwerty-1");
-                await _userManager.AddToRoleAsync(stud, "Student");
                 BaseProfile prof = new BaseProfile
                 {
-                    Id = stud.Id,
                     Name = model.Name,
                     LastName = model.LastName,
                     Surname = model.Surname,
                     Adress = model.Adress,
                     DateOfBirth = model.DateOfBirth
                 };
+
+                switch (model.Rolename)
+                {
+                    case "Student":
+                        await _userManager.CreateAsync(user, model.Password);
+                        await _userManager.AddToRoleAsync(user, "Student");
+                        break;
+                    case "Teacher":
+                        await _userManager.CreateAsync(user, model.Password);
+                        await _userManager.AddToRoleAsync(user, "Teacher");
+                        break;
+                    case "Director":
+                        await _userManager.CreateAsync(user, model.Password);
+                        await _userManager.AddToRoleAsync(user, "Director");
+                        break;
+                    case "Curator":
+                        await _userManager.CreateAsync(user, model.Password);
+                        await _userManager.AddToRoleAsync(user, "Curator");
+                        break;
+                    case "Director deputy":
+                        await _userManager.CreateAsync(user, model.Password);
+                        await _userManager.AddToRoleAsync(user, "DDeputy");
+                        break;
+                    case "Department head":
+                        await _userManager.CreateAsync(user, model.Password);
+                        await _userManager.AddToRoleAsync(user, "DepartmentHead");
+                        break;
+                    case "Cycle commision head":
+                        await _userManager.CreateAsync(user, model.Password);
+                        await _userManager.AddToRoleAsync(user, "CycleCommisionHead");
+                        break;
+                    case "Study room head":
+                        await _userManager.CreateAsync(user, model.Password);
+                        await _userManager.AddToRoleAsync(user, "StudyRoomHead");
+                        break;
+                    default:
+                        return "Введіть правильну роль";
+                }
+                prof.Id = user.Id;
                 await _context.BaseProfiles.AddAsync(prof);
                 await _context.SaveChangesAsync();
-                await _context.StudentProfiles.AddAsync(new StudentProfile { Id = prof.Id });
-                await _context.SaveChangesAsync();
-
-                return Ok("Студент успішно доданий");
+                if (model.Rolename == "Student")
+                {
+                    await _context.StudentProfiles.AddAsync(new StudentProfile { Id = prof.Id });
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    await _context.TeacherProfiles.AddAsync(new TeacherProfile { Id = prof.Id, Degree = model.Degree });
+                    await _context.SaveChangesAsync();
+                }
+                return Ok("Користувач успішно доданий");
             }
             catch (Exception ex)
             {
-                return BadRequest("Не корректні дані");
-            }
-        }
-        [HttpPost("addTeacher")]
-        public async Task<ActionResult<string>> AddTeacher([FromBody] AddTeacherModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return "Введіть всі дані";
-            }
-            try
-            {
-                DbUser teach = new DbUser
-                {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber,
-                };
-                await _userManager.CreateAsync(teach, "Qwerty-1");
-                await _userManager.AddToRoleAsync(teach, "Teacher");
-                BaseProfile prof = new BaseProfile
-                {
-                    Id = teach.Id,
-                    Name = model.Name,
-                    LastName = model.LastName,
-                    Surname = model.Surname,
-                    Adress = model.Adress,
-                    DateOfBirth = model.DateOfBirth
-                };
-                await _context.BaseProfiles.AddAsync(prof);
-                await _context.SaveChangesAsync();
-                await _context.TeacherProfiles.AddAsync(new TeacherProfile { Id = prof.Id,Degree=model.Degree });
-                await _context.SaveChangesAsync();
-
-                return Ok("Студент успішно доданий");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Не корректні дані");
+                return "Помилка: " + ex.Message;
             }
         }
         [HttpGet("get/students")]
@@ -107,16 +113,16 @@ namespace EJournal.Controllers.AdminControllers
         {
             try
             {
-                List<GetStudentsModel> list = _context.Users.Select(t=>new GetStudentsModel 
-                { 
-                    Email=t.Email,
-                    PhoneNumber=t.PhoneNumber,
-                    UserName=t.UserName,
-                    Name=_context.BaseProfiles.FirstOrDefault(n=>n.Id==t.Id).Name,
+                List<GetStudentsModel> list = _context.Users.Select(t => new GetStudentsModel
+                {
+                    Email = t.Email,
+                    PhoneNumber = t.PhoneNumber,
+                    UserName = t.UserName,
+                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name,
                     Surname = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
                     LastName = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName,
-                    Adress=_context.BaseProfiles.FirstOrDefault(n=>n.Id==t.Id).Adress,
-                    DateOfBirth= _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth
+                    Adress = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
+                    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth
                 }).ToList();
 
                 string json = JsonConvert.SerializeObject(list);
@@ -144,7 +150,7 @@ namespace EJournal.Controllers.AdminControllers
                     LastName = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName,
                     Adress = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
                     DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth,
-                    Degree= _context.TeacherProfiles.FirstOrDefault(n => n.Id == t.Id).Degree
+                    Degree = _context.TeacherProfiles.FirstOrDefault(n => n.Id == t.Id).Degree
                 }).ToList();
 
                 string json = JsonConvert.SerializeObject(list);
@@ -157,33 +163,33 @@ namespace EJournal.Controllers.AdminControllers
                 return Content("Error: " + ex.Message);
             }
         }
-        [HttpDelete("delete/{email}")]
-        public async Task<ContentResult> DeleteUserAsync(string email)
-        {
-            try
-            {
-                DbUser user = _context.Users.FirstOrDefault(t => t.Email == email);
-                if (_userManager.GetRolesAsync(user).Result.Contains("Student"))
-                {
-                    _context.StudentProfiles.Remove(_context.StudentProfiles.FirstOrDefault(t => t.Id == user.Id));
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    _context.TeacherProfiles.Remove(_context.TeacherProfiles.FirstOrDefault(t => t.Id == user.Id));
-                    _context.SaveChanges();
-                }
-                _context.BaseProfiles.Remove(_context.BaseProfiles.FirstOrDefault(t => t.Id == user.Id));
-                _context.SaveChanges();
+        //[HttpDelete("delete/{email}")]
+        //public async Task<ContentResult> DeleteUserAsync(string email)
+        //{
+        //    try
+        //    {
+        //        DbUser user = _context.Users.FirstOrDefault(t => t.Email == email);
+        //        if (_userManager.GetRolesAsync(user).Result.Contains("Student"))
+        //        {
+        //            _context.StudentProfiles.Remove(_context.StudentProfiles.FirstOrDefault(t => t.Id == user.Id));
+        //            _context.SaveChanges();
+        //        }
+        //        else
+        //        {
+        //            _context.TeacherProfiles.Remove(_context.TeacherProfiles.FirstOrDefault(t => t.Id == user.Id));
+        //            _context.SaveChanges();
+        //        }
+        //        _context.BaseProfiles.Remove(_context.BaseProfiles.FirstOrDefault(t => t.Id == user.Id));
+        //        _context.SaveChanges();
 
-                await _userManager.DeleteAsync(user);
-                return Content("User is deleted");
-            }
-            catch (Exception ex)
-            {
-                return Content("Error" + ex.Message);
-            }
-        }
+        //        await _userManager.DeleteAsync(user);
+        //        return Content("User is deleted");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Content("Error" + ex.Message);
+        //    }
+        //}
     }
 
 }
