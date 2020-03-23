@@ -157,6 +157,33 @@ namespace EJournal.Controllers.AdminControllers
                 return Content("Error: " + ex.Message);
             }
         }
+        [HttpDelete("delete/{email}")]
+        public async Task<ContentResult> DeleteUserAsync(string email)
+        {
+            try
+            {
+                DbUser user = _context.Users.FirstOrDefault(t => t.Email == email);
+                if (_userManager.GetRolesAsync(user).Result.Contains("Student"))
+                {
+                    _context.StudentProfiles.Remove(_context.StudentProfiles.FirstOrDefault(t => t.Id == user.Id));
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    _context.TeacherProfiles.Remove(_context.TeacherProfiles.FirstOrDefault(t => t.Id == user.Id));
+                    _context.SaveChanges();
+                }
+                _context.BaseProfiles.Remove(_context.BaseProfiles.FirstOrDefault(t => t.Id == user.Id));
+                _context.SaveChanges();
+
+                await _userManager.DeleteAsync(user);
+                return Content("User is deleted");
+            }
+            catch (Exception ex)
+            {
+                return Content("Error" + ex.Message);
+            }
+        }
     }
 
 }
