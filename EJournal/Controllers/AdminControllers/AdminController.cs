@@ -48,9 +48,9 @@ namespace EJournal.Controllers.AdminControllers
                     LastName = model.LastName,
                     Surname = model.Surname,
                     Adress = model.Adress,
-                    DateOfBirth = model.DateOfBirth
+                    DateOfBirth = Convert.ToDateTime(model.DateOfBirth)
                 };
-
+                
                 switch (model.Rolename)
                 {
                     case "Student":
@@ -122,7 +122,7 @@ namespace EJournal.Controllers.AdminControllers
                     Surname = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
                     LastName = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName,
                     Adress = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
-                    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth
+                    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy")
                 }).ToList();
 
                 string json = JsonConvert.SerializeObject(list);
@@ -149,7 +149,7 @@ namespace EJournal.Controllers.AdminControllers
                     Surname = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
                     LastName = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName,
                     Adress = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
-                    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth,
+                    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy"),
                     Degree = _context.TeacherProfiles.FirstOrDefault(n => n.Id == t.Id).Degree
                 }).ToList();
 
