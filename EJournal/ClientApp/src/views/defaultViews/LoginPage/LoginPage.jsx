@@ -119,8 +119,8 @@ console.log("onSubmitForm", this.state);
                           </div> : ""} */}
                      
     const form = (
-    
-<MDBContainer className="background-image" style={{backgroundImage:"url("+Background+")"}}>
+   <div className="main-div background-image" style={{backgroundImage:"url("+Background+")"}}> 
+<MDBContainer >
   <MDBRow style={{height: '100vh' }} className="justify-content-center align-items-center">
     <MDBCol md="5">
       <form onSubmit={this.onSubmitForm}>
@@ -154,6 +154,7 @@ console.log("onSubmitForm", this.state);
     </MDBCol>
   </MDBRow>
 </MDBContainer>
+</div>
     );
     return (
        form
