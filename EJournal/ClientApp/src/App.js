@@ -1,6 +1,6 @@
 import React, { Suspense, Component } from 'react';
 import { Route, Switch, HashRouter as Router } from "react-router-dom";
-//import './App.scss';
+import './App.scss';
 // import "./assets/scss/black-dashboard-react.scss";
 // import "./assets/css/black-dashboard-react.css";
 // import "./assets/demo/demo.css";
