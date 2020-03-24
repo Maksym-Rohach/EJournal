@@ -9,6 +9,8 @@ import { connect } from "react-redux";
 import * as loginActions from './reducer';
 // import InputMask from 'react-input-mask';
 import get from "lodash.get";
+import Background from "../../../assets/images/back2.jpg";
+import "../../../assets/css/loginStyle.css";
 
 import {
     MDBContainer,
@@ -117,7 +119,8 @@ console.log("onSubmitForm", this.state);
                           </div> : ""} */}
                      
     const form = (
-<MDBContainer >
+    
+<MDBContainer className="background-image" style={{backgroundImage:"url("+Background+")"}}>
   <MDBRow style={{height: '100vh' }} className="justify-content-center align-items-center">
     <MDBCol md="5">
       <form onSubmit={this.onSubmitForm}>
