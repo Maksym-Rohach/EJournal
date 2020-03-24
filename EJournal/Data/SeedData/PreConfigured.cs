@@ -34,33 +34,28 @@ namespace EJournal.Data.SeedData
                     {
                         Name = roleName
                     }).Result;
-                    roleName = "EducMethodDeputy";
+                    roleName = "DDeputy";
                     var result4 = roleManager.CreateAsync(new DbRole
                     {
                         Name = roleName
-                    }).Result;
-                    roleName = "EducDeputy";
+                    }).Result;                  
+                    roleName = "Curator";
                     var result5 = roleManager.CreateAsync(new DbRole
                     {
                         Name = roleName
                     }).Result;
-                    roleName = "Curator";
+                    roleName = "StudyRoomHead";
                     var result6 = roleManager.CreateAsync(new DbRole
                     {
                         Name = roleName
                     }).Result;
-                    roleName = "StudyRoomHead";
+                    roleName = "DepartmentHead";
                     var result7 = roleManager.CreateAsync(new DbRole
                     {
                         Name = roleName
                     }).Result;
-                    roleName = "DepartmentHead";
-                    var result8 = roleManager.CreateAsync(new DbRole
-                    {
-                        Name = roleName
-                    }).Result;
                     roleName = "CycleCommisionHead";
-                    var result9 = roleManager.CreateAsync(new DbRole
+                    var result8 = roleManager.CreateAsync(new DbRole
                     {
                         Name = roleName
                     }).Result;
@@ -141,10 +136,10 @@ namespace EJournal.Data.SeedData
                     await userManager.AddToRoleAsync(user1, "Director");
 
                     await userManager.CreateAsync(user2, "Qwerty-1");
-                    await userManager.AddToRoleAsync(user2, "EducMethodDeputy");
+                    await userManager.AddToRoleAsync(user2, "DDeputy");
 
                     await userManager.CreateAsync(user3, "Qwerty-1");
-                    await userManager.AddToRoleAsync(user3, "EducDeputy");
+                    await userManager.AddToRoleAsync(user3, "DDeputy");
 
                     await userManager.CreateAsync(user4, "Qwerty-1");
                     await userManager.AddToRoleAsync(user4, "StudyRoomHead");
@@ -173,7 +168,7 @@ namespace EJournal.Data.SeedData
                         Name = "Віктор",
                         LastName = "Дем’янюк",
                         Surname = "Володимирович",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Шевченка, 45",
                         DateOfBirth = new DateTime(1983, 6, 23),
                     };
                     BaseProfile profile2 = new BaseProfile
@@ -182,7 +177,7 @@ namespace EJournal.Data.SeedData
                         Name = "Лариса",
                         LastName = "Осадча",
                         Surname = "Костянтинівна",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Гранична, 58",
                         DateOfBirth = new DateTime(1983, 6, 23),
                     };
                     BaseProfile profile3 = new BaseProfile
@@ -191,7 +186,7 @@ namespace EJournal.Data.SeedData
                         Name = "Руслан",
                         LastName = "Алексіюк",
                         Surname = "Іванович",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Степана Бандери, 12",
                         DateOfBirth = new DateTime(1981, 3, 5),
                     };
                     BaseProfile profile4 = new BaseProfile
@@ -200,7 +195,7 @@ namespace EJournal.Data.SeedData
                         Name = "Євген",
                         LastName = "Вокальчук",
                         Surname = "Лукашович",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Княгині Ольги, 1",
                         DateOfBirth = new DateTime(1983, 6, 23),
                     };
                     BaseProfile profile5 = new BaseProfile
@@ -209,7 +204,7 @@ namespace EJournal.Data.SeedData
                         Name = "Галина",
                         LastName = "Чачіна",
                         Surname = "Сергіївна",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Степана Бандери, 36-44",
                         DateOfBirth = new DateTime(1962, 2, 4),
                     };
                     BaseProfile profile6 = new BaseProfile
@@ -218,7 +213,7 @@ namespace EJournal.Data.SeedData
                         Name = "Маргарита",
                         LastName = "Володько",
                         Surname = "Володимирівна",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Клима Савура, 8-14",
                         DateOfBirth = new DateTime(1983, 6, 23),
                     };
                     BaseProfile profile7 = new BaseProfile
@@ -227,7 +222,7 @@ namespace EJournal.Data.SeedData
                         Name = "Юлія",
                         LastName = "Власюк",
                         Surname = "Іллівна",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Прохідна, 15-13",
                         DateOfBirth = new DateTime(1961, 7, 12),
                     };
                     BaseProfile profile8 = new BaseProfile
@@ -236,7 +231,7 @@ namespace EJournal.Data.SeedData
                         Name = "Вікторія",
                         LastName = "Рейнська",
                         Surname = "Борисівна",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Павлюченка, 20",
                         DateOfBirth = new DateTime(1983, 6, 23),
                     };
                     BaseProfile profile9 = new BaseProfile
@@ -245,7 +240,7 @@ namespace EJournal.Data.SeedData
                         Name = "Інна",
                         LastName = "Кондратюк",
                         Surname = "Володимирівна",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Миколи Зерова, 23-1",
                         DateOfBirth = new DateTime(1983, 6, 23),
                     };
                     BaseProfile profile10 = new BaseProfile
@@ -254,7 +249,7 @@ namespace EJournal.Data.SeedData
                         Name = "Надія",
                         LastName = "Болтенко",
                         Surname = "Євгенівна",
-                        Adress = "Pushkina 44, 12a",
+                        Adress = "вулиця Костромська, 1",
                         DateOfBirth = new DateTime(1983, 6, 23),
                     };
                     await context.BaseProfiles.AddRangeAsync(profile1, profile2, profile3, profile4,
