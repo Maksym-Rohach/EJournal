@@ -113,19 +113,26 @@ namespace EJournal.Controllers.AdminControllers
         {
             try
             {
-                List<GetStudentsModel> list = _context.Users.Select(t => new GetStudentsModel
+                List<AdminTableStudentRowModel> rows = _context.Users.Select(t => new AdminTableStudentRowModel
                 {
                     Email = t.Email,
-                    PhoneNumber = t.PhoneNumber,
-                    UserName = t.UserName,
-                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name,
-                    Surname = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
-                    LastName = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName,
-                    Adress = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
+                    Phone = t.PhoneNumber,
+                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name+" "+
+                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName+" "+
+                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
+                    Address = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
                     DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy")
                 }).ToList();
-
-                string json = JsonConvert.SerializeObject(list);
+                List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
+                {
+                    new AdminTableColumnModel{label="Name",field="Name",sort="asc",width=300},
+                    new AdminTableColumnModel{label="Phone",field="Phone",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Birthday",field="DateOfBirth",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=200},
+                    new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=170}
+                };
+                AdminStudentsTableModel table = new AdminStudentsTableModel { rows = rows, columns = cols };
+                string json = JsonConvert.SerializeObject(table);
 
                 return Content(json);
             }
@@ -140,20 +147,28 @@ namespace EJournal.Controllers.AdminControllers
         {
             try
             {
-                List<GetTeacherModel> list = _context.Users.Select(t => new GetTeacherModel
+                List<AdminTableTeacherRowModel> rows = _context.Users.Select(t => new AdminTableTeacherRowModel
                 {
                     Email = t.Email,
-                    PhoneNumber = t.PhoneNumber,
-                    UserName = t.UserName,
-                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name,
-                    Surname = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
-                    LastName = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName,
-                    Adress = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
+                    Phone = t.PhoneNumber,
+                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name + " " +
+                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName + " " +
+                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
+                    Address = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
                     DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy"),
                     Degree = _context.TeacherProfiles.FirstOrDefault(n => n.Id == t.Id).Degree
                 }).ToList();
-
-                string json = JsonConvert.SerializeObject(list);
+                List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
+                {
+                    new AdminTableColumnModel{label="Name",field="Name",sort="asc",width=250},
+                    new AdminTableColumnModel{label="Phone",field="Phone",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Birthday",field="DateOfBirth",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Degree",field="Degree",sort="asc",width=120}
+                };
+                AdminTeachersTableModel table = new AdminTeachersTableModel { rows = rows, columns = cols };
+                string json = JsonConvert.SerializeObject(table);
 
                 return Content(json);
             }
