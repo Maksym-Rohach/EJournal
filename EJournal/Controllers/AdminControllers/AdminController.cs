@@ -192,7 +192,8 @@ namespace EJournal.Controllers.AdminControllers
                 string name = baseProf.Name+" " + baseProf.LastName+" " + baseProf.Surname;
                 var userMarks = _context.Marks.Where(t => t.StudentId == "").Where(t => jourCols.Contains(t.JournalColumn)).ToList();
             }
-        }
+            return Content("ad");
+        } 
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)
         //{
