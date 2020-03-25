@@ -6,6 +6,7 @@ using EJournal.Data.EfContext;
 using EJournal.Data.Entities;
 using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Models;
+using EJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -108,8 +109,8 @@ namespace EJournal.Controllers.AdminControllers
                 return "Помилка: " + ex.Message;
             }
         }
-        [HttpGet("get/students")]
-        public IActionResult GetStudentsAsync()
+        [HttpPost("get/students")]
+        public IActionResult GetStudentsAsync(StudentsFiltersModel model)
         {
             try
             {
@@ -129,7 +130,7 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Phone",field="Phone",sort="asc",width=150},
                     new AdminTableColumnModel{label="Birthday",field="DateOfBirth",sort="asc",width=150},
                     new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=200},
-                    new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=170}
+                    new AdminTableColumnModel{label="Address",field="Address",sort="asc",width=170}
                 };
                 AdminStudentsTableModel table = new AdminStudentsTableModel { rows = tableList, columns = cols };
 
