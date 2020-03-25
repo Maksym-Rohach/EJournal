@@ -50,7 +50,7 @@ namespace EJournal.Controllers.AdminControllers
                     Adress = model.Adress,
                     DateOfBirth = Convert.ToDateTime(model.DateOfBirth)
                 };
-                
+
                 switch (model.Rolename)
                 {
                     case "Student":
@@ -117,8 +117,8 @@ namespace EJournal.Controllers.AdminControllers
                 {
                     Email = t.Email,
                     Phone = t.PhoneNumber,
-                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name+" "+
-                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName+" "+
+                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name + " " +
+                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName + " " +
                     _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
                     Address = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
                     DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy")
@@ -147,13 +147,13 @@ namespace EJournal.Controllers.AdminControllers
         {
             try
             {
-                List<AdminTableTeacherRowModel> rows = _context.Users.Where(t=>_userManager.GetRolesAsync(t).Result.Contains("Teacher")).Select(t => new AdminTableTeacherRowModel
+                List<AdminTableTeacherRowModel> rows = _context.Users.Where(t => _userManager.GetRolesAsync(t).Result.Contains("Teacher")).Select(t => new AdminTableTeacherRowModel
                 {
                     Email = t.Email,
                     Phone = t.PhoneNumber,
                     Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name + " " +
-                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName + " " +
-                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
+                      _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName + " " +
+                      _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
                     Address = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
                     DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy"),
                     Degree = _context.TeacherProfiles.FirstOrDefault(n => n.Id == t.Id).Degree
@@ -176,6 +176,21 @@ namespace EJournal.Controllers.AdminControllers
             {
 
                 return Content("Error: " + ex.Message);
+            }
+        }
+        [HttpGet("get/marks")]
+        public ContentResult GetMarks(int lessonId, int groupId,int specId)
+        {
+            //var specGroups = _context.Groups.Where(t => t.SpecialityId == specId);
+            //var jours = _context.Journals.Where(t => specGroups.Contains(t.Group));
+            //var jourCols = _context.JournalColumns.Where(t => t.LessonId == lessonId).Where(t=>jours.Contains(t.Journal));
+            int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == groupId).Id;
+            var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.LessonId == lessonId);
+            foreach (var item in _context.GroupsToStudents.Where(t=>t.GroupId==groupId).Where(t=>_context.StudentProfiles.Contains(t.Student)))
+            {
+                var baseProf = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.StudentId);
+                string name = baseProf.Name+" " + baseProf.LastName+" " + baseProf.Surname;
+                var userMarks = _context.Marks.Where(t => t.StudentId == "").Where(t => jourCols.Contains(t.JournalColumn)).ToList();
             }
         }
         //[HttpDelete("delete/{email}")]
