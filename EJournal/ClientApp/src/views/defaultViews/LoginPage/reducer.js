@@ -102,7 +102,7 @@ function getUrlToRedirect() {
         path = "/admin/persons";
         break;
       } else if (roles[i] === "Student") {
-        path = "/student/profile";
+        path = "/student";
         break;
       } else if (roles[i] === "StudyRoomHead") {
         path = "/manager/profile";
@@ -116,7 +116,7 @@ function getUrlToRedirect() {
     if (roles == "Teacher") {
       path = "/teacher/profile";
     } else if (roles === "Student") {
-      path = "/student/profile";
+      path = "/student";
     } else if (roles === "StudyRoomHead") {
       path = "/manager/profile";
     } else if (roles === "Director") {

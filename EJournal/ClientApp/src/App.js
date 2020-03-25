@@ -11,6 +11,7 @@ import './App.scss';
 // Pages
 const LoginPage = React.lazy(() => import("./views/defaultViews/LoginPage"));
 
+const StudentLayout=React.lazy(()=>import("./layouts/studentLayout/StudentLayout"));
 
 // Layouts
 const AdminLayout = React.lazy(() => import("./layouts/adminLayout/AdminLayout"));
@@ -32,6 +33,7 @@ class App extends Component {
         <Switch>
           <Route path="/admin" name="Admin" render={ props => <AdminLayout { ...props } /> } />
           <Route exact path="/login" name="Login" render={ props => <LoginPage { ...props } /> } />
+          <Route path="/student" name="Student" render={ props => <StudentLayout { ...props } /> } />
         </Switch>
       </Suspense>
       </Router> 
