@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using EJournal.Data.EfContext;
 using EJournal.Data.Entities;
 using EJournal.Data.Entities.AppUeser;
-using EJournal.Data.Models;
 using EJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -29,6 +28,7 @@ namespace EJournal.Controllers.AdminControllers
         }
 
         [HttpPost("adduser")]
+        [Route("Admin/adduser")]
         public async Task<ActionResult<string>> AddUser([FromBody] AddUserModel model)
         {
             if (!ModelState.IsValid)
@@ -109,13 +109,27 @@ namespace EJournal.Controllers.AdminControllers
                 return "Помилка: " + ex.Message;
             }
         }
-        [HttpPost("get/students")]
-        public IActionResult GetStudentsAsync(StudentsFiltersModel model)
+        [HttpPost]
+        [Route("Admin/get/students")]
+        public IActionResult GetStudents([FromBody]StudentsFiltersModel model)
         {
             try
             {
                 var query = _context.StudentProfiles.AsQueryable();
                 List<AdminTableStudentRowModel> tableList = new List<AdminTableStudentRowModel>();
+                if(model!=null)
+                {
+                    //var groups = _context.Groups.Where(t => t.Speciality.Name == model.Speciality);
+                    //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
+                    var grToStud = _context.GroupsToStudents.Where(t => t.Group.Name == model.Group);
+
+                    List<StudentProfile> temp = new List<StudentProfile>();
+                    foreach(var item in grToStud)
+                    {
+                        temp.AddRange(_context.StudentProfiles.Where(t => t.Id == item.StudentId));
+                    }
+                    query = temp.AsQueryable();
+                }
                 tableList = query.Select(t => new AdminTableStudentRowModel
                 {
                     Name=t.BaseProfile.Name+" "+t.BaseProfile.LastName+" "+t.BaseProfile.Surname,
@@ -126,12 +140,13 @@ namespace EJournal.Controllers.AdminControllers
                 }).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {
-                    new AdminTableColumnModel{label="Name",field="Name",sort="asc",width=300},
-                    new AdminTableColumnModel{label="Phone",field="Phone",sort="asc",width=150},
-                    new AdminTableColumnModel{label="Birthday",field="DateOfBirth",sort="asc",width=150},
-                    new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=200},
-                    new AdminTableColumnModel{label="Address",field="Address",sort="asc",width=170}
+                    new AdminTableColumnModel{label="Name",field="name",sort="asc",width=300},
+                    new AdminTableColumnModel{label="Phone",field="phone",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Birthday",field="dateOfBirth",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Email",field="email",sort="asc",width=200},
+                    new AdminTableColumnModel{label="Address",field="address",sort="asc",width=170}
                 };
+                
                 AdminStudentsTableModel table = new AdminStudentsTableModel { rows = tableList, columns = cols };
 
                 return Ok(table); 
@@ -141,15 +156,27 @@ namespace EJournal.Controllers.AdminControllers
                 return BadRequest("Error: " + ex.Message+" I: "+ex.InnerException);
             }
         }
-        [HttpGet("get/teachers")]
-        public IActionResult GetTeachers()
+        [HttpPost]
+        [Route("Admin/get/teachers")]
+        public IActionResult GetTeachers([FromBody]TeacherFiltersModel model)
         {
             try
             {
                 var query = _context.TeacherProfiles.AsQueryable();
                 List<AdminTableTeacherRowModel> tableList = new List<AdminTableTeacherRowModel>();
-                tableList = query.Select(t => new AdminTableTeacherRowModel
+                if (model != null)
                 {
+                    List<TeacherProfile> temp = new List<TeacherProfile>();
+                    foreach (var item in _context.TeacherProfiles)
+                    {
+                        DbUser user = _context.Users.FirstOrDefault(t => t.Id == item.Id);
+                        if (_userManager.GetRolesAsync(user).Result.Contains(model.Rolename))
+                            temp.Add(item);
+                    }
+                    query = _context.TeacherProfiles.Where(t=>temp.Contains(t)).AsQueryable();
+                }
+                tableList = query.Select(t => new AdminTableTeacherRowModel
+                {//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdmYjZjYTczLWU0ZGYtNDQ0Zi1hOWI1LTI1ZWY0OWFjZTI3OSIsIm5hbWUiOiJkaXJlY3RvciIsInJvbGVzIjoiRGlyZWN0b3IiLCJleHAiOjE1ODUyNjE2MTV9.pmdGudiz0rqOldnAZqUpN8jd--d7n7HFBJJ3748Ec3M
                     Name = t.BaseProfile.Name + " " + t.BaseProfile.LastName + " " + t.BaseProfile.Surname,
                     Address = t.BaseProfile.Adress,
                     DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
@@ -159,12 +186,12 @@ namespace EJournal.Controllers.AdminControllers
                 }).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {
-                    new AdminTableColumnModel{label="Name",field="Name",sort="asc",width=250},
-                    new AdminTableColumnModel{label="Phone",field="Phone",sort="asc",width=150},
-                    new AdminTableColumnModel{label="Birthday",field="DateOfBirth",sort="asc",width=150},
-                    new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=150},
-                    new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=150},
-                    new AdminTableColumnModel{label="Degree",field="Degree",sort="asc",width=120}
+                    new AdminTableColumnModel{label="Name",field="name",sort="asc",width=250},
+                    new AdminTableColumnModel{label="Phone",field="phone",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Birthday",field="dateOfBirth",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Email",field="email",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Address",field="address",sort="asc",width=150},
+                    new AdminTableColumnModel{label="Degree",field="degree",sort="asc",width=120}
                 };
                 AdminTeachersTableModel table = new AdminTeachersTableModel { rows = tableList, columns = cols };
 
@@ -172,20 +199,24 @@ namespace EJournal.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-
-                return BadRequest("Error: " + ex.Message);
+                return BadRequest("Error: " + ex.Message+" asd: "+ex.StackTrace);
             }
         }
-        [HttpGet("get/marks")]
+        [HttpGet]
+        [Route("Admin/get/marks")]
         public IActionResult GetMarks(AdminGetMarksModel model)
         {           
             int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == model.GroupId).Id;
             var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.LessonId == model.LessonId);
-            foreach (var item in _context.GroupsToStudents.Where(t=>t.GroupId== model.GroupId).Where(t=>_context.StudentProfiles.Contains(t.Student)))
+
+            var grToStud = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId);
+            var verGrToStud = grToStud.Where(t => _context.StudentProfiles.Contains(t.Student));         
+            foreach (var item in verGrToStud)
             {
+                var userMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.StudentId);
+                var marksFormatted = userMarks.Select(t => t.Value).ToList();
                 var baseProf = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.StudentId);
                 string name = baseProf.Name+" " + baseProf.LastName+" " + baseProf.Surname;
-                var userMarks = _context.Marks.Where(t => t.StudentId == "").Where(t => jourCols.Contains(t.JournalColumn)).Select(t=>t.Value).ToList();
             }
             List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {

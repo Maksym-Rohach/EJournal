@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EJournal.Data.Models
+namespace EJournal.ViewModels
 {
-    public class AdminTableTeacherRowModel
+    public class AdminTableStudentRowModel
     {
         public string Name { get; set; }
         public string Address { get; set; }
         public string Phone { get; set; }
         public string DateOfBirth { get; set; }
         public string Email { get; set; }
-        public string Degree { get; set; }
     }
 }
