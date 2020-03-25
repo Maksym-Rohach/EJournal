@@ -123,16 +123,6 @@ namespace EJournal.Controllers.AdminControllers
                     Email=t.BaseProfile.DbUser.Email,
                     Phone=t.BaseProfile.DbUser.PhoneNumber
                 }).ToList();
-                //List<AdminTableStudentRowModel> rows = _context.StudentProfiles.Select(t => new AdminTableStudentRowModel
-                //{
-                //    Email = t.Email,
-                //    Phone = t.PhoneNumber,
-                //    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name + " " +
-                //    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName + " " +
-                //    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
-                //    Address = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
-                //    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy")
-                //}).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {
                     new AdminTableColumnModel{label="Name",field="Name",sort="asc",width=300},
@@ -142,9 +132,8 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=170}
                 };
                 AdminStudentsTableModel table = new AdminStudentsTableModel { rows = tableList, columns = cols };
-                string json = JsonConvert.SerializeObject(table);
 
-                return Ok(json); 
+                return Ok(table); 
             }
             catch (Exception ex)
             {
@@ -152,20 +141,20 @@ namespace EJournal.Controllers.AdminControllers
             }
         }
         [HttpGet("get/teachers")]
-        public ContentResult GetTeachers()
+        public IActionResult GetTeachers()
         {
             try
             {
-                List<AdminTableTeacherRowModel> rows = _context.Users.Where(t => _userManager.GetRolesAsync(t).Result.Contains("Teacher")).Select(t => new AdminTableTeacherRowModel
+                var query = _context.TeacherProfiles.AsQueryable();
+                List<AdminTableTeacherRowModel> tableList = new List<AdminTableTeacherRowModel>();
+                tableList = query.Select(t => new AdminTableTeacherRowModel
                 {
-                    Email = t.Email,
-                    Phone = t.PhoneNumber,
-                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name + " " +
-                      _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName + " " +
-                      _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
-                    Address = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
-                    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy"),
-                    Degree = _context.TeacherProfiles.FirstOrDefault(n => n.Id == t.Id).Degree
+                    Name = t.BaseProfile.Name + " " + t.BaseProfile.LastName + " " + t.BaseProfile.Surname,
+                    Address = t.BaseProfile.Adress,
+                    DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                    Email = t.BaseProfile.DbUser.Email,
+                    Phone = t.BaseProfile.DbUser.PhoneNumber,
+                    Degree=t.Degree
                 }).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {
@@ -176,15 +165,14 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=150},
                     new AdminTableColumnModel{label="Degree",field="Degree",sort="asc",width=120}
                 };
-                AdminTeachersTableModel table = new AdminTeachersTableModel { rows = rows, columns = cols };
-                string json = JsonConvert.SerializeObject(table);
+                AdminTeachersTableModel table = new AdminTeachersTableModel { rows = tableList, columns = cols };
 
-                return Content(json);
+                return Ok(table);
             }
             catch (Exception ex)
             {
 
-                return Content("Error: " + ex.Message);
+                return BadRequest("Error: " + ex.Message);
             }
         }
         [HttpGet("get/marks")]
