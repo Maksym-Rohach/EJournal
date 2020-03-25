@@ -113,7 +113,7 @@ namespace EJournal.Controllers.AdminControllers
         {
             try
             {
-                List<AdminTableStudentRowModel> rows = _context.Users.Select(t => new AdminTableStudentRowModel
+                List<AdminTableStudentRowModel> rows = _context.Users.Where(t => _userManager.GetRolesAsync(t).Result.Contains("Student")).Select(t => new AdminTableStudentRowModel
                 {
                     Email = t.Email,
                     Phone = t.PhoneNumber,
@@ -147,7 +147,7 @@ namespace EJournal.Controllers.AdminControllers
         {
             try
             {
-                List<AdminTableTeacherRowModel> rows = _context.Users.Select(t => new AdminTableTeacherRowModel
+                List<AdminTableTeacherRowModel> rows = _context.Users.Where(t=>_userManager.GetRolesAsync(t).Result.Contains("Teacher")).Select(t => new AdminTableTeacherRowModel
                 {
                     Email = t.Email,
                     Phone = t.PhoneNumber,
