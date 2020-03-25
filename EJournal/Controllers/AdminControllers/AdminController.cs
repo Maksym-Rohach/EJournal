@@ -109,20 +109,30 @@ namespace EJournal.Controllers.AdminControllers
             }
         }
         [HttpGet("get/students")]
-        public ContentResult GetStudents()
+        public IActionResult GetStudentsAsync()
         {
             try
             {
-                List<AdminTableStudentRowModel> rows = _context.Users.Where(t => _userManager.GetRolesAsync(t).Result.Contains("Student")).Select(t => new AdminTableStudentRowModel
+                var query = _context.StudentProfiles.AsQueryable();
+                List<AdminTableStudentRowModel> tableList = new List<AdminTableStudentRowModel>();
+                tableList = query.Select(t => new AdminTableStudentRowModel
                 {
-                    Email = t.Email,
-                    Phone = t.PhoneNumber,
-                    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name + " " +
-                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName + " " +
-                    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
-                    Address = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
-                    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy")
+                    Name=t.BaseProfile.Name+" "+t.BaseProfile.LastName+" "+t.BaseProfile.Surname,
+                    Address=t.BaseProfile.Adress,
+                    DateOfBirth=t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                    Email=t.BaseProfile.DbUser.Email,
+                    Phone=t.BaseProfile.DbUser.PhoneNumber
                 }).ToList();
+                //List<AdminTableStudentRowModel> rows = _context.StudentProfiles.Select(t => new AdminTableStudentRowModel
+                //{
+                //    Email = t.Email,
+                //    Phone = t.PhoneNumber,
+                //    Name = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Name + " " +
+                //    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).LastName + " " +
+                //    _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Surname,
+                //    Address = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).Adress,
+                //    DateOfBirth = _context.BaseProfiles.FirstOrDefault(n => n.Id == t.Id).DateOfBirth.ToString("dd.MM.yyyy")
+                //}).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {
                     new AdminTableColumnModel{label="Name",field="Name",sort="asc",width=300},
@@ -131,14 +141,14 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=200},
                     new AdminTableColumnModel{label="Email",field="Email",sort="asc",width=170}
                 };
-                AdminStudentsTableModel table = new AdminStudentsTableModel { rows = rows, columns = cols };
+                AdminStudentsTableModel table = new AdminStudentsTableModel { rows = tableList, columns = cols };
                 string json = JsonConvert.SerializeObject(table);
 
-                return Content(json);
+                return Ok(json); 
             }
             catch (Exception ex)
             {
-                return Content("Error: " + ex.Message);
+                return BadRequest("Error: " + ex.Message+" I: "+ex.InnerException);
             }
         }
         [HttpGet("get/teachers")]
