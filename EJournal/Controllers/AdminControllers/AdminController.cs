@@ -138,7 +138,6 @@ namespace EJournal.Controllers.AdminControllers
             }
             catch (Exception ex)
             {
-
                 return Content("Error: " + ex.Message);
             }
         }
@@ -179,20 +178,28 @@ namespace EJournal.Controllers.AdminControllers
             }
         }
         [HttpGet("get/marks")]
-        public ContentResult GetMarks(int lessonId, int groupId,int specId)
-        {
-            //var specGroups = _context.Groups.Where(t => t.SpecialityId == specId);
-            //var jours = _context.Journals.Where(t => specGroups.Contains(t.Group));
-            //var jourCols = _context.JournalColumns.Where(t => t.LessonId == lessonId).Where(t=>jours.Contains(t.Journal));
-            int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == groupId).Id;
-            var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.LessonId == lessonId);
-            foreach (var item in _context.GroupsToStudents.Where(t=>t.GroupId==groupId).Where(t=>_context.StudentProfiles.Contains(t.Student)))
+        public IActionResult GetMarks(AdminGetMarksModel model)
+        {           
+            int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == model.GroupId).Id;
+            var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.LessonId == model.LessonId);
+            foreach (var item in _context.GroupsToStudents.Where(t=>t.GroupId== model.GroupId).Where(t=>_context.StudentProfiles.Contains(t.Student)))
             {
                 var baseProf = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.StudentId);
                 string name = baseProf.Name+" " + baseProf.LastName+" " + baseProf.Surname;
-                var userMarks = _context.Marks.Where(t => t.StudentId == "").Where(t => jourCols.Contains(t.JournalColumn)).ToList();
+                var userMarks = _context.Marks.Where(t => t.StudentId == "").Where(t => jourCols.Contains(t.JournalColumn)).Select(t=>t.Value).ToList();
             }
-            return Content("ad");
+            List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
+                {
+                    new AdminTableColumnModel{label="Name",field="Name",sort="asc",width=270},
+                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
+                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
+                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
+                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
+                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
+                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
+                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100}
+                };
+            return Ok("");
         } 
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)
