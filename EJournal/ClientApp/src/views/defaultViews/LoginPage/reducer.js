@@ -108,19 +108,24 @@ function getUrlToRedirect() {
         path = "/manager/profile";
         break;
       } else if (roles[i] === "Teacher") {
-        path = "/teacher/profile";
+        path = "/teacher";
+        break;
+      }else if(roles[i]==="Curator"){
+        path="/teacher";
         break;
       }
     }
   } else {
     if (roles == "Teacher") {
-      path = "/teacher/profile";
+      path = "/teacher";
     } else if (roles === "Student") {
       path = "/student";
     } else if (roles === "StudyRoomHead") {
       path = "/manager/profile";
     } else if (roles === "Director") {
       path = "/admin/clients";
+    }else if(roles === "Curator"){
+      path="/teacher";
     }
   }
 
