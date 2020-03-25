@@ -2,7 +2,7 @@ export default {
     items: [
       {
         name: 'Login',
-        url: '/teaher',
+        url: '/teacher',
         icon: 'icon-speedometer',
         badge: {
           variant: 'info',
@@ -11,7 +11,7 @@ export default {
       },
       {
         title: true,
-        name: 'Theme',
+        name: 'Marks',
         wrapper: {            // optional wrapper object
           element: '',        // required valid HTML5 element tag
           attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}

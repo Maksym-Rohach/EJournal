@@ -68,7 +68,7 @@ class TeacherLayout extends Component {
                         )} />
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/dashboard" />
+                  <Redirect from="/" to="/teacher" />
                 </Switch>
               </Suspense>
             </Container>
