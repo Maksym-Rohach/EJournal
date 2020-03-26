@@ -24,8 +24,8 @@ namespace EJournal.Data.Configurations
                 .WithOne(e => e.MarkType);
 
             builder.HasData(
-                new MarkType() { Id = 0, Type = "twelve-point", Description = "For the school program" },
-                new MarkType() { Id = 1, Type = "five-point", Description = "For specialty lessons and exams" });
+                new MarkType() { Id = 1, Type = "twelve-point", Description = "For the school program" },
+                new MarkType() { Id = 2, Type = "five-point", Description = "For specialty lessons and exams" });
         }
     }
 }

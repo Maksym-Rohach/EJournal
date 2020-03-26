@@ -30,6 +30,27 @@ namespace EJournal.Data.Configurations
                 .WithMany(e => e.Groups)
                 .HasForeignKey(e => e.SpecialityId)
                 .IsRequired();
+
+            builder.HasData(
+                new Group()
+                {
+                    Id = 1,
+                    Name = "11-П",
+                    YearFrom = new System.DateTime(2019, 9, 1),
+                    YearTo = new System.DateTime(2023, 5, 29),
+                    //TeacherId = "7330f282-e5b5-4836-9e71-f82d22ab64e8", 
+                    SpecialityId = 1
+                },
+                new Group()
+                {
+                    Id = 2,
+                    Name = "12-П",
+                    YearFrom = new System.DateTime(2019, 9, 1),
+                    YearTo = new System.DateTime(2023, 5, 29),
+                    //TeacherId = "d51a3fd5-3590-4838-88c7-f00e01ab5e3f",
+                    SpecialityId = 1
+                }
+                );
         }
     }
 }
