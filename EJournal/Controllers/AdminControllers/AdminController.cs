@@ -27,8 +27,8 @@ namespace EJournal.Controllers.AdminControllers
             _userManager = userManager;
         }
 
-        [HttpPost("adduser")]
-        [Route("Admin/adduser")]
+        [HttpPost]
+        [Route("adduser")]
         public async Task<ActionResult<string>> AddUser([FromBody] AddUserModel model)
         {
             if (!ModelState.IsValid)
@@ -110,7 +110,7 @@ namespace EJournal.Controllers.AdminControllers
             }
         }
         [HttpPost]
-        [Route("Admin/get/students")]
+        [Route("get/students")]
         public IActionResult GetStudents([FromBody]StudentsFiltersModel model)
         {
             try
@@ -121,14 +121,8 @@ namespace EJournal.Controllers.AdminControllers
                 {
                     //var groups = _context.Groups.Where(t => t.Speciality.Name == model.Speciality);
                     //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
-                    var grToStud = _context.GroupsToStudents.Where(t => t.Group.Name == model.Group);
-
-                    List<StudentProfile> temp = new List<StudentProfile>();
-                    foreach(var item in grToStud)
-                    {
-                        temp.AddRange(_context.StudentProfiles.Where(t => t.Id == item.StudentId));
-                    }
-                    query = temp.AsQueryable();
+                    var grToStud = _context.GroupsToStudents.Where(t => t.Group.Name == model.Group);                   
+                    query = _context.StudentProfiles.Where(t => grToStud.Any(g => g.StudentId == t.Id)).AsQueryable();
                 }
                 tableList = query.Select(t => new AdminTableStudentRowModel
                 {
@@ -157,7 +151,7 @@ namespace EJournal.Controllers.AdminControllers
             }
         }
         [HttpPost]
-        [Route("Admin/get/teachers")]
+        [Route("get/teachers")]
         public IActionResult GetTeachers([FromBody]TeacherFiltersModel model)
         {
             try
@@ -203,7 +197,7 @@ namespace EJournal.Controllers.AdminControllers
             }
         }
         [HttpGet]
-        [Route("Admin/get/marks")]
+        [Route("get/marks")]
         public IActionResult GetMarks(AdminGetMarksModel model)
         {           
             int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == model.GroupId).Id;
