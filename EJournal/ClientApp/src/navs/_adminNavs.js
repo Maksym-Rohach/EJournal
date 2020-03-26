@@ -1,8 +1,8 @@
 export default {
     items: [
       {
-        name: 'Dashboard',
-        url: '/admin',
+        name: 'Список Студентів',
+        url: '/admin/students',
         icon: 'icon-speedometer',
         badge: {
           variant: 'info',
