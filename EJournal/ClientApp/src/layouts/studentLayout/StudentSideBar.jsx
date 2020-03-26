@@ -16,15 +16,16 @@ import {
   AppSidebarNav2 as AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
-import navigation from '../../navs/_adminNavs';
+import navigation from '../../navs/_studentNavs';
 // routes config
-import routes from '../../routes/adminRoutes';
+import routes from '../../routes/studentRoutes';
 
+import "./sideBarStyle.css";
 
 //const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
-const AdminNavbar = React.lazy(() => import('./AdminNavbar'));
+const StudentNavbar = React.lazy(() => import('./StudentNavbar'));
 
-class AdminLayout extends Component {
+class StudentLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
@@ -38,11 +39,11 @@ class AdminLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <AdminNavbar onLogout={e=>this.signOut(e)}/>
+            <StudentNavbar onLogout={e=>this.signOut(e)}/>
           </Suspense>
         </AppHeader>
-        <div className="app-body">
-          <AppSidebar fixed display="lg">
+        <div className="back-image app-body">
+          <AppSidebar  fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
@@ -73,20 +74,10 @@ class AdminLayout extends Component {
               </Suspense>
             </Container>
           </main>
-          {/* <AppAside fixed>
-            <Suspense fallback={this.loading()}>
-              <DefaultAside />
-            </Suspense>
-          </AppAside> */}
-        </div>
-        {/* <AppFooter>
-          <Suspense fallback={this.loading()}>
-            <DefaultFooter />
-          </Suspense>
-        </AppFooter> */}
+        </div>        
       </div>
     );
   }
 }
 
-export default AdminLayout;
+export default StudentLayout;

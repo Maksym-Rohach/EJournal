@@ -13,7 +13,7 @@ const propTypes = {
 
 const defaultProps = {};
 
-class AdminNavbar extends Component {
+class TeacherNavbar extends Component {
   render() {
 
     // eslint-disable-next-line
@@ -77,7 +77,7 @@ class AdminNavbar extends Component {
   }
 }
 
-AdminNavbar.propTypes = propTypes;
-AdminNavbar.defaultProps = defaultProps;
+TeacherNavbar.propTypes = propTypes;
+TeacherNavbar.defaultProps = defaultProps;
 
-export default AdminNavbar;
+export default TeacherNavbar;

@@ -22,22 +22,22 @@ namespace EJournal.Data.Configurations
                 .WithOne(e => e.Subject);
 
             builder.HasData(
-                new Subject() { Id = 1, Name = "Українська мова" },
-                new Subject() { Id = 2, Name = "Українська література" },
-                new Subject() { Id = 3, Name = "Світова література" },
-                new Subject() { Id = 4, Name = "Математика" },
+                new Subject() { Id = 1, Name = "Українська мова"},
+                new Subject() { Id = 2, Name = "Українська література"},
+                new Subject() { Id = 3, Name = "Світова література"},
+                new Subject() { Id = 4, Name = "Математика"},
                 new Subject() { Id = 5, Name = "Основи інформатики" },
                 new Subject() { Id = 6, Name = "Всесвітня істрія" },
                 new Subject() { Id = 7, Name = "Географія" },
                 new Subject() { Id = 8, Name = "Біологія" },
                 new Subject() { Id = 9, Name = "Фізика" },
                 new Subject() { Id = 10, Name = "Хімія" },
-                new Subject() { Id = 11, Name = "Іноземна мова" },
+                new Subject() { Id = 11, Name = "Іноземна мова"},
                 new Subject() { Id = 12, Name = "Фізична культура" },
                 new Subject() { Id = 13, Name = "Людина і світ" },
                 new Subject() { Id = 14, Name = "Громадянська освіта" },
                 new Subject() { Id = 15, Name = "Астрономія" },
-      
+
                 new Subject() { Id = 16, Name = "Інформаційна діяльність підприємства" },
                 new Subject() { Id = 17, Name = "Планування та організація виробничої діяльності підприємства" },
                 new Subject() { Id = 18, Name = "Інформаційні системи і технології на підприємстві" },
@@ -48,7 +48,7 @@ namespace EJournal.Data.Configurations
                 new Subject() { Id = 23, Name = "Основи алгоритмізації та програмування" },
                 new Subject() { Id = 24, Name = "Електронна комерція" },
                 new Subject() { Id = 25, Name = "Охорона праці" },
-            
+     
                 new Subject() { Id = 26, Name = "Менеджмент та маркетинг" },
                 new Subject() { Id = 27, Name = "Управління інформаційними ресурсами" },
                 new Subject() { Id = 28, Name = "Інформаційний бізнес" },

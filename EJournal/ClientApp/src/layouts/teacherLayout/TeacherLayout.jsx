@@ -16,15 +16,15 @@ import {
   AppSidebarNav2 as AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
-import navigation from '../../navs/_adminNavs';
+import navigation from '../../navs/_teacherNavs';
 // routes config
-import routes from '../../routes/adminRoutes';
+import routes from '../../routes/teacherRoutes';
 
 
 //const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
-const AdminNavbar = React.lazy(() => import('./AdminNavbar'));
+const TeacherNavbar = React.lazy(() => import('./TeacherNavbar'));
 
-class AdminLayout extends Component {
+class TeacherLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
@@ -38,7 +38,7 @@ class AdminLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <AdminNavbar onLogout={e=>this.signOut(e)}/>
+            <TeacherNavbar onLogout={e=>this.signOut(e)}/>
           </Suspense>
         </AppHeader>
         <div className="app-body">
@@ -68,7 +68,7 @@ class AdminLayout extends Component {
                         )} />
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/dashboard" />
+                  <Redirect from="/" to="/teacher" />
                 </Switch>
               </Suspense>
             </Container>
@@ -89,4 +89,4 @@ class AdminLayout extends Component {
   }
 }
 
-export default AdminLayout;
+export default TeacherLayout;

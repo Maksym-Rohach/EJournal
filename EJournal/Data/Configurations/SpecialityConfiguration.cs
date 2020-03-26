@@ -17,8 +17,8 @@ namespace EJournal.Data.Configurations
                 .IsRequired();
 
             builder.HasData(
-                new Speciality { Id = 1, Name = "Програмування"},
-                new Speciality { Id = 2, Name = "Дизайн"}
+                new Speciality() { Id = 1, Name = "Programming" },
+                new Speciality() { Id = 2, Name = "Design" }
                 );
         }
     }
