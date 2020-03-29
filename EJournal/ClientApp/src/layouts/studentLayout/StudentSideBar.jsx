@@ -16,15 +16,16 @@ import {
   AppSidebarNav2 as AppSidebarNav,
 } from '@coreui/react';
 // sidebar nav config
-import navigation from '../../navs/_teacherNavs';
+import navigation from '../../navs/_studentNavs';
 // routes config
-import routes from '../../routes/teacherRoutes';
+import routes from '../../routes/studentRoutes';
 
+import "./sideBarStyle.css";
 
 //const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
-const TeacherNavbar = React.lazy(() => import('./TeacherNavbar'));
+const StudentNavbar = React.lazy(() => import('./StudentNavbar'));
 
-class TeacherLayout extends Component {
+class StudentLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
@@ -38,11 +39,11 @@ class TeacherLayout extends Component {
       <div className="app">
         <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
-            <TeacherNavbar onLogout={e=>this.signOut(e)}/>
+            <StudentNavbar onLogout={e=>this.signOut(e)}/>
           </Suspense>
         </AppHeader>
-        <div className="app-body">
-          <AppSidebar fixed display="lg">
+        <div className="back-image app-body">
+          <AppSidebar  fixed display="lg">
             <AppSidebarHeader />
             <AppSidebarForm />
             <Suspense>
@@ -68,25 +69,15 @@ class TeacherLayout extends Component {
                         )} />
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/teacher" />
+                  <Redirect from="/" to="/dashboard" />
                 </Switch>
               </Suspense>
             </Container>
           </main>
-          {/* <AppAside fixed>
-            <Suspense fallback={this.loading()}>
-              <DefaultAside />
-            </Suspense>
-          </AppAside> */}
-        </div>
-        {/* <AppFooter>
-          <Suspense fallback={this.loading()}>
-            <DefaultFooter />
-          </Suspense>
-        </AppFooter> */}
+        </div>        
       </div>
     );
   }
 }
 
-export default TeacherLayout;
+export default StudentLayout;
