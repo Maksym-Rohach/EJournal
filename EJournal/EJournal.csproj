@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\AuthControllers\" />
-    <Folder Include="Controllers\TeacherControllers\" />
     <Folder Include="Controllers\StudentControllers\" />
   </ItemGroup>
 
