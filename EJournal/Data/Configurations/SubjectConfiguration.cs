@@ -20,6 +20,9 @@ namespace EJournal.Data.Configurations
 
             builder.HasMany(e => e.Lessons)
                 .WithOne(e => e.Subject);
+
+            builder.HasMany(e => e.GroupToSubjects)
+                .WithOne(e => e.Subject);
         }
     }
 }
