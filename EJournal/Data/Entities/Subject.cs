@@ -10,5 +10,6 @@ namespace EJournal.Data
 
         public ICollection<TeacherToSubject> TeacherToSubjects { get; set; }
         public ICollection<Lesson> Lessons { get; set; }
+        public ICollection<GroupToSubject> GroupToSubjects { get; set; }
     }
 }
