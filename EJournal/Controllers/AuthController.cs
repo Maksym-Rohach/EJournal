@@ -9,6 +9,7 @@ using EJournal.Data.EfContext;
 using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Models;
 using EJournal.Services;
+using EJournal.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -56,8 +57,20 @@ namespace EJournal.Controllers
             await _signInManager.SignInAsync(user, isPersistent: false);
 
             return Ok(new {token=_jwtTokenService.CreateToken(user)});
+        }        
+        [HttpPost("changepassword")]
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        {
+            var user = _context.Users.FirstOrDefault(x => x.Id == model.UserId);
+            if (user == null)
+            {              
+                return BadRequest();
+            }
+            var res = _userManager.PasswordHasher.HashPassword(user, model.Password);
+            user.PasswordHash = res;
+            var result = await _userManager.UpdateAsync(user);
+            return Ok(result);
         }
-
         
     }
 }

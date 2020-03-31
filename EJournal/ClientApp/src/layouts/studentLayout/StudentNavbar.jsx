@@ -55,7 +55,7 @@ class StudentNavbar extends Component {
                     </MDBDropdownToggle>
                     <MDBDropdownMenu id="dropMenu1" className='dropdown-default' right>
       {/* TODO перекидувати на те куди потрібно*/}
-                      <MDBDropdownItem href='#!'><i class="ml-2 icon-user"></i> Мій профіль</MDBDropdownItem>
+                      <MDBDropdownItem href='/#/student/profile'><i class="ml-2 icon-user"></i> Мій профіль</MDBDropdownItem>
                       <MDBDropdownItem href='#!'><i class="ml-2 icon-settings"></i> Настройки</MDBDropdownItem>
                       <MDBDropdownItem href='#!'><i class="ml-2 icon-logout"></i> Вихід</MDBDropdownItem>
                     </MDBDropdownMenu>

@@ -8,6 +8,6 @@ namespace EJournal.Data.Models
     public class GetTimetableModel
     {
         public string Id { get; set; }
-        public string Date { get; set; }
+        public string Month { get; set; }
     }
 }

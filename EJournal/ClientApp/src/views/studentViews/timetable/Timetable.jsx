@@ -4,52 +4,13 @@ import * as getListActions from './reducer';
 import { connect } from 'react-redux';
 import get from "lodash.get";
 import { Table } from 'reactstrap';
-import {
-  MDBDropdown,
-  MDBDropdownToggle,
-  MDBDropdownMenu,
-} from 'mdbreact';
-
+import {Dropdown} from 'primereact/dropdown';
+import TimetableModal from "../../../components/TimetableModal";
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 import "./TimeTableStyle.css";
-//лоадим уроки, щоб запихнути в одну змінну робим чистий html
-function createMarkup(data,date) {
-    
-    if(data[0]!=undefined||data===undefined){
-        
-        let html='';
-        for (let i = 0; i < data.length; i++) {
-            const el = data[i];
-            if(el.day==date){
-                     if(el.topic!=null){
-                     html+=`
-                     <h3>${el.subjectName}</h3>
-                     <h4>${el.topic}</h4>
-                     <p>${el.teacherName}</p>
-                     <div class="d-flex flex-row">
-                     <p>${el.lessonTimeGap}</p>
-                     <p class="ml-3">${el.auditoriumNumber}</p>
-                     </div>
-                     <hr/>
-                  `;}else{
-                  html+=`
-                     <h3>${el.subjectName}</h3>
-                     
-                     <p>${el.teacherName}</p>
-                     <div class="d-flex flex-row">
-                     <p>${el.lessonTimeGap}</p>
-                     <p class="ml-3">${el.auditoriumNumber}</p>
-                     </div>
-                     <hr/>
-                  `;}
-                }
-        }
-        if(html==''){
-            html=`<div class="d-flex flex-row"><p>Занять не буде !</p><i class="ml-2 fas fa-smile-beam fa-2x"></i></div>`;
-        }
-        return {__html: html};
 
-    }
-  }
   //лоадим 7 днів з масиву
   function LoadDays(data,arr){
       return(
@@ -59,14 +20,10 @@ function createMarkup(data,date) {
         if(el>=200){
             return(<td></td>);
         }
+        
         return(
         <td>
-    <MDBDropdown>
-    <MDBDropdownToggle  style={{width:'50px'}} caret color='primary'>{el}</MDBDropdownToggle>
-    <MDBDropdownMenu><div className="m-2" >
-        <div dangerouslySetInnerHTML={createMarkup(data,el)}></div>
-        </div>
-    </MDBDropdownMenu></MDBDropdown>
+          <TimetableModal data={data} date={el}></TimetableModal>       
     </td>
     );
     }))
@@ -75,17 +32,17 @@ function createMarkup(data,date) {
 //лоадим день тижня для дати...
   function LoadTimetable(data){
       
-    if(data[0]!=undefined||data===undefined){
-      if(data[0].daysInMonth!=undefined){
+    if(data.timetable!=undefined||data===undefined){
+      if(data.daysInMonth!=undefined){
           let numOfDay=0;
-          switch (data[0].dayOfWeek) {
+          switch (data.dayOfWeek) {
               case "Monday":
                   
                   break;
                 case "Tuesday":
                     numOfDay+=1;
                     break;
-                case "Wednessday":
+                case "Wednesday":
                     numOfDay+=2;
                     break;
                     case "Thursday":
@@ -114,7 +71,7 @@ function createMarkup(data,date) {
               
           }
           //запихуєм к-ст днів в цикл, щоб їх замапити
-           for (let i = 1; i <= data[0].daysInMonth; i++) {
+           for (let i = 1; i <= data.daysInMonth; i++) {
                 arr.push(i);
                 
             }
@@ -224,31 +181,57 @@ class Timetable extends Component {
     
     
     state = {
-        
-        group: '32PR',
-        date: '',        
+        month: '',        
       }
    
    
     componentDidMount = () => {
         //this.mouseEnter();
-        
-        const {date } = this.state;
+      
         const{login} = this.props;
         const {id}= login.user;
-        this.props.getTimetable({ id, date });
+        this.props.getTimetable({ id });
 
       }
+      componentWillReceiveProps = () => {
+        //this.mouseEnter();
       
+        const{month} = this.state;
+        const{login} = this.props;
+        const {id}= login.user;
+        this.props.getTimetable({ id,month });
+
+      }
+      changeMonth=(e)=>{
+        this.setState({month: e.value});
+        // const{month} = this.state;
+        // const{login} = this.props;
+        // const {id}= login.user;
+        // this.props.getTimetable({ id,month });
+      }
    
 render() {
     const {data} = this.props;
-    
+    const monthSelectItems = [
+      {label: 'Січень', value: '01'},
+      {label: 'Лютий', value: '02'},
+      {label: 'Березень', value: '03'},
+      {label: 'Квітень', value: '04'},
+      {label: 'Травень', value: '05'},
+      {label: 'Червень', value: '06'},
+      {label: 'Липень', value: '07'},
+      {label: 'Серпень', value: '08'},
+      {label: 'Вересень', value: '09'},
+      {label: 'Жовтень', value: '10'},
+      {label: 'Листопад', value: '11'},
+      {label: 'Грудень', value: '12'},
+  ];
 
 
     return (
         <div>
-       <Table responsive borderless className="mt-3 mr-3">
+          <Dropdown value={this.state.month} className="mt-3 ml-1" options={monthSelectItems} onChange={(e)=>this.changeMonth(e)} placeholder="Оберіть місяць"/>
+       <Table responsive borderless className="text-center mt-3 mr-3">
                   <thead>
                     <tr>
                       <th>ПН</th>
