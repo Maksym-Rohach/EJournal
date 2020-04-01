@@ -115,22 +115,34 @@ namespace EJournal.Controllers.AdminControllers
         {
             try
             {
+                AdminStudentsTableModel table = new AdminStudentsTableModel();
                 var query = _context.StudentProfiles.AsQueryable();
                 List<AdminTableStudentRowModel> tableList = new List<AdminTableStudentRowModel>();
-                if(model!=null)
+                if (model != null)
                 {
                     //var groups = _context.Groups.Where(t => t.Speciality.Name == model.Speciality);
                     //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
-                    var grToStud = _context.GroupsToStudents.Where(t => t.Group.Name == model.Group);                   
-                    query = _context.StudentProfiles.Where(t => grToStud.Any(g => g.StudentId == t.Id)).AsQueryable();
+                    if (model.SpecialityId != 0)
+                    {
+                        table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                        {
+                            Label = t.Name,
+                            Value = t.Id
+                        }).ToList();
+                    }
+                    if (model.GroupId != 0)
+                    {
+                        var grToStud = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId);
+                        query = _context.StudentProfiles.Where(t => grToStud.Any(g => g.StudentId == t.Id)).AsQueryable();
+                    }
                 }
                 tableList = query.Select(t => new AdminTableStudentRowModel
                 {
-                    Name=t.BaseProfile.Name+" "+t.BaseProfile.LastName+" "+t.BaseProfile.Surname,
-                    Address=t.BaseProfile.Adress,
-                    DateOfBirth=t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
-                    Email=t.BaseProfile.DbUser.Email,
-                    Phone=t.BaseProfile.DbUser.PhoneNumber
+                    Name = t.BaseProfile.Name + " " + t.BaseProfile.LastName + " " + t.BaseProfile.Surname,
+                    Address = t.BaseProfile.Adress,
+                    DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                    Email = t.BaseProfile.DbUser.Email,
+                    Phone = t.BaseProfile.DbUser.PhoneNumber
                 }).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {
@@ -140,14 +152,20 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Email",field="email",sort="asc",width=200},
                     new AdminTableColumnModel{label="Address",field="address",sort="asc",width=170}
                 };
-                
-                AdminStudentsTableModel table = new AdminStudentsTableModel { rows = tableList, columns = cols };
+                List<DropdownIntModel> specs = _context.Specialities.Select(t => new DropdownIntModel
+                {
+                    Label = t.Name,
+                    Value = t.Id
+                }).ToList();
 
-                return Ok(table); 
+                table.rows = tableList;
+                table.columns = cols;
+                table.Specialities = specs;
+                return Ok(table);
             }
             catch (Exception ex)
             {
-                return BadRequest("Error: " + ex.Message+" I: "+ex.InnerException);
+                return BadRequest("Error: " + ex.Message + " I: " + ex.InnerException);
             }
         }
         [HttpPost]
@@ -160,14 +178,17 @@ namespace EJournal.Controllers.AdminControllers
                 List<AdminTableTeacherRowModel> tableList = new List<AdminTableTeacherRowModel>();
                 if (model != null)
                 {
-                    List<TeacherProfile> temp = new List<TeacherProfile>();
-                    foreach (var item in _context.TeacherProfiles)
+                    if (!String.IsNullOrEmpty(model.Rolename))
                     {
-                        DbUser user = _context.Users.FirstOrDefault(t => t.Id == item.Id);
-                        if (_userManager.GetRolesAsync(user).Result.Contains(model.Rolename))
-                            temp.Add(item);
+                        List<TeacherProfile> temp = new List<TeacherProfile>();
+                        foreach (var item in _context.TeacherProfiles)
+                        {
+                            DbUser user = _context.Users.FirstOrDefault(t => t.Id == item.Id);
+                            if (_userManager.GetRolesAsync(user).Result.Contains(model.Rolename))
+                                temp.Add(item);
+                        }
+                        query = _context.TeacherProfiles.Where(t => temp.Contains(t)).AsQueryable();
                     }
-                    query = _context.TeacherProfiles.Where(t=>temp.Contains(t)).AsQueryable();
                 }
                 tableList = query.Select(t => new AdminTableTeacherRowModel
                 {//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdmYjZjYTczLWU0ZGYtNDQ0Zi1hOWI1LTI1ZWY0OWFjZTI3OSIsIm5hbWUiOiJkaXJlY3RvciIsInJvbGVzIjoiRGlyZWN0b3IiLCJleHAiOjE1ODUyNjE2MTV9.pmdGudiz0rqOldnAZqUpN8jd--d7n7HFBJJ3748Ec3M
@@ -176,7 +197,7 @@ namespace EJournal.Controllers.AdminControllers
                     DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
                     Email = t.BaseProfile.DbUser.Email,
                     Phone = t.BaseProfile.DbUser.PhoneNumber,
-                    Degree=t.Degree
+                    Degree = t.Degree
                 }).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {
@@ -187,44 +208,102 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Address",field="address",sort="asc",width=150},
                     new AdminTableColumnModel{label="Degree",field="degree",sort="asc",width=120}
                 };
-                AdminTeachersTableModel table = new AdminTeachersTableModel { rows = tableList, columns = cols };
+                List<DropdownStrModel> roles = _context.Roles.Where(t => t.Name != "Student").Select(t => new DropdownStrModel
+                {
+                    Label = t.Name,
+                    Value = t.Name
+                }).ToList();
+                AdminTeachersTableModel table = new AdminTeachersTableModel();
+                table.rows = tableList;
+                table.columns = cols;
+                table.Roles = roles;
 
                 return Ok(table);
             }
             catch (Exception ex)
             {
-                return BadRequest("Error: " + ex.Message+" asd: "+ex.StackTrace);
+                return BadRequest("Error: " + ex.Message + " asd: " + ex.StackTrace);
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("get/marks")]
-        public IActionResult GetMarks(AdminGetMarksModel model)
-        {           
-            int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == model.GroupId).Id;
-            var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.LessonId == model.LessonId);
-
-            var grToStud = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId);
-            var verGrToStud = grToStud.Where(t => _context.StudentProfiles.Contains(t.Student));         
-            foreach (var item in verGrToStud)
+        public IActionResult GetMarks([FromBody]GetMarksFiltersModel model)
+        {
+            if (model != null)
             {
-                var userMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.StudentId);
-                var marksFormatted = userMarks.Select(t => t.Value).ToList();
-                var baseProf = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.StudentId);
-                string name = baseProf.Name+" " + baseProf.LastName+" " + baseProf.Surname;
-            }
-            List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
+                AdminMarksTableModel table = new AdminMarksTableModel();
+                if (model.SpecialityId != 0)
                 {
-                    new AdminTableColumnModel{label="Name",field="Name",sort="asc",width=270},
-                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
-                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
-                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
-                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
-                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
-                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100},
-                    new AdminTableColumnModel{label="Date",field="Date",sort="asc",width=100}
-                };
-            return Ok("");
-        } 
+                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                    {
+                        Label = t.Name,
+                        Value = t.Id
+                    }).ToList();
+                }
+                if (model.GroupId != 0)
+                {
+                    var lessons = _context.Lessons.Where(t => t.GroupId == model.GroupId).Select(t => new DropdownIntModel
+                    {
+                        Label = t.Subject.Name,
+                        Value = t.Subject.Id
+                    }).ToList();
+                    table.Subjects = lessons;
+                }
+                if (model.SubjectId != 0)
+                {
+                    List<AdminTableMarksRowModel> tableList = new List<AdminTableMarksRowModel>();
+                    int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == model.GroupId).Id;
+                    var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.Lesson.SubjectId == model.SubjectId);
+                    var lessonDates = jourCols.Select(t => t.Lesson.LessonDate).ToList();
+                    lessonDates.OrderByDescending(d => d);
+
+                    var students = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId).Select(t => t.Student);
+                    foreach (var item in students)
+                    {
+                        var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id);
+                        var marksFormatted = new List<string>();
+                        foreach (var date in lessonDates)
+                        {
+                            var cell = studMarks.FirstOrDefault(m => m.JournalColumn.Lesson.LessonDate == date);
+                            if (cell != null)
+                                marksFormatted.Add(cell.Value);
+                            else 
+                                marksFormatted.Add("-");
+                        }
+                        var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
+                        string name = baseP.Name + " " + baseP.LastName + " " + baseP.Surname;
+                        AdminTableMarksRowModel rowModel = new AdminTableMarksRowModel
+                        {
+                            Name = name,
+                            Mark1 = marksFormatted[0],
+                            Mark2 = marksFormatted[1]
+                            //...
+                        };
+                        tableList.Add(rowModel);
+                    }
+                    List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>();
+                    cols.Add(new AdminTableColumnModel { label = "Name", field = "name", sort = "asc", width = 270 });
+                    int lenght = lessonDates.Count;
+                    if (lenght > 7) lenght = 7;
+                    for (int i = 0; i < lenght; i++)
+                    {
+                        cols.Add(new AdminTableColumnModel { label = lessonDates[i].ToString("dd.MM.yyyy"), field = "mark" + (i + 1), sort = "asc", width = 100 });
+                    }
+
+                    table.rows = tableList;
+                    table.columns = cols;
+                }
+                List<DropdownIntModel> specs = _context.Specialities.Select(t => new DropdownIntModel
+                {
+                    Label = t.Name,
+                    Value = t.Id
+                }).ToList();
+                table.Specialities = specs;
+
+                return Ok(table);
+            }
+            return BadRequest("Введені не всі дані");
+        }
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)
         //{

@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 
 namespace EJournal.ViewModels
 {
-    public class AdminStudentsTableModel
+    public class AdminMarksTableModel
     {
         public List<AdminTableColumnModel> columns { get; set; }
-        public List<AdminTableStudentRowModel> rows { get; set; }
+        public List<AdminTableMarksRowModel> rows { get; set; }
+
         public List<DropdownIntModel> Specialities { get; set; }
         public List<DropdownIntModel> Groups { get; set; }
-
+        public List<DropdownIntModel> Subjects { get; set; }
     }
 }

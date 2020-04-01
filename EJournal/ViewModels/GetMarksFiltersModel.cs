@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace EJournal.ViewModels
 {
-    public class AdminGetMarksModel
+    public class GetMarksFiltersModel
     {
-        public int LessonId { get; set; }
+        public int SubjectId { get; set; }
         public int GroupId { get; set; }
-        public int SpecId { get; set; }
+        public int SpecialityId { get; set; }
     }
 }

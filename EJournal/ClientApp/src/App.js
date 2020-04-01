@@ -1,6 +1,9 @@
 import React, { Suspense, Component } from 'react';
 import { Route, Switch, HashRouter as Router } from "react-router-dom";
 import './App.scss';
+import 'primereact/resources/themes/nova-light/theme.css';
+import 'primereact/resources/primereact.min.css';
+import 'primeicons/primeicons.css';
 // import "./assets/scss/black-dashboard-react.scss";
 // import "./assets/css/black-dashboard-react.css";
 // import "./assets/demo/demo.css";

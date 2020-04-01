@@ -8,6 +8,7 @@ import {personsChartReducer} from '../views/adminViews/PersonsChart/reducer';
 import {commentsChartReducer} from '../views/adminViews/CommentsChart/reducer';
 import {loginReducer} from '../views/defaultViews/LoginPage/reducer';
 import {studentTableReducer} from '../views/adminViews/StudentsTable/reducer';
+import {teachersTableReducer} from '../views/adminViews/TeachersTable/reducer';
 
 
 
@@ -20,7 +21,8 @@ export default function configureStore(history, initialState) {
     persons: personsChartReducer,
     comments: commentsChartReducer,
     login: loginReducer,
-    students: studentTableReducer
+    students: studentTableReducer,
+    teachers:teachersTableReducer
   };
 
   const middleware = [

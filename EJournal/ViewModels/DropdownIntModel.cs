@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace EJournal.ViewModels
 {
-    public class StudentsFiltersModel
+    public class DropdownIntModel
     {
-        public int GroupId { get; set; }
-        public int SpecialityId { get; set; }
+        public string Label { get; set; }
+        public int Value { get; set; }
     }
 }
