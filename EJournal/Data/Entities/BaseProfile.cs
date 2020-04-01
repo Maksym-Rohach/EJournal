@@ -14,6 +14,7 @@ namespace EJournal.Data.Entities
         public string LastName { get; set; }
         public string Adress { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string Image { get; set; }
 
         public DbUser DbUser { get; set; }
         public TeacherProfile Teacher { get; set; }
