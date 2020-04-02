@@ -10,6 +10,7 @@ using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Models;
 using EJournal.Services;
 using EJournal.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -58,19 +59,53 @@ namespace EJournal.Controllers
 
             return Ok(new {token=_jwtTokenService.CreateToken(user)});
         }        
+        [Authorize]
         [HttpPost("changepassword")]
-        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
+        //its change password not forgot password !!!
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordViewModel model)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Id == model.UserId);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Введіть всі данні");
+            }
+            if (model.Password != model.ConfirmPassword)
+            {
+                return BadRequest("Паролі не збігаються");
+            }
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
             if (user == null)
             {              
                 return BadRequest();
             }
-            var res = _userManager.PasswordHasher.HashPassword(user, model.Password);
-            user.PasswordHash = res;
-            var result = await _userManager.UpdateAsync(user);
+           
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.Password);
+            if (!result.Succeeded)
+            {
+                return BadRequest(new {invalid = "Старий пароль не вірний" });
+            }
+           //var res = _userManager.PasswordHasher.HashPassword(user, model.Password);
+           //user.PasswordHash = res;
+           //var result = await _userManager.UpdateAsync(user);
             return Ok(result);
         }
-        
+        [Authorize]
+        [HttpGet("profile")]
+        public IActionResult Profile()
+        {
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+            var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            var baseProfile = _context.BaseProfiles.FirstOrDefault(x => x.Id == userId);
+            return Ok(new ProfileViewModel()
+            {
+                Adress = baseProfile.Adress,
+                DateOfBirth = baseProfile.DateOfBirth.ToString("dd/MM/yyyy"),
+                Email = user.Email,
+                Name = baseProfile.Name + " " + baseProfile.Surname + " " + baseProfile.LastName,
+                Phone = user.PhoneNumber
+            });
+        }
     }
 }

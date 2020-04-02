@@ -188,26 +188,20 @@ class Timetable extends Component {
     componentDidMount = () => {
         //this.mouseEnter();
       
-        const{login} = this.props;
-        const {id}= login.user;
-        this.props.getTimetable({ id });
+        const{month} = this.state;
+        this.props.getTimetable({month });
 
       }
       componentWillReceiveProps = () => {
         //this.mouseEnter();
       
         const{month} = this.state;
-        const{login} = this.props;
-        const {id}= login.user;
-        this.props.getTimetable({ id,month });
+        this.props.getTimetable({month });
 
       }
       changeMonth=(e)=>{
         this.setState({month: e.value});
-        // const{month} = this.state;
-        // const{login} = this.props;
-        // const {id}= login.user;
-        // this.props.getTimetable({ id,month });
+       
       }
    
 render() {
@@ -260,7 +254,6 @@ render() {
 const mapStateToProps = state => {
     return {
         data: get(state,'timetable.list.data'), 
-        login: get(state,'login'), 
     };
   }
   

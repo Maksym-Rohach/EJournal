@@ -1,8 +1,8 @@
-import TimeTableService from './TimeTableService';
-import update from '../../../helpers/update';
-export const TIMETABLE_STARTED = "TIMETABLE_STARTED";
-export const TIMETABLE_SUCCESS = "TIMETABLE_SUCCESS";
-export const TIMETABLE_FAILED = "TIMETABLE_FAILED";
+import PasswordService from './PasswordService';
+import update from '../../helpers/update';
+export const PASSWORD_STARTED = "PASSWORD_STARTED";
+export const PASSWORD_SUCCESS = "PASSWORD_SUCCESS";
+export const PASSWORD_FAILED = "PASSWORD_FAILED";
 
 
 const initialState = {
@@ -14,17 +14,15 @@ const initialState = {
     },   
 }
 
-export const getTimetable = (model) => {
+export const changePassword = (model) => {
     return (dispatch) => {
         dispatch(getListActions.started());
-        
-        TimeTableService.getTimetable(model)
+        PasswordService.changePassword(model)
             .then((response) => {
-
-                dispatch(getListActions.success(response));               
+                dispatch(getListActions.success("Пароль змінено"));               
             }, err=> { throw err; })
             .catch(err=> {
-              dispatch(getListActions.failed(err));
+              dispatch(getListActions.failed(err.response));
             });
     }
 }
@@ -32,45 +30,46 @@ export const getTimetable = (model) => {
 export const getListActions = {
     started: () => {
         return {
-            type: TIMETABLE_STARTED
+            type: PASSWORD_STARTED
         }
     },  
     success: (data) => {
         return {
-            type: TIMETABLE_SUCCESS,
-            payload: data.data
+            type: PASSWORD_SUCCESS,
+            payload: data
         }
     },  
     failed: (error) => {
         return {           
-            type: TIMETABLE_FAILED,
-            errors: error
+            type: PASSWORD_FAILED,
+            errors: error.data.invalid
         }
     }
   }
 
-export const timetableReducer = (state = initialState, action) => { 
+export const changePasswordReducer = (state = initialState, action) => { 
   let newState = state;
 
   switch (action.type) {
 
-      case TIMETABLE_STARTED: {
+      case PASSWORD_STARTED: {
           newState = update.set(state, 'list.loading', true);
           newState = update.set(newState, 'list.success', false);
           newState = update.set(newState, 'list.failed', false);
           break;
       }
-      case TIMETABLE_SUCCESS: {
+      case PASSWORD_SUCCESS: {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.failed', false);
           newState = update.set(newState, 'list.success', true);
           newState = update.set(newState, 'list.data', action.payload);         
           break;
       }
-      case TIMETABLE_FAILED: {
+      case PASSWORD_FAILED: {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.success', false);
           newState = update.set(newState, 'list.failed', true);
+          newState = update.set(newState, "list.errors", action.errors);
           break;
       }
       default: {

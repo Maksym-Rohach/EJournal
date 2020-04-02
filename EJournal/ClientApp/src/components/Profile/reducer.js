@@ -1,8 +1,8 @@
-import TimeTableService from './TimeTableService';
-import update from '../../../helpers/update';
-export const TIMETABLE_STARTED = "TIMETABLE_STARTED";
-export const TIMETABLE_SUCCESS = "TIMETABLE_SUCCESS";
-export const TIMETABLE_FAILED = "TIMETABLE_FAILED";
+import ProfileService from './ProfileService';
+import update from '../../helpers/update';
+export const PROFILE_STARTED = "PROFILE_STARTED";
+export const PROFILE_SUCCESS = "PROFILE_SUCCESS";
+export const PROFILE_FAILED = "PROFILE_FAILED";
 
 
 const initialState = {
@@ -14,13 +14,11 @@ const initialState = {
     },   
 }
 
-export const getTimetable = (model) => {
+export const getProfile = () => {
     return (dispatch) => {
         dispatch(getListActions.started());
-        
-        TimeTableService.getTimetable(model)
+        ProfileService.getProfile()
             .then((response) => {
-
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
             .catch(err=> {
@@ -32,45 +30,46 @@ export const getTimetable = (model) => {
 export const getListActions = {
     started: () => {
         return {
-            type: TIMETABLE_STARTED
+            type: PROFILE_STARTED
         }
     },  
     success: (data) => {
         return {
-            type: TIMETABLE_SUCCESS,
+            type: PROFILE_SUCCESS,
             payload: data.data
         }
     },  
     failed: (error) => {
         return {           
-            type: TIMETABLE_FAILED,
+            type: PROFILE_FAILED,
             errors: error
         }
     }
   }
 
-export const timetableReducer = (state = initialState, action) => { 
+export const profileReducer = (state = initialState, action) => { 
   let newState = state;
 
   switch (action.type) {
 
-      case TIMETABLE_STARTED: {
+      case PROFILE_STARTED: {
           newState = update.set(state, 'list.loading', true);
           newState = update.set(newState, 'list.success', false);
           newState = update.set(newState, 'list.failed', false);
           break;
       }
-      case TIMETABLE_SUCCESS: {
+      case PROFILE_SUCCESS: {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.failed', false);
           newState = update.set(newState, 'list.success', true);
           newState = update.set(newState, 'list.data', action.payload);         
           break;
       }
-      case TIMETABLE_FAILED: {
+      case PROFILE_FAILED: {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.success', false);
           newState = update.set(newState, 'list.failed', true);
+          newState = update.set(newState, "list.errors", action.errors);
           break;
       }
       default: {

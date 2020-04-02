@@ -24,17 +24,14 @@ namespace EJournal.Controllers.StudentControllers
         [HttpPost("get/timetable")]
         public IActionResult GetTimetable([FromBody]GetTimetableModel model)
         {
-            if (string.IsNullOrEmpty(model.Id))
-            {
-                return BadRequest("Input group!");
-            }
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
             var now = DateTime.Now;           
             if (!string.IsNullOrEmpty(model.Month))
             {
                 now = new DateTime(now.Year, int.Parse(model.Month), 1);
             }
-            var group = _context.Groups.FirstOrDefault(x => x.Id == _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == model.Id && t.Group.YearTo.Year >= now.Year).GroupId).Name;
-            //var group = "32PR";
+            var group = _context.Groups.FirstOrDefault(x => x.Id == _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == userId && t.Group.YearTo.Year >= now.Year).GroupId).Name;
             var lessons = _context.Lessons.Where(x=>x.Group.Name==group).Where(x=>x.LessonDate.Month== now.Month&& x.LessonDate.Year == now.Year);
             List<TimetableModel> timetable = new List<TimetableModel>();
             timetable = lessons.Select(t => new TimetableModel()
