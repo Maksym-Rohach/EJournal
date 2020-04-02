@@ -14,7 +14,7 @@ class StudentLayout extends React.Component {
     //   }
 render() {
     const { login } = this.props;
-    console.log(login);
+    //console.log(login);
     let isAccess = false;
     if(login.isAuthenticated===undefined){
         return (
