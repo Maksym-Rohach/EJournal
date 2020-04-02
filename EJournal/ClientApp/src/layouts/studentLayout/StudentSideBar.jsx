@@ -23,25 +23,18 @@ import routes from '../../routes/studentRoutes';
 import "./sideBarStyle.css";
 
 //const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
-const StudentNavbar = React.lazy(() => import('./StudentNavbar'));
+
 
 class StudentLayout extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
-  signOut(e) {
-    e.preventDefault()
-    this.props.history.push('/login')
-  }
+  
 
   render() {
     return (
-      <div className="app">
-        <AppHeader fixed>
-          <Suspense  fallback={this.loading()}>
-            <StudentNavbar onLogout={e=>this.signOut(e)}/>
-          </Suspense>
-        </AppHeader>
+      // <div className="app">
+       
         <div className="back-image app-body">
           <AppSidebar  fixed display="lg">
             <AppSidebarHeader />
@@ -75,7 +68,7 @@ class StudentLayout extends Component {
             </Container>
           </main>
         </div>        
-      </div>
+      // </div>
     );
   }
 }

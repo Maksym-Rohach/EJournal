@@ -164,10 +164,11 @@ namespace EJournal
             #region  InitStaticFiles StudentImages
             string pathstudent = InitStaticFiles
                 .CreateFolderServer(env, this.Configuration,
-                    new string[] { "ImagesStudentPath" });
+                new string[] { "ImagesPath", "ImagesStudentPath" });
+    
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(pathRoot),
+                FileProvider = new PhysicalFileProvider(pathstudent),
                 RequestPath = new PathString('/' + Configuration.GetValue<string>("StudentUrlImages"))
 
             });
@@ -176,10 +177,10 @@ namespace EJournal
             #region  InitStaticFiles TeacherImages
             string pathteacher = InitStaticFiles
                 .CreateFolderServer(env, this.Configuration,
-                    new string[] { "ImagesTeachersPath" });
+                    new string[] { "ImagesPath", "ImagesTeachersPath" });
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(pathRoot),
+                FileProvider = new PhysicalFileProvider(pathteacher),
                 RequestPath = new PathString('/' + Configuration.GetValue<string>("TeacherUrlImages"))
 
             });
