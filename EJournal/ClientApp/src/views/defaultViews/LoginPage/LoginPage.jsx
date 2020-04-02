@@ -16,11 +16,6 @@ import {
     MDBContainer,
     MDBRow,
     MDBCol,
-    MDBCard,
-    MDBCardBody,
-    MDBModalFooter,
-    MDBIcon,
-    MDBCardHeader,
     MDBBtn,
     MDBInput
   } from "mdbreact";

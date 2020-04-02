@@ -110,7 +110,7 @@ namespace EJournal.Controllers.AdminControllers
             }
         }
         [HttpPost("get/students")]
-        public IActionResult GetStudentsAsync(StudentsFiltersModel model)
+        public IActionResult GetStudentsAsync([FromBody] StudentsFiltersModel model)
         {
             try
             {
