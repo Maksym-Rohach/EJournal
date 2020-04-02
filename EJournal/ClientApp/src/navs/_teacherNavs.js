@@ -49,7 +49,7 @@ export default {
           },
           {
             name: 'Перегляд',
-            url: '/base/carousels',
+            url: '/teacher/getmarks',
             icon: 'icon-eyeglass',
           },
         ],
@@ -70,6 +70,11 @@ export default {
             icon: 'icon-eyeglass',
           },
         ],
+      },
+      {
+        name: 'Перегляд студентів',
+        url: '/buttons',
+        icon: 'icon-eyeglass',
       },
     ],
   };

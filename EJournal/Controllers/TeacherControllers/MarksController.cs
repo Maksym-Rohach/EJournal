@@ -30,11 +30,29 @@ namespace EJournal.Controllers.TeacherControllers
             _jwtTokenService = jwtTokenService;
         }
 
-        //[HttpGet("teacher/getmarks")]
-        //public ContentResult GetMarksCurator()
-        //{
+        [HttpGet("teacher/getmarks")]
+        public IActionResult GetMarksCurator()
+        {
+            try
+            {
+                var claims = User.Claims;
+                var userId = claims.FirstOrDefault().Value;
+                //var curator = _context.TeacherProfiles.FirstOrDefault(x => x.Id == userId);
+                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year));
+                List<SubjectsViewModel> subjects = _context.GroupToSubjects.Where(x => x.GroupId == group.Id)
+                    .Select(x => new SubjectsViewModel
+                    {
+                        Name = x.Subject.Name
+                    }).ToList();
 
-        //}
+
+                return Ok(subjects);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest("Error: " + ex.Message);
+            }
+        }
 
         [HttpPost("teacher/getmarks")]
         public async Task<ActionResult<string>> GetMarksCurator([FromBody] GetMarksViewModel model)
