@@ -2,8 +2,9 @@ import React from 'react';
 import SideBar from "./StudentSideBar";
 import {Redirect, Route, Switch } from "react-router-dom";
 import routes from "../../routes/adminRoutes";
-
-
+import { connect } from "react-redux";
+import get from "lodash.get";
+import { logout } from '../../views/defaultViews/LoginPage/reducer';
 
 class StudentLayout extends React.Component {
     // constructor(props) {
