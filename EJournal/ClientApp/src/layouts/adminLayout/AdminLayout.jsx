@@ -34,6 +34,8 @@ class AdminLayout extends Component {
   }
 
   render() {
+
+    
     return (
       <div className="app">
         <AppHeader fixed>

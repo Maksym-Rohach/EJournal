@@ -21,6 +21,7 @@ using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
+using Microsoft.Extensions.FileProviders;
 
 namespace EJournal
 { 
@@ -148,6 +149,41 @@ namespace EJournal
             app.UseSpaStaticFiles();
             app.UseAuthentication();
             app.UseSession();
+
+            #region  InitStaticFiles Images
+            string pathRoot = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                    new string[] { "ImagesPath" });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathRoot),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("UrlImages"))
+            });
+            #endregion
+
+            #region  InitStaticFiles StudentImages
+            string pathstudent = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                    new string[] { "ImagesStudentPath" });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathRoot),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("StudentUrlImages"))
+
+            });
+            #endregion
+
+            #region  InitStaticFiles TeacherImages
+            string pathteacher = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                    new string[] { "ImagesTeachersPath" });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathRoot),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("TeacherUrlImages"))
+
+            });
+            #endregion
 
             //await Seed.SeedData(app.ApplicationServices, env, this.Configuration);
 
