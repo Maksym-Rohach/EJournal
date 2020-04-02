@@ -13,6 +13,11 @@ namespace EJournal.Data.Configurations
 
             builder.HasMany(e => e.JournalColumns)
                 .WithOne(e => e.Journal);
+
+            builder.HasData(
+                new Journal { Id = 1, GroupId = 1 },
+                new Journal { Id = 2, GroupId = 2 }
+                );
         }
     }
 }
