@@ -7,7 +7,7 @@ namespace EJournal.ViewModels
 {
     public class AdminMarksTableModel
     {
-        public List<AdminTableColumnModel> columns { get; set; }
+        public List<string> columns { get; set; }
         public List<AdminTableMarksRowModel> rows { get; set; }
 
         public List<DropdownIntModel> Specialities { get; set; }

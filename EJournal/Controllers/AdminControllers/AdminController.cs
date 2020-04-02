@@ -275,19 +275,17 @@ namespace EJournal.Controllers.AdminControllers
                         AdminTableMarksRowModel rowModel = new AdminTableMarksRowModel
                         {
                             Name = name,
-                            Mark1 = marksFormatted[0],
-                            Mark2 = marksFormatted[1]
-                            //...
+                            Marks=marksFormatted
                         };
                         tableList.Add(rowModel);
                     }
-                    List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>();
-                    cols.Add(new AdminTableColumnModel { label = "Name", field = "name", sort = "asc", width = 270 });
+                    List<string> cols = new List<string>();
+                    cols.Add("Name");
                     int lenght = lessonDates.Count;
                     if (lenght > 7) lenght = 7;
                     for (int i = 0; i < lenght; i++)
                     {
-                        cols.Add(new AdminTableColumnModel { label = lessonDates[i].ToString("dd.MM.yyyy"), field = "mark" + (i + 1), sort = "asc", width = 100 });
+                        cols.Add(lessonDates[i].ToString("dd.MM.yyyy"));
                     }
 
                     table.rows = tableList;
