@@ -5,12 +5,13 @@ import get from "lodash.get";
 import { MDBDataTable } from 'mdbreact'; 
 class StudentsTable extends Component {
     state = {
-        group: '',
-        speciality: '',        
+        group: 'CA-25',
+        speciality: 'Electrik',        
       }
 
-    componentDidMount = () => {
+    componentWillMount = () => {
         const { group, speciality } = this.state;
+        console.log("componentDidMount", this.state);
         this.props.getStudents({ group, speciality });
       }
 
@@ -20,10 +21,11 @@ class StudentsTable extends Component {
         console.log("RENDER", listStudents);
         return ( 
             <MDBDataTable
+                data={listStudents}
                 striped
                 bordered
                 hover
-                data={listStudents}/>
+                />
          );
     }
 }

@@ -21,7 +21,7 @@ namespace EJournal.Data.SeedData
                 var manager = scope.ServiceProvider.GetRequiredService<UserManager<DbUser>>();
                 var managerRole = scope.ServiceProvider.GetRequiredService<RoleManager<DbRole>>();
                 var context = scope.ServiceProvider.GetRequiredService<EfDbContext>();
-                context.Database.Migrate();
+               // context.Database.Migrate();
                 PreConfigured.SeedRoles(managerRole);
                 await PreConfigured.SeedUsers(manager, context);
             }
