@@ -12,6 +12,7 @@ using EJournal.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 namespace EJournal.Controllers
@@ -41,7 +42,7 @@ namespace EJournal.Controllers
             {
                 return "Введіть всі данні";
             }
-            var user = _context.Users.FirstOrDefault(x => x.Email == model.Email);
+            var user = _context.Users.Include(u=> u.BaseProfile).FirstOrDefault(x => x.Email == model.Email);
             if (user == null)
             {
                 return "Не правильна електронна пошта!";

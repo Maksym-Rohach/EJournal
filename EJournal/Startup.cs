@@ -185,7 +185,6 @@ namespace EJournal
             });
             #endregion
 
-            //await Seed.SeedData(app.ApplicationServices, env, this.Configuration);
 
             app.UseMvc(routes =>
             {
@@ -203,6 +202,9 @@ namespace EJournal
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+             //await Seed.SeedData(app.ApplicationServices, env, this.Configuration);
+
         }
     }
 }
