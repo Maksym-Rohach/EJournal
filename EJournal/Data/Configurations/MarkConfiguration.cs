@@ -16,6 +16,9 @@ namespace EJournal.Data.Configurations
                 .IsRequired()
                 .HasMaxLength(3);
 
+            builder.Property(e => e.IsPresent)
+                .IsRequired();
+
             builder.HasOne(e => e.JournalColumn)
                 .WithMany(e => e.Marks)
                 .OnDelete(DeleteBehavior.Restrict);

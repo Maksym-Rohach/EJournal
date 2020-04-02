@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace EJournal.Data.Entities
 {
-    public class Auditorium
+    public class DeductionType
     {
         public int Id { get; set; }
-        public int Number { get; set; }
-        public string Name { get; set; }
-        public ICollection<Lesson> Lessons { get; set; }
+        public string DeductionName { get; set; }
+
+        public ICollection<DeductedUser> DeductedUsers { get; set; }
     }
 }

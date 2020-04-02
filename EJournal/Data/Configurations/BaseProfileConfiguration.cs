@@ -23,6 +23,10 @@ namespace EJournal.Data.Configurations
             builder.HasOne(e => e.Teacher)
                 .WithOne(e => e.BaseProfile);
 
+            builder.HasOne(e => e.DeductedUser)
+                .WithOne(e => e.BaseProfile)
+                .HasForeignKey<DeductedUser>(e => e.DeductedUserId);
+
             builder.Property(e => e.Name)
                 .HasMaxLength(64)
                 .IsRequired();
@@ -41,6 +45,12 @@ namespace EJournal.Data.Configurations
 
             builder.Property(e => e.DateOfBirth)
                 .IsRequired();
+
+            builder.Property(e => e.PassportString)
+                .HasMaxLength(9);
+
+            builder.Property(e => e.IdentificationCode)
+                .HasMaxLength(10);
         }
     }
 }
