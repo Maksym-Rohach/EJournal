@@ -23,6 +23,7 @@ using System.Reflection;
 using System.IO;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Repositories;
+using Microsoft.Extensions.FileProviders;
 
 namespace EJournal
 { 
@@ -156,7 +157,42 @@ namespace EJournal
             app.UseAuthentication();
             app.UseSession();
 
-            //Seed.SeedData(app.ApplicationServices, env, this.Configuration);
+            #region  InitStaticFiles Images
+            string pathRoot = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                    new string[] { "ImagesPath" });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathRoot),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("UrlImages"))
+            });
+            #endregion
+
+            #region  InitStaticFiles StudentImages
+            string pathstudent = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                new string[] { "ImagesPath", "ImagesStudentPath" });
+    
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathstudent),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("StudentUrlImages"))
+
+            });
+            #endregion
+
+            #region  InitStaticFiles TeacherImages
+            string pathteacher = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                    new string[] { "ImagesPath", "ImagesTeachersPath" });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathteacher),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("TeacherUrlImages"))
+
+            });
+            #endregion
+
 
             app.UseMvc(routes =>
             {
@@ -174,6 +210,9 @@ namespace EJournal
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+             //await Seed.SeedData(app.ApplicationServices, env, this.Configuration);
+
         }
     }
 }
