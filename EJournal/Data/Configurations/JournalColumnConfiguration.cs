@@ -31,7 +31,7 @@ namespace EJournal.Data.Configurations
                 //new JournalColumn() { Id = 2, JournalId = 1, LessonId = 2, Topic = "Some topic 2" },
                 //new JournalColumn() { Id = 3, JournalId = 1, LessonId = 3, Topic = "Some topic 3" },
                 //new JournalColumn() { Id = 4, JournalId = 1, LessonId = 4, Topic = "Some topic 4" }
-                );
+            );
         }
     }
 }
