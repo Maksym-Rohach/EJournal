@@ -54,6 +54,22 @@ namespace EJournal.Data.Repositories
             
         }
 
+        public int CountOfTruancy(string studentId)
+        {
+            var group = _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == studentId && t.Group.YearTo.Year >= DateTime.Now.Year).Group;
+            var count = _context.Marks.Where(x => x.StudentId == studentId && x.IsPresent == false && x.JournalColumn.Lesson.GroupId == group.Id && x.JournalColumn.Lesson.LessonDate.Year == DateTime.Now.Year).Count();
+            return count;
+        }
+
+        public int GetAverageMarkStudent(string studentId, int subjectId = 0)
+        {
+            var stMarks = _context.Marks.Where(t => t.StudentId == studentId);
+            if(subjectId!=0)
+            stMarks = stMarks.Where(t => t.JournalColumn.Lesson.SubjectId == subjectId);
+            int lenght = stMarks.Count();
+            return (stMarks.Select(t => Convert.ToInt32(t.Value)).Sum()/lenght);
+        }
+
         public IEnumerable<string> GetSpecialities()
         {
             return _context.Specialities.Select(t => t.Name);

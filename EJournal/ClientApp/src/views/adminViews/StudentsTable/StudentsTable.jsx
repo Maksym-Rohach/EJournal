@@ -22,11 +22,11 @@ class StudentsTable extends Component {
   
 
   componentDidMount = () => {
-    const { group, speciality } = this.state;
-    this.props.getStudents({ group, speciality });
+    const { groupId, specialityId } = this.state;
+    this.props.getStudents({ groupId, specialityId });
   }
   changeSpec(event) {
-    const groupId= this.state.group;
+    const groupId= 0;
     const specialityId=event.value;
     console.log("spe"+specialityId);
     this.setState({ groupId: groupId, specialityId: specialityId });

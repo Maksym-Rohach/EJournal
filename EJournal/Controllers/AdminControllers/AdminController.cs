@@ -132,6 +132,11 @@ namespace EJournal.Controllers.AdminControllers
                     }
                     if (model.GroupId != 0)
                     {
+                        table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                        {
+                            Label = t.Name,
+                            Value = t.Id
+                        }).ToList();
                         var grToStud = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId);
                         query = _context.StudentProfiles.Where(t => grToStud.Any(g => g.StudentId == t.Id)).AsQueryable();
                     }
@@ -242,12 +247,16 @@ namespace EJournal.Controllers.AdminControllers
                 }
                 if (model.GroupId != 0)
                 {
-                    var lessons = _context.Lessons.Where(t => t.GroupId == model.GroupId).Select(t => new DropdownIntModel
+                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
                     {
-                        Label = t.Subject.Name,
-                        Value = t.Subject.Id
+                        Label = t.Name,
+                        Value = t.Id
                     }).ToList();
-                    table.Subjects = lessons;
+                    table.Subjects = _context.GroupToSubjects.Where(t => t.GroupId == model.GroupId).Select(t => new DropdownIntModel 
+                    {
+                        Label= t.Subject.Name,
+                        Value=t.SubjectId
+                    }).ToList();
                 }
                 if (model.SubjectId != 0)
                 {
@@ -280,8 +289,10 @@ namespace EJournal.Controllers.AdminControllers
                         tableList.Add(rowModel);
                     }
                     List<string> cols = new List<string>();
-                    cols.Add("Name");
+                    cols.Add("#");
+                    cols.Add("ПІБ");
                     int lenght = lessonDates.Count;
+                    //Set the count of cols
                     if (lenght > 7) lenght = 7;
                     for (int i = 0; i < lenght; i++)
                     {
@@ -290,6 +301,11 @@ namespace EJournal.Controllers.AdminControllers
 
                     table.rows = tableList;
                     table.columns = cols;
+                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                    {
+                        Label = t.Name,
+                        Value = t.Id
+                    }).ToList();
                 }
                 List<DropdownIntModel> specs = _context.Specialities.Select(t => new DropdownIntModel
                 {

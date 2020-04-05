@@ -94,7 +94,7 @@ export default {
       },
       {
         name: 'Переглянути оцінки',
-        url: '',
+        url: '/admin/marks',
         icon: 'icon-drop',
       },
       {
