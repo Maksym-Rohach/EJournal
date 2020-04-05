@@ -8,6 +8,8 @@ import {personsChartReducer} from '../views/adminViews/PersonsChart/reducer';
 import {commentsChartReducer} from '../views/adminViews/CommentsChart/reducer';
 import {loginReducer} from '../views/defaultViews/LoginPage/reducer';
 import {studentTableReducer} from '../views/adminViews/StudentsTable/reducer';
+import {teachersTableReducer} from '../views/adminViews/TeachersTable/reducer';
+import {marksTableReducer} from '../views/adminViews/MarksTable/reducer';
 import {timetableReducer} from '../views/studentViews/timetable/reducer';
 import {changePasswordReducer} from '../components/ChangePassword/reducer';
 import {profileReducer} from '../components/Profile/reducer';
@@ -22,6 +24,8 @@ export default function configureStore(history, initialState) {
     comments: commentsChartReducer,
     login: loginReducer,
     students: studentTableReducer,
+    teachers:teachersTableReducer,
+    marks:marksTableReducer,
     timetable: timetableReducer,
     password: changePasswordReducer,
     profile:profileReducer
