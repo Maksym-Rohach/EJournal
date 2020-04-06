@@ -148,7 +148,7 @@ export const loginActions = {
   failed: response => {
     return {
       type: LOGIN_POST_FAILED,
-      //errors: response.data
+      errors: response.data
     };
   },
 

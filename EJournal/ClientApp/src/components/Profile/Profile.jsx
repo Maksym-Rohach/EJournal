@@ -21,7 +21,7 @@ class Profile extends React.Component {
     console.log(data);
     if(data!=undefined)
   return (
-    <Card>
+    <Card className=" mr-3">
         <CardHeader
           subheader="Щоб змінити інформацію зверніться в навчальну частину"
           title="Профіль"
