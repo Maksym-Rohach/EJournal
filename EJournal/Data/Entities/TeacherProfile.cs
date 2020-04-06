@@ -10,6 +10,7 @@ namespace EJournal.Data.Entities
 
         public BaseProfile BaseProfile { get; set; }
 
+        public ICollection<Speciality> Specialities { get; set; }
         public ICollection<TeacherToSubject> TeacherToSubjects { get; set; }
         public ICollection<Group> Groups { get; set; }
         public ICollection<Lesson> Lessons { get; set; }

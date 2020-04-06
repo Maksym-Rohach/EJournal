@@ -9,6 +9,7 @@ namespace EJournal.Data.Entities
     {
         public int Id { get; set; }
         public string Value { get; set; }
+        public bool IsPresent { get; set; }
 
         public int JournalColumnId { get; set; }
         public JournalColumn JournalColumn { get; set; }
