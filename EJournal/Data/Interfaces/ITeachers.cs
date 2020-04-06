@@ -1,0 +1,17 @@
+﻿using EJournal.Data.Entities;
+using EJournal.Data.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace EJournal.Data.Interfaces
+{
+    public interface ITeachers
+    {
+        IEnumerable<GetTeacherModel> GetTeachers(string rolename);
+        GetTeacherModel GetTeacherById(string id);
+        Task<bool> AddTeacherAsync(AddTeacherModel profile);
+
+    }
+}

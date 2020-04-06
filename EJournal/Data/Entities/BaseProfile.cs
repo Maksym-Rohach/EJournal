@@ -14,7 +14,12 @@ namespace EJournal.Data.Entities
         public string LastName { get; set; }
         public string Adress { get; set; }
         public DateTime DateOfBirth { get; set; }
+        public string Image { get; set; }
+        public bool IsDeducted { get; set; }
+        public string PassportString { get; set; }
+        public string IdentificationCode { get; set; }
 
+        public DeductedUser DeductedUser { get; set; }
         public DbUser DbUser { get; set; }
         public TeacherProfile Teacher { get; set; }
         public StudentProfile Student { get; set; }

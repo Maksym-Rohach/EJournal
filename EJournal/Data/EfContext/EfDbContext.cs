@@ -31,6 +31,9 @@ namespace EJournal.Data.EfContext
         public DbSet<TeacherToSubject> TeacherToSubjects { get; set; }
         public DbSet<BaseProfile> BaseProfiles { get; set; }
         public DbSet<Speciality> Specialities { get; set; }
+        public DbSet<GroupToSubject> GroupToSubjects { get; set; }
+        public DbSet<DeductedUser> DeductedUsers { get; set; }
+        public DbSet<DeductionType> DeductionTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -53,6 +56,9 @@ namespace EJournal.Data.EfContext
             modelBuilder.ApplyConfiguration(new MarkConfiguration());
             modelBuilder.ApplyConfiguration(new MarkTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SpecialityConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupToSubjectConfiguration());
+            modelBuilder.ApplyConfiguration(new DeductedUserConfiguration());
+            modelBuilder.ApplyConfiguration(new DeductionTypeConfiguration());
         }
     }
 }

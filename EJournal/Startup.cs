@@ -17,6 +17,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.OpenApi.Models;
+using System.Collections.Generic;
+using System.Reflection;
+using System.IO;
+using EJournal.Data.Interfaces;
+using EJournal.Data.Repositories;
+using Microsoft.Extensions.FileProviders;
 
 namespace EJournal
 { 
@@ -43,6 +50,46 @@ namespace EJournal
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("gachi-muchi-secret-key"));
             services.AddDbContext<EfDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EJornalDataBase")));
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "EJournal API",
+                    Description = "A project  ASP.NET Core Web API",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Team EJournal",
+                        Email = string.Empty,
+                    },
+
+                });
+                c.AddSecurityDefinition("Bearer",
+                    new OpenApiSecurityScheme
+                    {
+                        Description = "JWT Authorization header using the Bearer scheme.",
+                        Type = SecuritySchemeType.Http,
+                        Scheme = "bearer"
+                    });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement{
+                    {
+                        new OpenApiSecurityScheme{
+                            Reference = new OpenApiReference{
+                                Id = "Bearer",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        },new List<string>()
+                    }
+                });
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                if (File.Exists(xmlPath))
+                {
+                    c.IncludeXmlComments(xmlPath);
+                }
+            });
+
             services.AddIdentity<DbUser, DbRole>(options =>
                 options.Stores.MaxLengthForKeys = 128)
                 .AddEntityFrameworkStores<EfDbContext>()
@@ -67,6 +114,11 @@ namespace EJournal
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            services.AddTransient<IStudents, StudentRepository>();
+            services.AddTransient<ITeachers, TeacherRepository>();
+            services.AddTransient<IMarks, MarkRepository>();
+            services.AddTransient<ILessons, LessonRepository>();
+
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
 
@@ -76,6 +128,11 @@ namespace EJournal
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseCors(
                builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
@@ -100,7 +157,42 @@ namespace EJournal
             app.UseAuthentication();
             app.UseSession();
 
-            //await Seed.SeedData(app.ApplicationServices, env, this.Configuration);
+            #region  InitStaticFiles Images
+            string pathRoot = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                    new string[] { "ImagesPath" });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathRoot),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("UrlImages"))
+            });
+            #endregion
+
+            #region  InitStaticFiles StudentImages
+            string pathstudent = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                new string[] { "ImagesPath", "ImagesStudentPath" });
+    
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathstudent),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("StudentUrlImages"))
+
+            });
+            #endregion
+
+            #region  InitStaticFiles TeacherImages
+            string pathteacher = InitStaticFiles
+                .CreateFolderServer(env, this.Configuration,
+                    new string[] { "ImagesPath", "ImagesTeachersPath" });
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(pathteacher),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("TeacherUrlImages"))
+
+            });
+            #endregion
+
 
             app.UseMvc(routes =>
             {
@@ -118,6 +210,9 @@ namespace EJournal
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+             //await Seed.SeedData(app.ApplicationServices, env, this.Configuration);
+
         }
     }
 }

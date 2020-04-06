@@ -12,9 +12,18 @@ namespace EJournal.Data.Configurations
             builder.HasMany(e => e.Groups)
                 .WithOne(e => e.Speciality);
 
+            builder.HasOne(e => e.Teacher)
+                .WithMany(e => e.Specialities)
+                .HasForeignKey(e => e.TeacherId);
+
             builder.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsRequired();
+
+            builder.HasData(
+                new Speciality() { Id = 1, Name = "Programming" },
+                new Speciality() { Id = 2, Name = "Design" }
+                );
         }
     }
 }
