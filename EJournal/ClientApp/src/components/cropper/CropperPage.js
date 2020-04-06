@@ -9,7 +9,7 @@ class CropperPage extends Component {
   state = {
     src: "",
     modal: false
-  };
+  }; 
 
   onChange = e => {
     e.preventDefault();

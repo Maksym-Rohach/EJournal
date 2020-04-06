@@ -47,7 +47,7 @@ render() {
          <AppHeader fixed>
           <Suspense  fallback={this.loading()}>
             <StudentNavbar onLogout={e=>this.signOut(e)}
-                            image={`${serverUrl}StudentsImage/50_${login.user.image}`}/>
+                            image={`${serverUrl}UsersImages/50_${login.user.image}`}/>
           </Suspense>
         </AppHeader>
         <SideBar></SideBar>
