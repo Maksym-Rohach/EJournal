@@ -21,6 +21,9 @@ namespace EJournal.Data.Configurations
             builder.HasMany(e => e.Lessons)
                 .WithOne(e => e.Subject);
 
+            builder.HasMany(e => e.GroupToSubjects)
+                .WithOne(e => e.Subject);
+
             builder.HasData(
                 new Subject() { Id = 1, Name = "Українська мова"},
                 new Subject() { Id = 2, Name = "Українська література"},

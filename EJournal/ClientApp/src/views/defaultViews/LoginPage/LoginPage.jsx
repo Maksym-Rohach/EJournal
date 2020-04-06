@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 //          Col, Container, Form, Input, InputGroup,
 //          InputGroupAddon, InputGroupText, Row } from 'reactstrap';
 import classnames from 'classnames';
-import PropTypes from 'prop-types';
+import PropTypes, { object } from 'prop-types';
 import { connect } from "react-redux";
 import * as loginActions from './reducer';
 // import InputMask from 'react-input-mask';
@@ -13,19 +13,23 @@ import Background from "../../../assets/images/back2.jpg";
 import "../../../assets/css/loginStyle.css";
 
 import {
+  FormHelperText
+} from '@material-ui/core';
+import {
     MDBContainer,
     MDBRow,
     MDBCol,
-    MDBCard,
-    MDBCardBody,
-    MDBModalFooter,
-    MDBIcon,
-    MDBCardHeader,
     MDBBtn,
     MDBInput
   } from "mdbreact";
 
-
+function LoadErrors(err){
+  if(typeof err!='object'){
+    return(
+    <FormHelperText error>{err}</FormHelperText>
+    )
+  }
+}
 class Login extends Component {
 
   state = {
@@ -35,7 +39,7 @@ class Login extends Component {
     errors: {},
     done: false,
     isLoading: false,
-    errorsServer: {},
+    errorsServer: '',
     iconInput: 'eye-slash',
     typeInput: 'password'
   }
@@ -110,9 +114,10 @@ console.log("onSubmitForm", this.state);
   
   render() {
     const { iconInput, typeInput } = this.state;
-    //const { errors, isLoading, profileUrl, visible, errorsServer } = this.state;
+    //const {errors}=this.props;
+    const { errors, isLoading, profileUrl, visible, errorsServer } = this.state;
 
-   
+    //console.log("ERORR",errorsServer);
                       {/* {!!errorsServer.invalid ?
                           <div className="alert alert-danger">
                               {errorsServer.invalid}.
@@ -133,6 +138,7 @@ console.log("onSubmitForm", this.state);
             success="right" 
             id="email"
             name="email"
+            required
             onChange={this.handleChange}/>         
               <MDBInput
                 label='Пароль'
@@ -141,10 +147,13 @@ console.log("onSubmitForm", this.state);
                 name="password"
                 type={typeInput}
                 icon={iconInput}
+                required
                 onIconMouseEnter={this.mouseEnter}
                 onIconMouseLeave={this.mouseLeave}
                 onChange={this.handleChange}
               />
+              {LoadErrors(errorsServer)}
+              
           {/* <MDBInput label="Type your password" icon="lock" group type="password" validate /> */}
         </div>
         <div className="text-center">

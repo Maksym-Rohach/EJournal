@@ -9,6 +9,8 @@ namespace EJournal.Data.Entities
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string TeacherId { get; set; }
+        public TeacherProfile Teacher { get; set; }
 
         public ICollection<Group> Groups { get; set; }
     }

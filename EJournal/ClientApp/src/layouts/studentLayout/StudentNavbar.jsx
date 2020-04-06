@@ -27,8 +27,8 @@ class StudentNavbar extends Component {
   render() {
 
     // eslint-disable-next-line
-    const { children, ...attributes } = this.props;
-
+    const { children, image, ...attributes } = this.props;
+console.log("IMAGE",image);
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -47,7 +47,8 @@ class StudentNavbar extends Component {
                     <MDBDropdownToggle className='dopdown-toggle' nav>
                       <img
       //TODO  динамічно підтягувати імейдж юзера 
-                        src='https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg'
+                        // src='https://mdbootstrap.com/img/Photos/Avatars/avatar-2.jpg'
+                        src={image}
                         className='rounded-circle z-depth-0'
                         alt=''
                         id="profileImage"
@@ -55,9 +56,9 @@ class StudentNavbar extends Component {
                     </MDBDropdownToggle>
                     <MDBDropdownMenu id="dropMenu1" className='dropdown-default' right>
       {/* TODO перекидувати на те куди потрібно*/}
-                      <MDBDropdownItem href='#!'><i class="ml-2 icon-user"></i> Мій профіль</MDBDropdownItem>
-                      <MDBDropdownItem href='#!'><i class="ml-2 icon-settings"></i> Настройки</MDBDropdownItem>
-                      <MDBDropdownItem href='#!'><i class="ml-2 icon-logout"></i> Вихід</MDBDropdownItem>
+                      <MDBDropdownItem href='/#/student/profile'><i className="ml-2 icon-user"></i> Мій профіль</MDBDropdownItem>
+                      <MDBDropdownItem href='#!'><i className="ml-2 icon-settings"></i> Настройки</MDBDropdownItem>
+                      <MDBDropdownItem href='#!'><i className="ml-2 icon-logout"></i> Вихід</MDBDropdownItem>
                     </MDBDropdownMenu>
                   </MDBDropdown>
           
