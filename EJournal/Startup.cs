@@ -21,6 +21,8 @@ using Microsoft.OpenApi.Models;
 using System.Collections.Generic;
 using System.Reflection;
 using System.IO;
+using EJournal.Data.Interfaces;
+using EJournal.Data.Repositories;
 using Microsoft.Extensions.FileProviders;
 
 namespace EJournal
@@ -112,6 +114,11 @@ namespace EJournal
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            services.AddTransient<IStudents, StudentRepository>();
+            services.AddTransient<ITeachers, TeacherRepository>();
+            services.AddTransient<IMarks, MarkRepository>();
+            services.AddTransient<ILessons, LessonRepository>();
+
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
 
