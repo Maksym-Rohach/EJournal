@@ -1,8 +1,13 @@
 export default {
     items: [
       {
-        name: 'Мої оцінки',
+        name: 'Домашня сторінка',
         url: '/student',
+        icon: 'icon-home'
+      },
+      {
+        name: 'Мої оцінки',
+        url: '/student/marks',
         icon: 'icon-calculator'
       },
     //   {
