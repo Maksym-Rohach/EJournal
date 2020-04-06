@@ -28,11 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\AuthControllers\" />
     <Folder Include="Controllers\TeacherControllers\" />
     <Folder Include="Controllers\StudentControllers\" />
-    <Folder Include="Uploaded\TeachersImage\" />
-    <Folder Include="Uploaded\StudentsImage\" />
+    <Folder Include="Uploaded\UsersImages\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
