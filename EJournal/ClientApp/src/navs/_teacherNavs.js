@@ -21,7 +21,7 @@ export default {
       },
       {
         name: 'Календарне планування',
-        url: '/teacher/clients',
+        url: '/teacher/timetable',
         icon: 'icon-calendar',
       },
       {

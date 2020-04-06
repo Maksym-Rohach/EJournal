@@ -26,12 +26,12 @@ namespace EJournal.Data.Configurations
                 .WithMany(e => e.JournalColumns)
                 .HasForeignKey(e => e.JournalId);
 
-            builder.HasData(
-                new JournalColumn() { Id = 1, JournalId = 1, LessonId = 1, Topic = "Some topic 1" },
-                new JournalColumn() { Id = 2, JournalId = 1, LessonId = 2, Topic = "Some topic 2" },
-                new JournalColumn() { Id = 3, JournalId = 1, LessonId = 3, Topic = "Some topic 3" },
-                new JournalColumn() { Id = 4, JournalId = 1, LessonId = 4, Topic = "Some topic 4" }
-                );
+            //builder.HasData(
+            //    new JournalColumn() { Id = 1, JournalId = 1, LessonId = 1, Topic = "Some topic 1" },
+            //    new JournalColumn() { Id = 2, JournalId = 1, LessonId = 2, Topic = "Some topic 2" },
+            //    new JournalColumn() { Id = 3, JournalId = 1, LessonId = 3, Topic = "Some topic 3" },
+            //    new JournalColumn() { Id = 4, JournalId = 1, LessonId = 4, Topic = "Some topic 4" }
+            //    );
         }
     }
 }

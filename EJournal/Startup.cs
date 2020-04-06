@@ -149,7 +149,7 @@ namespace EJournal
             app.UseAuthentication();
             app.UseSession();
 
-            //Seed.SeedData(app.ApplicationServices, env, this.Configuration);
+          // Seed.SeedData(app.ApplicationServices, env, this.Configuration);
 
             app.UseMvc(routes =>
             {
