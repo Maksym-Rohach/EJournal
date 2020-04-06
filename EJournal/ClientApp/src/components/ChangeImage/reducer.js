@@ -7,11 +7,24 @@ export const IMAGE_FAILED = "IMAGE_FAILED";
 
 const initialState = {
     list: {
-        data: [],
+        data: '',
         loading: false,
         success: false,
         failed: false,
     },   
+}
+
+export const getImage = () => {
+    return (dispatch) => {
+        dispatch(getListActions.started());
+        ChangeImageService.getImage()
+            .then((response) => {
+                dispatch(getListActions.success(response));               
+            }, err=> { throw err; })
+            .catch(err=> {
+              dispatch(getListActions.failed(err.response));
+            });
+    }
 }
 
 export const changeImage = (model) => {
