@@ -6,16 +6,13 @@ import { MDBDataTable } from 'mdbreact';
 import{ ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'; 
 class GetMarks extends Component {
 
-    state = {
-        subject:'',
-    }
-
     constructor(props) {
         super(props);
     
         this.toggle = this.toggle.bind(this);
         this.state = {
           dropdownOpen: new Array(19).fill(false),
+          subject: ''
         };
       }
     
@@ -23,6 +20,7 @@ class GetMarks extends Component {
         const newArray = this.state.dropdownOpen.map((element, index) => { return (index === i ? !element : false); });
         this.setState({
           dropdownOpen: newArray,
+          subject:"math",
         });
       }
 
@@ -55,12 +53,14 @@ class GetMarks extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log("mapStateto props");
     return {
         listMarks: get(state, 'list.data'), 
     };
   }
   
   const mapDispatchToProps = (dispatch) => {
+    console.log("mapDispatch");
     return {
         getListActions: filter => {
         dispatch(getListActions.getMarks(filter));

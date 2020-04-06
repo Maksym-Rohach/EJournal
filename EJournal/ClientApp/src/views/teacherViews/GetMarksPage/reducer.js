@@ -16,7 +16,7 @@ const initialState = {
 export const getMarks = (model) => {
     return (dispatch) => {
         dispatch(getListActions.started());
-        GetMarksService.getStudents(model)
+        GetMarksService.getMarks(model)
             .then((response) => {
                 console.log("response", response);
                 dispatch(getListActions.success(response));               
