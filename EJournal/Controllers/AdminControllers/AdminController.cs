@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using EJournal.Data.EfContext;
 using EJournal.Data.Entities;
 using EJournal.Data.Entities.AppUeser;
+using EJournal.Data.Interfaces;
+using EJournal.Data.Models;
 using EJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +23,14 @@ namespace EJournal.Controllers.AdminControllers
     {
         private readonly UserManager<DbUser> _userManager;
         private readonly EfDbContext _context;
-        public AdminController(UserManager<DbUser> userManager, EfDbContext context)
+        private readonly IStudents _students;
+        private readonly ITeachers _teachers;
+        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers)
         {
             _context = context;
             _userManager = userManager;
+            _students = students;
+            _teachers = teachers;
         }
 
         [HttpPost]
@@ -35,78 +41,47 @@ namespace EJournal.Controllers.AdminControllers
             {
                 return BadRequest("Введіть коректні дані");
             }
-            try
+            if (model.Rolename == "Student")
             {
-                DbUser user = new DbUser
+                bool res=await _students.AddStudentAsync(new AddStudentModel
                 {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber,
-                };
-                BaseProfile prof = new BaseProfile
+                    Name = model.Name,
+                    LastName=model.LastName,
+                    Surname=model.Surname,
+                    Adress=model.Adress,
+                    DateOfBirth=model.DateOfBirth,
+                    Email=model.Email,
+                    PhoneNumber=model.PhoneNumber,
+                    UserName=model.UserName,
+                    IdentificationCode=model.IdentificationCode,
+                    PassportString=model.PassportString
+                });
+                if(res==false)
+                return "Помилка на етапі додавання";
+
+                return Ok("Користувач успішно доданий");
+            }
+            else
+            {
+                bool res = await _teachers.AddTeacherAsync(new AddTeacherModel
                 {
+                    Rolename=model.Rolename,
+                    Degree=model.Degree,
                     Name = model.Name,
                     LastName = model.LastName,
                     Surname = model.Surname,
                     Adress = model.Adress,
-                    DateOfBirth = Convert.ToDateTime(model.DateOfBirth)
-                };
-
-                switch (model.Rolename)
-                {
-                    case "Student":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "Student");
-                        break;
-                    case "Teacher":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "Teacher");
-                        break;
-                    case "Director":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "Director");
-                        break;
-                    case "Curator":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "Curator");
-                        break;
-                    case "Director deputy":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "DDeputy");
-                        break;
-                    case "Department head":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "DepartmentHead");
-                        break;
-                    case "Cycle commision head":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "CycleCommisionHead");
-                        break;
-                    case "Study room head":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "StudyRoomHead");
-                        break;
-                    default:
-                        return "Введіть правильну роль";
-                }
-                prof.Id = user.Id;
-                await _context.BaseProfiles.AddAsync(prof);
-                await _context.SaveChangesAsync();
-                if (model.Rolename == "Student")
-                {
-                    await _context.StudentProfiles.AddAsync(new StudentProfile { Id = prof.Id });
-                    await _context.SaveChangesAsync();
-                }
+                    DateOfBirth = model.DateOfBirth,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    UserName = model.UserName,
+                    IdentificationCode = model.IdentificationCode,
+                    PassportString = model.PassportString
+                });
+                if (res == true)
+                    return Ok("Користувач успішно доданий");
                 else
-                {
-                    await _context.TeacherProfiles.AddAsync(new TeacherProfile { Id = prof.Id, Degree = model.Degree });
-                    await _context.SaveChangesAsync();
-                }
-                return Ok("Користувач успішно доданий");
-            }
-            catch (Exception ex)
-            {
-                return "Помилка: " + ex.Message;
+                    return "Помилка на етапі додавання";
             }
         }
         [HttpPost]
@@ -252,10 +227,10 @@ namespace EJournal.Controllers.AdminControllers
                         Label = t.Name,
                         Value = t.Id
                     }).ToList();
-                    table.Subjects = _context.GroupToSubjects.Where(t => t.GroupId == model.GroupId).Select(t => new DropdownIntModel 
+                    table.Subjects = _context.GroupToSubjects.Where(t => t.GroupId == model.GroupId).Select(t => new DropdownIntModel
                     {
-                        Label= t.Subject.Name,
-                        Value=t.SubjectId
+                        Label = t.Subject.Name,
+                        Value = t.SubjectId
                     }).ToList();
                 }
                 if (model.SubjectId != 0)
@@ -274,9 +249,9 @@ namespace EJournal.Controllers.AdminControllers
                         foreach (var date in lessonDates)
                         {
                             var cell = studMarks.FirstOrDefault(m => m.JournalColumn.Lesson.LessonDate == date);
-                            if (cell != null)
+                            if (cell.IsPresent == true)
                                 marksFormatted.Add(cell.Value);
-                            else 
+                            else
                                 marksFormatted.Add("-");
                         }
                         var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
@@ -284,7 +259,7 @@ namespace EJournal.Controllers.AdminControllers
                         AdminTableMarksRowModel rowModel = new AdminTableMarksRowModel
                         {
                             Name = name,
-                            Marks=marksFormatted
+                            Marks = marksFormatted
                         };
                         tableList.Add(rowModel);
                     }
