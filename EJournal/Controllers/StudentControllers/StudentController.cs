@@ -53,5 +53,43 @@ namespace EJournal.Controllers.StudentControllers
             };
             return Ok(result);
         }
+        [HttpGet("homepage")]
+        public IActionResult GetHomePage()
+        {
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+            var res = new List<MarkViewModel>();
+            res = _context.Marks.Where(x => x.StudentId == userId).Select(t => new MarkViewModel
+            {
+                Value = t.Value,
+                Date = t.JournalColumn.Lesson.LessonDate.ToString("dd/MM/yyyy"),
+                Subject = t.JournalColumn.Lesson.Subject.Name
+            }).OrderBy(x=>x.Date).ToList();
+            var avg = _context.Marks.Where(x => x.StudentId == userId && x.IsPresent == true).Average(x=>long.Parse(x.Value));
+            var group = _context.Groups.FirstOrDefault(x => x.Id == _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == userId && t.Group.YearTo.Year >= DateTime.Now.Year).GroupId);
+            var count = _context.Marks.Where(x => x.StudentId == userId && x.IsPresent == false && x.JournalColumn.Lesson.GroupId == group.Id && x.JournalColumn.Lesson.LessonDate.Year == DateTime.Now.Year).Count();
+            var lessons = _context.Lessons.Where(x => x.Group.Id == group.Id).Where(x => x.LessonDate.Day == DateTime.Now.Day&&x.LessonDate.Year==DateTime.Now.Year);
+            List<TimetableModel> timetable = new List<TimetableModel>();
+            timetable = lessons.Select(t => new TimetableModel()
+            {
+                AuditoriumNumber = "ауд " + t.Auditorium.Number.ToString(),
+                LessonDate = t.LessonDate.Date.ToString(),
+                TeacherName = t.Teacher.BaseProfile.Name + " " + t.Teacher.BaseProfile.LastName,
+                LessonNumber = t.LessonNumber,
+                Day = t.LessonDate.Day.ToString(),
+                SubjectName = t.Subject.Name,
+                LessonTimeGap = t.LessonTimeGap,
+                Topic = t.JournalColumn.Topic
+            }).OrderBy(x => x.LessonDate).ToList();
+            return Ok(new HomePageViewModel()
+            {
+                Marks = res,
+                AverageMark=avg.ToString(),
+                CountOfDays=count.ToString(),
+                Day=DateTime.Now.Day.ToString(),
+                Timetable=timetable
+            });
+            
+        }
     }
 }

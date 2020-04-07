@@ -28,7 +28,7 @@ class Password extends React.Component {
       this.setState({error:"Введіть всі данні"});
     }
     else if(!mediumRegex.test(password)){
-              this.setState({error:"Зробіть складніший пароль"});
+              this.setState({error:"Оберіть складніший пароль"});
             }
       else if (password !== confirmPassword) {
         this.setState({error:"Паролі не збігаються"});
@@ -49,7 +49,7 @@ class Password extends React.Component {
     
     const {error}= this.state;
       return (
-        <Card className="mt-3">
+        <Card className="mt-3 mr-3">
           <form onSubmit={this.onSubmitForm}>
             <CardHeader
               subheader="Оновити пароль"
