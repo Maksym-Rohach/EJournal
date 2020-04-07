@@ -38,22 +38,22 @@ namespace EJournal.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             if (!ModelState.IsValid)
             {
-                return "Введіть всі данні";
+                return BadRequest("Введіть всі данні");
             }
             var user = _context.Users.Include(u=> u.BaseProfile).FirstOrDefault(x => x.Email == model.Email);
             if (user == null)
             {
-                return "Не правильна електронна пошта!";
+                return BadRequest("Не правильна електронна пошта!");
             }
             var res = _signInManager
                 .PasswordSignInAsync(user, model.Password, false, false).Result;
             if (!res.Succeeded)
             {
-                return "Не правильний пароль!";
+                return BadRequest("Не правильний пароль!");
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);

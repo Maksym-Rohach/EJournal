@@ -13,7 +13,9 @@ import {marksTableReducer} from '../views/adminViews/MarksTable/reducer';
 import {addStudentReducer} from '../views/adminViews/AddStudent/reducer';
 import {timetableReducer} from '../views/studentViews/timetable/reducer';
 import {changePasswordReducer} from '../components/ChangePassword/reducer';
+import {changeImageReducer} from '../components/ChangeImage/reducer';
 import {profileReducer} from '../components/Profile/reducer';
+import {studentHomePageReducer} from '../views/studentViews/home/reducer';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -29,7 +31,9 @@ export default function configureStore(history, initialState) {
     marks:marksTableReducer,
     timetable: timetableReducer,
     password: changePasswordReducer,
+    changeImage: changeImageReducer,
     profile:profileReducer,
+    studentHome:studentHomePageReducer,
     addStudent:addStudentReducer
   };
 
