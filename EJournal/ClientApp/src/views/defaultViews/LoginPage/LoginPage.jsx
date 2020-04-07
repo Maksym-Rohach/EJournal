@@ -130,6 +130,7 @@ console.log("onSubmitForm", this.state);
     <MDBCol md="5">
       <form onSubmit={this.onSubmitForm}>
         <p className="h5 text-center mb-4">Увійти</p>
+        {LoadErrors(errorsServer)}
         <div className="grey-text">
           <MDBInput label="Електронна пошта" 
           icon="envelope" 
@@ -152,7 +153,7 @@ console.log("onSubmitForm", this.state);
                 onIconMouseLeave={this.mouseLeave}
                 onChange={this.handleChange}
               />
-              {LoadErrors(errorsServer)}
+              
               
           {/* <MDBInput label="Type your password" icon="lock" group type="password" validate /> */}
         </div>
