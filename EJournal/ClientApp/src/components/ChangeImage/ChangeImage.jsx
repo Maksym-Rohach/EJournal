@@ -10,7 +10,8 @@ import {
   CardActions,
   CardContent,
   Divider,
-  IconButton
+  IconButton,
+  Tooltip
 } from "@material-ui/core";
 class Password extends React.Component {
   state = {
@@ -69,6 +70,7 @@ class Password extends React.Component {
             style={{display: "none"}}
           /> */}
           {/* <label htmlFor="icon-button-file"> */}
+          <Tooltip title="Змінити зображення">
             <IconButton
               color="primary"
               aria-label="upload picture"
@@ -77,6 +79,7 @@ class Password extends React.Component {
             >
               <PhotoCamera />
             </IconButton>
+            </Tooltip>
           {/* </label> */}
         </CardActions>
         <CropperPage ref="cropperPage" getCroppedImage={this.getCroppedImage} isHidden={true} isForAvatar={true} />
