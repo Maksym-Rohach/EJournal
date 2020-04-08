@@ -7,6 +7,7 @@ namespace EJournal.ViewModels
 {
     public class GetMarksViewModel
     {
-        public string Speciality { get; set; }
+        public int SubjectId { get; set; }
+        public int Month { get; set; }
     }
 }

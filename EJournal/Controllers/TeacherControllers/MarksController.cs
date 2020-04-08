@@ -4,7 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using EJournal.Data.EfContext;
+using EJournal.Data.Entities;
 using EJournal.Data.Entities.AppUeser;
+using EJournal.Data.Interfaces;
 using EJournal.Services;
 using EJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -22,16 +24,19 @@ namespace EJournal.Controllers.TeacherControllers
         private readonly EfDbContext _context;
         private readonly UserManager<DbUser> _userManager;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly IMarks _marks;
 
-        public MarksController(EfDbContext context, UserManager<DbUser> userManager, IJwtTokenService jwtTokenService)
+        public MarksController(EfDbContext context, UserManager<DbUser> userManager, 
+            IJwtTokenService jwtTokenService, IMarks marks)
         {
             _context = context;
             _userManager = userManager;
             _jwtTokenService = jwtTokenService;
+            _marks = marks;
         }
 
-        [HttpGet("teacher/getmarks")]
-        public IActionResult GetMarksCurator()
+        [HttpGet("teacher/getsubject")]
+        public IActionResult GetSubject()
         {
             try
             {
@@ -61,10 +66,20 @@ namespace EJournal.Controllers.TeacherControllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return "Виберіть предмет";
+                    return "Виберіть предмет або місяць";
                 }
-                var userId = User.FindFirstValue("id");
-                return Ok();
+                var claims = User.Claims;
+                var userId = claims.FirstOrDefault().Value;
+                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year));
+
+                var listMarks = new List<IEnumerable<Mark>>();
+                for(int i=1; i<=31; i++)
+                {
+                    var data = $"{i}/{model.Month}/{DateTime.Now.Year}";
+                    var marks = _marks.GetMarksInGroup(group.Id, model.SubjectId, data);
+                    listMarks.Add(marks);
+                }
+                return Ok(listMarks);
             }
             catch(Exception ex)
             {

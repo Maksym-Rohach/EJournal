@@ -13,7 +13,6 @@ import 'primeicons/primeicons.css';
 
 // Pages
 const LoginPage = React.lazy(() => import("./views/defaultViews/LoginPage"));
-const GetMarksPage = React.lazy(() => import("./views/teacherViews/GetMarksPage"));
 
 const StudentLayout=React.lazy(()=>import("./layouts/studentLayout/StudentLayout"));
 
@@ -42,7 +41,7 @@ class App extends Component {
           <Route path="/teacher" name="Teacher" render={props => <TeacherLayout {...props} />}/>
           <Route path="/manager" name="Manager" render={props => <ManagerLayout {...props} />}/>
 
-          <Route path="/teacher/getmarks" name="TeacheGetMarks" render={props => <GetMarksPage {...props} />}/>
+          
         </Switch>
       </Suspense>
       </Router> 
