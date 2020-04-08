@@ -52,7 +52,7 @@ class Password extends React.Component {
         <Card className="mt-3 mr-3">
           <form onSubmit={this.onSubmitForm}>
             <CardHeader
-              subheader="Оновити пароль"
+              subheader="Змінити пароль"
               title="Пароль"
             />
             <Divider />
@@ -101,7 +101,7 @@ class Password extends React.Component {
                 color="primary"
                 variant="outlined"
               >
-                Оновити
+                Змінити
               </Button>
               
               

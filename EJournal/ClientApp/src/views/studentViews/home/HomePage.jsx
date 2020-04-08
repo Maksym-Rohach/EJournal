@@ -6,6 +6,8 @@ import AssessmentIcon from "@material-ui/icons/Assessment";
 import SchoolIcon from "@material-ui/icons/School";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import {Pie,Line} from 'react-chartjs-2';
 import get from "lodash.get";
 import Skeleton from "@material-ui/lab/Skeleton";
 import {
@@ -88,7 +90,51 @@ class HomePage extends React.Component {
   }
   render() {
     const { data } = this.props;
-    console.log(data);
+    const months=['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
+    const pie = {
+      labels: [
+        'Пропущено %',
+        'Відвідано %',
+      ],
+      datasets: [
+        {
+          data: [data.countOfDays,100-data.countOfDays],
+          backgroundColor: [
+            '#FF6384',
+            '#FFCE56',
+          ],
+          hoverBackgroundColor: [
+            '#FF6384',
+            '#FFCE56',
+          ],
+        }],
+    };
+    const line = {
+      labels: [months[data.month-3], months[data.month]-3, months[data.month-3], months[data.month-3], months[data.month-2], months[data.month-1]],
+      datasets: [
+        {
+          label: 'Середня оцінка',
+          fill: false,
+          lineTension: 0.1,
+          backgroundColor: '#FFCE56',
+          borderColor: '#FFCE56',
+          borderCapStyle: 'butt',
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: 'miter',
+          
+          data: [data.averageMark1, data.averageMark2, data.averageMark3, data.averageMark4, data.averageMark5, data.averageMark6],
+        },
+      ],
+    };
+    const options = {
+      tooltips: {
+        enabled: false,
+        custom: CustomTooltips
+      },
+      maintainAspectRatio: false
+    }
+    //console.log(data);
     return (
       <Grid className="mt-4" container>
         <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -100,15 +146,17 @@ class HomePage extends React.Component {
               />
               
               <CardContent>
-                {data.averageMark == null ? (
+                {data.averageMark1 == null ? (
                   <Skeleton
                     animation="wave"
-                    height={15}
-                    width="5%"
+                    height={248}
+                    width="100%"
                     style={{ marginBottom: 6 }}
                   />
                 ) : (
-                  data.averageMark
+                  <div className="chart-wrapper">
+                <Line data={line} options={options} />
+              </div>
                 )}
               </CardContent>
             </form>
@@ -122,36 +170,34 @@ class HomePage extends React.Component {
              
               <CardContent>
                 {data.countOfDays == null ? (
+                  <div className="d-flex justify-content-center align-items-center text-center">
+                    <div className="d-flex flex-column">
+
+                    
                   <Skeleton
                     animation="wave"
                     height={15}
-                    width="70%"
-                    style={{ marginBottom: 6 }}
+                    width="100%"
+                    style={{ marginBottom: 2 }}
                   />
-                ) : (
-                  `К-сть пропущених занять за цей семестр - ${data.countOfDays}`
+                  <Skeleton
+                          animation="wave"
+                          variant="circle"
+                          width={200}
+                          height={200}
+                        />
+                        </div>
+                        </div>
+                ) : (           
+                  <div className="chart-wrapper">
+                  <Pie data={pie} />
+                  </div>
+                  
                 )}
               </CardContent>
             </form>
           </Card>
-          <Card className="mt-3 mr-3">
-            <CardHeader
-              avatar={<ScheduleIcon></ScheduleIcon>}
-              title="Розклад"
-              subheader="Розклад на сьогодні"
-            />
-            
-            <CardContent>{LoadTimetable(data, data.day)}</CardContent>
-            <CardActions>
-              <div className="d-flex flex-column">
-                <Link href="/#/student/timetable">
-                  <Button size="small" color="primary">
-                    Більше інформації
-                  </Button>
-                </Link>
-              </div>
-            </CardActions>
-          </Card>
+          
         </Grid>
         <Grid item lg={6} md={6} xl={6} xs={12}>
           <Card className="mt-3  mr-3" className="max-height">
@@ -217,6 +263,24 @@ class HomePage extends React.Component {
                 </div>
               </CardActions>
             </form>
+          </Card>
+          <Card className="mt-3 mr-3">
+            <CardHeader
+              avatar={<ScheduleIcon></ScheduleIcon>}
+              title="Розклад"
+              subheader="Розклад на сьогодні"
+            />
+            
+            <CardContent>{LoadTimetable(data, data.day)}</CardContent>
+            <CardActions>
+              <div className="d-flex flex-column">
+                <Link href="/#/student/timetable">
+                  <Button size="small" color="primary">
+                    Більше інформації
+                  </Button>
+                </Link>
+              </div>
+            </CardActions>
           </Card>
         </Grid>
       </Grid>
