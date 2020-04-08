@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EJournal.Controllers.TeacherControllers
 {
-    [Authorize(Roles = "Teacher")]
+    //[Authorize(Roles = "Teacher")]
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class MarksController : ControllerBase
