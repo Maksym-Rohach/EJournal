@@ -1,56 +1,250 @@
 import React, { Component } from 'react';
-import { MDBInput, MDBContainer, MDBRow, MDBCol } from 'mdbreact';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel'; import * as getListActions from './reducer';
+import * as getListActions from './reducer';
+import {
+  TextField,
+  FormHelperText
+} from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import 'date-fns';
+import DateFnsUtils from "@date-io/date-fns";
+import deLocale from "date-fns/locale/uk";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import InputMask from 'react-input-mask';
+import Button from '@material-ui/core/Button';
 import { connect } from 'react-redux';
 import get from "lodash.get";
 
+function LoadErrors(err){
+  if(typeof err!='object'){
+    return(
+    <FormHelperText error>{err}</FormHelperText>
+    )
+  }
+}
 class addStudent extends Component {
   state = {
     result: {},
-    selectedValue: 'a'
+    errors: {},
+    dateOfBirth: new Date(),
+    name: '',
+    lastName: '',
+    surname: '',
+    adress: '',
+    email: '',
+    phoneNumber: '',
+    passportString: '',
+    identificationCode: ''
   };
-  handleChange = (event) => {
-    const res = this.state.result;
-    this.setState({ result: res, selectedValue: event.target.value });
+
+
+  handleDateChange = (date) => {
+    if (!!this.state.errors['dateOfBirth']) {
+      let errors = Object.assign({}, this.state.errors);
+      delete errors['dateOfBirth'];
+      this.setState(
+        {
+          dateOfBirth: date,
+          errors
+        }
+      )
+    }
+    else {
+      this.setState({ dateOfBirth: date });
+    }
   };
+  setStateByErrors = (name, value) => {
+    if (!!this.state.errors[name]) {
+      let errors = Object.assign({}, this.state.errors);
+      delete errors[name];
+      this.setState(
+        {
+          [name]: value,
+          errors
+        }
+      )
+    }
+    else {
+      this.setState(
+        { [name]: value })
+    }
+  }
+
+  handleChange = (e) => {
+    this.setStateByErrors(e.target.name, e.target.value);
+
+  }
+  onSubmit = (e) => {
+    e.preventDefault();
+    let errors = {};
+    const {name,surname,lastName,adress,email,phoneNumber,passportString,identificationCode,dateOfBirth}=this.state;
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    
+    if(name==='')errors.name="Field is important";
+    if(surname==='')errors.surname="Field is important";
+    if(lastName==='')errors.lastName="Field is important";
+    if(adress==='')errors.adress="Field is important";
+    if(email==='')errors.email="Field is important";
+    if(phoneNumber==='')errors.phoneNumber="Field is important";
+    if(passportString==='')errors.passportString="Field is important";
+    if(identificationCode==='')errors.identificationCode="Field is important";
+
+    const isValid = Object.keys(errors).length === 0
+    if (isValid) {
+      const newDate = [pad(dateOfBirth.getDate()), pad(dateOfBirth.getMonth() + 1), dateOfBirth.getFullYear()].join('.');
+      const rolename="Student";
+      
+      this.props.addStudent({
+          name,
+          lastName,
+          surname,
+          adress,
+          email,
+          phoneNumber,
+          passportString,
+          identificationCode,
+          dateOfBirth:newDate,
+          rolename,
+          degree:''});     
+    }
+    else {
+      this.setState({ errors });
+    }
+  }
   render() {
     const { result } = this.props;
     console.log("RENDER", result);
+    const { errors } = this.state;
 
     return (
       <React.Fragment>
-        <FormControl component="fieldset">
-          <FormLabel component="legend">Gender</FormLabel>
-          <RadioGroup row aria-label="gender" name="gender1" value={this.state.selectedValue} onChange={this.handleChange}>
-            <FormControlLabel value="female" control={<Radio />} label="Female" />
-            <FormControlLabel value="male" control={<Radio />} label="Male" />
-            <FormControlLabel value="other" control={<Radio />} label="Other" />
-          </RadioGroup>
-        </FormControl>
-
-        <MDBContainer className='mt-5'>
-
-          <MDBRow>
-            <MDBCol md='6'>
-              <MDBInput
-                label='Type your email'
-                icon='envelope'
-                group
-                type='email'
-                validate
-                error='wrong'
-                success='right'
+        <div>
+          <Grid container spacing={3}>
+            <Grid item lg={4} md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Outlined"
+                variant="outlined"
+                label="Name"
+                name="name"
+                onChange={this.handleChange}
               />
-            </MDBCol>
-            <MDBCol md='6'>
-              <MDBInput label='Type your password' icon='lock' group type='password' validate />
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
+              {/* <FormHelperText error>{error}</FormHelperText> */}
+            </Grid>
+            <Grid item lg={4} md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Outlined"
+                variant="outlined"
+                label="Lastname"
+                name="lastName"
+                onChange={this.handleChange}
+              />
+              {/* <FormHelperText error>{error}</FormHelperText> */}
+            </Grid>
+            <Grid item lg={4} md={12} xs={12}>
+              <TextField
+                fullWidth
+                label="Outlined"
+                variant="outlined"
+                label="Surname"
+                name="surname"
+                onChange={this.handleChange}
+              />
+              {/* <FormHelperText error>{error}</FormHelperText> */}
+            </Grid>
+          </Grid>
+          <Grid justify="space-between" container spacing={3}>
+            <Grid item lg={4} md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Outlined"
+                variant="outlined"
+                label="Email"
+                name="email"
+                onChange={this.handleChange}
+              />
+              {/* <FormHelperText error>{error}</FormHelperText> */}
+            </Grid>
+            <Grid item lg={3} md={6} xs={12}>
+              <InputMask
+                mask="(+38)999 999 99 99"
+                maskChar=" "
+                onChange={this.handleChange}
+              >
+                {() =>
+                  <TextField
+                    fullWidth
+                    label="Outlined"
+                    variant="outlined"
+                    label="Phone"
+                    name="phoneNumber"
+                  />
+                }
+              </InputMask>
+
+              {/* <FormHelperText error>{error}</FormHelperText> */}
+            </Grid>
+            <Grid item lg={4} md={12} xs={12}>
+              <TextField
+                fullWidth
+                label="Outlined"
+                variant="outlined"
+                label="Address"
+                name="adress"
+                onChange={this.handleChange}
+              />
+              {/* <FormHelperText error>{error}</FormHelperText> */}
+            </Grid>
+          </Grid>
+          <Grid justify="space-between" container spacing={3}>
+            <Grid item lg={4} md={6} xs={12}>
+              <TextField
+                fullWidth
+                label="Outlined"
+                variant="outlined"
+                label="Identity code"
+                name="identificationCode"
+                onChange={this.handleChange}
+              />
+              {/* <FormHelperText error>{error}</FormHelperText> */}
+            </Grid>
+            <Grid item lg={3} md={6} xs={12}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
+                <KeyboardDatePicker
+                  margin="normal"
+                  label="Date of birthday"
+                  format="dd/MM/yyyy"
+                  value={this.state.dateOfBirth}
+                  onChange={this.handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </MuiPickersUtilsProvider>
+            </Grid>
+            <Grid item lg={4} md={12} xs={12}>
+              <TextField
+                fullWidth
+                label="Outlined"
+                variant="outlined"
+                label="Passport"
+                name="passportString"
+                onChange={this.handleChange}
+              />
+              {/* <FormHelperText error>{error}</FormHelperText> */}
+            </Grid>
+          </Grid>
+          <Grid container spacing={3} direction="column" alignItems="flex-end">
+            <Grid item xs>
+              <Button variant="outlined" color="primary" onClick={this.onSubmit}>
+                Додати
+              </Button>
+            </Grid>
+          </Grid>
+        </div>
 
       </React.Fragment>
     );
@@ -72,53 +266,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(addStudent);
-
-// import React, { useState } from 'react';
-// import { Collapse, Button, CardBody, Card } from 'reactstrap';
-
-// const Example = (props) => {
-//   const [isOpen, setIsOpen] = useState(true);
-//   const [isOpen2, setIsOpen2] = useState(false);
-//   const [isOpen3, setIsOpen3] = useState(false);
-
-//   const toggle = () => {setIsOpen2(false);setIsOpen3(false);setIsOpen(!isOpen);};
-//   const toggle2 = () => {setIsOpen(false);setIsOpen3(false);setIsOpen2(!isOpen2);};
-//   const toggle3 = () => {setIsOpen(false);setIsOpen2(false);setIsOpen3(!isOpen3);};
-
-//   return (
-//     <div>
-//       <Button color="primary" onClick={toggle} style={{ marginBottom: '1rem' }}>Toggle</Button>
-//       <Button color="primary" onClick={toggle2} style={{ marginBottom: '1rem' }}>Toggle2     </Button>
-//       <Button color="primary" onClick={toggle3} style={{ marginBottom: '1rem' }}>Toggle3     </Button>
-
-//       <Collapse isOpen={isOpen}>
-//         <Card>
-//           <CardBody>
-//           Anim pariatur cliche reprehenderit,
-//            enim eiusmod high life accusamus terry richardson ad squid. Nihil
-//            anim keffiyeh helvetica, craft beer labore wes anderson cred
-//            nesciunt sapiente ea proident.
-//           </CardBody>
-//         </Card>
-//       </Collapse>
-//       <Collapse isOpen={isOpen2}>
-//         <Card>
-//           <CardBody>
-//           Anim pariatur cliche reprehenderit,
-
-//           </CardBody>
-//         </Card>
-//       </Collapse>
-//       <Collapse isOpen={isOpen3}>
-//         <Card>
-//           <CardBody>
-//           123
-
-//           </CardBody>
-//         </Card>
-//       </Collapse>
-//     </div>
-//   );
-// }
-
-// export default Example;

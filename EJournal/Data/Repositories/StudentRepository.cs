@@ -27,7 +27,7 @@ namespace EJournal.Data.Repositories
             {
                 DbUser user = new DbUser
                 {
-                    UserName = profile.UserName,
+                    UserName = profile.Email/*profile.UserName*/,
                     Email = profile.Email,
                     PhoneNumber = profile.PhoneNumber,
                 };

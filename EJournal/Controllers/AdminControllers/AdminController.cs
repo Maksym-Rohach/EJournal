@@ -52,7 +52,7 @@ namespace EJournal.Controllers.AdminControllers
                     DateOfBirth=model.DateOfBirth,
                     Email=model.Email,
                     PhoneNumber=model.PhoneNumber,
-                    UserName=model.UserName,
+                    //UserName=model.UserName,
                     IdentificationCode=model.IdentificationCode,
                     PassportString=model.PassportString
                 });
@@ -74,14 +74,14 @@ namespace EJournal.Controllers.AdminControllers
                     DateOfBirth = model.DateOfBirth,
                     Email = model.Email,
                     PhoneNumber = model.PhoneNumber,
-                    UserName = model.UserName,
+                    //UserName = model.UserName,
                     IdentificationCode = model.IdentificationCode,
                     PassportString = model.PassportString
                 });
-                if (res == true)
-                    return Ok("Користувач успішно доданий");
-                else
+                if (res == false)
                     return "Помилка на етапі додавання";
+
+                return Ok("Користувач успішно доданий");
             }
         }
         [HttpPost]
