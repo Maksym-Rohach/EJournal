@@ -1,6 +1,8 @@
   
 import React, { Component } from 'react';
 import { MDBTable, MDBTableBody, MDBTableHead, MDBCardHeader, MDBCardBody, MDBBtn, MDBCard } from 'mdbreact';
+import "./TimeTableStyle.css";
+
 
 class Timetable extends Component {
 //   state = {
@@ -43,8 +45,10 @@ return (
          <th>Неділя</th>    
         </tr>
        </MDBTableHead>
-       <MDBTableBody rows = '4'>
-
+       <MDBTableBody >
+            <tr>
+              1
+            </tr>
        </MDBTableBody>
        </MDBTable>
        </MDBCardBody>
@@ -70,4 +74,4 @@ export default Timetable;
 //   }
 // }
  
-//export default connect(mapStateToProps, mapDispatchToProps)(Timetable);
+// export default connect(mapStateToProps, mapDispatchToProps)(Timetable);
