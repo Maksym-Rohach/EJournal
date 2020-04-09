@@ -168,27 +168,15 @@ namespace EJournal
             });
             #endregion
 
-            #region  InitStaticFiles StudentImages
-            string pathstudent = InitStaticFiles
+            #region  InitStaticFiles UserImages
+            string pathuser = InitStaticFiles
                 .CreateFolderServer(env, this.Configuration,
-                new string[] { "ImagesPath", "ImagesStudentPath" });
+                new string[] { "ImagesPath", "ImagesUserPath" });
     
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(pathstudent),
-                RequestPath = new PathString('/' + Configuration.GetValue<string>("StudentUrlImages"))
-
-            });
-            #endregion
-
-            #region  InitStaticFiles TeacherImages
-            string pathteacher = InitStaticFiles
-                .CreateFolderServer(env, this.Configuration,
-                    new string[] { "ImagesPath", "ImagesTeachersPath" });
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(pathteacher),
-                RequestPath = new PathString('/' + Configuration.GetValue<string>("TeacherUrlImages"))
+                FileProvider = new PhysicalFileProvider(pathuser),
+                RequestPath = new PathString('/' + Configuration.GetValue<string>("UserUrlImages"))
 
             });
             #endregion

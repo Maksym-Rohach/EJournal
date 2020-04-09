@@ -3,6 +3,7 @@ using EJournal.Data.Entities;
 using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
+using EJournal.Services;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace EJournal.Data.Repositories
             {
                 DbUser user = new DbUser
                 {
-                    UserName = profile.UserName,
+                    UserName = profile.Email/*profile.UserName*/,
                     Email = profile.Email,
                     PhoneNumber = profile.PhoneNumber,
                 };
@@ -36,9 +37,12 @@ namespace EJournal.Data.Repositories
                     LastName = profile.LastName,
                     Surname = profile.Surname,
                     Adress = profile.Adress,
-                    DateOfBirth = Convert.ToDateTime(profile.DateOfBirth)
+                    DateOfBirth = Convert.ToDateTime(profile.DateOfBirth),
+                    PassportString=profile.PassportString,
+                    IdentificationCode=profile.IdentificationCode
                 };
-                await _userManager.CreateAsync(user, profile.Password);
+                string password = PasswordGenerator.GenerationPassword();
+                await _userManager.CreateAsync(user, password);
                 await _userManager.AddToRoleAsync(user, "Student");
                 prof.Id = user.Id;
                 await _context.BaseProfiles.AddAsync(prof);

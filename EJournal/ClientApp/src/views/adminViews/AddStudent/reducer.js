@@ -1,28 +1,29 @@
-import HomePageService from './HomePageService';
+import AddStudentService from './AddStudentService';
 import update from '../../../helpers/update';
-export const HOME_STARTED = "HOME_STARTED";
-export const HOME_SUCCESS = "HOME_SUCCESS";
-export const HOME_FAILED = "HOME_FAILED";
+export const STUDENT_ADD_STARTED = "STUDENT_ADD_STARTED";
+export const STUDENT_ADD_SUCCESS = "STUDENT_ADD_SUCCESS";
+export const STUDENT_ADD_FAILED = "STUDENT_ADD_FAILED";
 
 
 const initialState = {
     list: {
-        data: [],
+        result:{},
         loading: false,
         success: false,
         failed: false,
     },   
 }
 
-export const getData = () => {
+export const addStudent = (model) => {
     return (dispatch) => {
         dispatch(getListActions.started());
-        HomePageService.getData()
+        AddStudentService.addStudent(model)
             .then((response) => {
+                console.log("response", response);
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
             .catch(err=> {
-              dispatch(getListActions.failed(err.response));
+              dispatch(getListActions.failed(err));
             });
     }
 }
@@ -30,46 +31,45 @@ export const getData = () => {
 export const getListActions = {
     started: () => {
         return {
-            type: HOME_STARTED
+            type: STUDENT_ADD_STARTED
         }
     },  
-    success: (data) => {
+    success: (result) => {
         return {
-            type: HOME_SUCCESS,
-            payload: data.data
+            type: STUDENT_ADD_SUCCESS,
+            payload: result.data
         }
     },  
     failed: (error) => {
         return {           
-            type: HOME_FAILED,
+            type: STUDENT_ADD_FAILED,
             errors: error
         }
     }
   }
 
-export const studentHomePageReducer = (state = initialState, action) => { 
+export const addStudentReducer = (state = initialState, action) => { 
   let newState = state;
 
   switch (action.type) {
 
-      case HOME_STARTED: {
+      case STUDENT_ADD_STARTED: {
           newState = update.set(state, 'list.loading', true);
           newState = update.set(newState, 'list.success', false);
           newState = update.set(newState, 'list.failed', false);
           break;
       }
-      case HOME_SUCCESS: {
+      case STUDENT_ADD_SUCCESS: {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.failed', false);
           newState = update.set(newState, 'list.success', true);
-          newState = update.set(newState, 'list.data', action.payload);         
+          newState = update.set(newState, 'list.result', action.payload);         
           break;
       }
-      case HOME_FAILED: {
+      case STUDENT_ADD_FAILED: {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.success', false);
           newState = update.set(newState, 'list.failed', true);
-          newState = update.set(newState, "list.errors", action.errors);
           break;
       }
       default: {

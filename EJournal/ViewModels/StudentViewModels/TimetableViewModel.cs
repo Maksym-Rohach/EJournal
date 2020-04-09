@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace EJournal.ViewModels
 {
-    public class HomePageViewModel
+    public class TimetableViewModel
     {
-        public List<MarkViewModel> Marks { get; set; }
         public List<TimetableModel> Timetable { get; set; }
-        public string CountOfDays { get; set; }
-        public string AverageMark { get; set; }
-        public string Day { get; set; }
+
+        public string DaysInMonth { get; set; }
+        public string DayOfWeek { get; set; }
+        public string Month { get; set; }
     }
 }
