@@ -10,6 +10,8 @@ namespace EJournal.ViewModels
     {
         public List<MarkViewModel> Marks { get; set; }
         public List<TimetableModel> Timetable { get; set; }
+        public List<string> AverageMarks { get; set; }
+        public string AverageMark { get; set; }
         public string CountOfDays { get; set; }
         public string Day { get; set; }
         public string Month { get; set; }

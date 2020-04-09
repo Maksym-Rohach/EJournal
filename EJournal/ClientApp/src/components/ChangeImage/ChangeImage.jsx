@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 
 import "./ChangeImageStyle.css";
-class Password extends React.Component {
+class ChangeImage extends React.Component {
   state = {
     image: "",
     croppedImage: "",
@@ -112,4 +112,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Password);
+export default connect(mapStateToProps, mapDispatchToProps)(ChangeImage);

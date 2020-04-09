@@ -50,7 +50,8 @@ namespace EJournal.Controllers.StudentControllers
             {
                 DayOfWeek = new DateTime(now.Year, now.Month, 1).DayOfWeek.ToString(),
                 DaysInMonth = DateTime.DaysInMonth(now.Year, now.Month).ToString(),
-                Timetable = timetable
+                Timetable = timetable,
+                Month=now.Month.ToString()
             };
             return Ok(result);
         }
@@ -67,37 +68,23 @@ namespace EJournal.Controllers.StudentControllers
                 Subject = t.JournalColumn.Lesson.Subject.Name
             }).OrderBy(x=>x.Date).Take(5).ToList();
             var avg = _context.Marks.Where(x => x.StudentId == userId && x.IsPresent == true).Include(t => t.JournalColumn).Include(t=>t.JournalColumn.Lesson);
-            double m1 = 0;
-            double m2 = 0;
-            double m3 = 0;
-            double m4 = 0;
-            double m5 = 0;
-            double m6 = 0;
-            if (avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-5).Month).Count() != 0)
+            List<string> arr = new List<string>();
+            for (int i = 1; i <=12; i++)
             {
-                m1 = avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-5).Month).Average(x => long.Parse(x.Value));
+                if (i != 7 || i != 8)
+                {
+                    if (avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == i).Count() != 0)
+                    {
+                        arr.Add(Math.Round(avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == i).Average(x => double.Parse(x.Value))).ToString());
+                    }
+                    else
+                    {
+                        arr.Add("0");
+                    }
+                }
             }
-            if (avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-4).Month).Count() != 0)
-            {
-                m2 = avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-4).Month).Average(x => long.Parse(x.Value));
-            }
-            if (avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-3).Month).Count() != 0)
-            {
-                m3 = avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-3).Month).Average(x => long.Parse(x.Value));
-            }
-            if (avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-2).Month).Count() != 0)
-            {
-                m4 = avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-2).Month).Average(x => long.Parse(x.Value));
-            }
-            if (avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-1).Month).Count() != 0)
-            {
-                m5 = avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.AddMonths(-1).Month).Average(x => long.Parse(x.Value));
-            }
-            var d= DateTime.Now.AddMonths(-2).Month;
-            if (avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.Month).Count() != 0)
-            {
-                m6 = avg.Where(x => x.JournalColumn.Lesson.LessonDate.Month == DateTime.Now.Month).Average(x => long.Parse(x.Value));
-            }
+            
+            
             var group = _context.Groups.FirstOrDefault(x => x.Id == _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == userId && t.Group.YearTo.Year >= DateTime.Now.Year).GroupId);
             var countLessons = _context.Marks.Where(x => x.StudentId == userId &&  x.JournalColumn.Lesson.GroupId == group.Id && x.JournalColumn.Lesson.LessonDate.Year == DateTime.Now.Year);
             var count = countLessons.Where(x => x.IsPresent == false).Count();
@@ -115,7 +102,7 @@ namespace EJournal.Controllers.StudentControllers
                 SubjectName = t.Subject.Name,
                 LessonTimeGap = t.LessonTimeGap,
                 Topic = t.JournalColumn.Topic
-            }).OrderBy(x => x.LessonDate).ToList();
+            }).ToList();
             return Ok(new HomePageViewModel()
             {
                 Marks = res,
@@ -123,12 +110,8 @@ namespace EJournal.Controllers.StudentControllers
                 CountOfDays=attendance.ToString(),
                 Day=DateTime.Now.Day.ToString(),
                 Timetable=timetable,
-                AverageMark1=m1.ToString(),
-                AverageMark2 = m2.ToString(),
-                AverageMark3 = m3.ToString(),
-                AverageMark4 = m4.ToString(),
-                AverageMark5 = m5.ToString(),
-                AverageMark6 = m6.ToString(),
+                AverageMarks=arr,
+                AverageMark=avg.Average(x => double.Parse(x.Value)).ToString()
             });
             
         }

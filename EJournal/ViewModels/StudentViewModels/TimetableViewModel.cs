@@ -12,5 +12,6 @@ namespace EJournal.ViewModels
 
         public string DaysInMonth { get; set; }
         public string DayOfWeek { get; set; }
+        public string Month { get; set; }
     }
 }
