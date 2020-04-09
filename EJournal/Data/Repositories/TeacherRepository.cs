@@ -3,6 +3,7 @@ using EJournal.Data.Entities;
 using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
+using EJournal.Services;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -37,36 +38,40 @@ namespace EJournal.Data.Repositories
                     LastName = profile.LastName,
                     Surname = profile.Surname,
                     Adress = profile.Adress,
-                    DateOfBirth = Convert.ToDateTime(profile.DateOfBirth)
+                    DateOfBirth = Convert.ToDateTime(profile.DateOfBirth),
+                    PassportString = profile.PassportString,
+                    IdentificationCode = profile.IdentificationCode
                 };
+                string password = PasswordGenerator.GenerationPassword();
+                await _userManager.CreateAsync(user, password);
                 switch (profile.Rolename)
                 {
                     case "Teacher":
-                        await _userManager.CreateAsync(user, profile.Password);
+                        await _userManager.CreateAsync(user, password);
                         await _userManager.AddToRoleAsync(user, "Teacher");
                         break;
                     case "Director":
-                        await _userManager.CreateAsync(user, profile.Password);
+                        await _userManager.CreateAsync(user, password);
                         await _userManager.AddToRoleAsync(user, "Director");
                         break;
                     case "Curator":
-                        await _userManager.CreateAsync(user, profile.Password);
+                        await _userManager.CreateAsync(user, password);
                         await _userManager.AddToRoleAsync(user, "Curator");
                         break;
                     case "Director deputy":
-                        await _userManager.CreateAsync(user, profile.Password);
+                        await _userManager.CreateAsync(user, password);
                         await _userManager.AddToRoleAsync(user, "DDeputy");
                         break;
                     case "Department head":
-                        await _userManager.CreateAsync(user, profile.Password);
+                        await _userManager.CreateAsync(user, password);
                         await _userManager.AddToRoleAsync(user, "DepartmentHead");
                         break;
                     case "Cycle commision head":
-                        await _userManager.CreateAsync(user, profile.Password);
+                        await _userManager.CreateAsync(user, password);
                         await _userManager.AddToRoleAsync(user, "CycleCommisionHead");
                         break;
                     case "Study room head":
-                        await _userManager.CreateAsync(user, profile.Password);
+                        await _userManager.CreateAsync(user, password);
                         await _userManager.AddToRoleAsync(user, "StudyRoomHead");
                         break;
                     default:
