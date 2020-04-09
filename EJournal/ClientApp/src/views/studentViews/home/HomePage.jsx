@@ -5,9 +5,9 @@ import FaceIcon from "@material-ui/icons/Face";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import SchoolIcon from "@material-ui/icons/School";
 import ScheduleIcon from "@material-ui/icons/Schedule";
-import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import {Pie,Line} from 'react-chartjs-2';
+import Typography from "@material-ui/core/Typography";
+import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
+import { Pie, Line } from "react-chartjs-2";
 import get from "lodash.get";
 import Skeleton from "@material-ui/lab/Skeleton";
 import {
@@ -72,9 +72,11 @@ function LoadMarks(data) {
       if (el.value != 0) {
         return (
           <div className="mt-1">
-            <div className="d-flex flex-row">
-              <div className="mark text-center mr-4">{el.value}</div>
+            <div  className="d-flex flex-row">
               <h2>{el.subject}</h2>
+              <div style={{width:'100%'}} className="d-flex justify-content-end">
+                <div className="mark text-center mr-4">{el.value}</div>
+              </div>
             </div>
             <p className="text-muted">{el.date}</p>
             <Divider></Divider>
@@ -90,51 +92,73 @@ class HomePage extends React.Component {
   }
   render() {
     const { data } = this.props;
-    const months=['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
+
     const pie = {
-      labels: [
-        'Пропущено %',
-        'Відвідано %',
-      ],
+      labels: ["Пропущено %", "Відвідано %"],
       datasets: [
         {
-          data: [data.countOfDays,100-data.countOfDays],
-          backgroundColor: [
-            '#FF6384',
-            '#FFCE56',
-          ],
-          hoverBackgroundColor: [
-            '#FF6384',
-            '#FFCE56',
-          ],
-        }],
-    };
-    const line = {
-      labels: [months[data.month-3], months[data.month]-3, months[data.month-3], months[data.month-3], months[data.month-2], months[data.month-1]],
-      datasets: [
-        {
-          label: 'Середня оцінка',
-          fill: false,
-          lineTension: 0.1,
-          backgroundColor: '#FFCE56',
-          borderColor: '#FFCE56',
-          borderCapStyle: 'butt',
-          borderDash: [],
-          borderDashOffset: 0.0,
-          borderJoinStyle: 'miter',
-          
-          data: [data.averageMark1, data.averageMark2, data.averageMark3, data.averageMark4, data.averageMark5, data.averageMark6],
+          data: [data.countOfDays, 100 - data.countOfDays],
+          backgroundColor: ["#FF6384", "#FFCE56"],
+          hoverBackgroundColor: ["#FF6384", "#FFCE56"],
         },
       ],
     };
+    let line = {};
+    if (data.averageMarks != undefined) {
+      line = {
+        labels: [
+          "Січень",
+          "Лютий",
+          "Березень",
+          "Квітень",
+          "Травень",
+          "Червень",
+          "Вересень",
+          "Жовтень",
+          "Листопад",
+          "Грудень",
+        ],
+        datasets: [
+          {
+            label: "Успішність",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "#FFCE56",
+            borderColor: "#FFCE56",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "#FFCE56",
+
+            pointHoverBorderColor: "#FFCE56",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: [
+              data.averageMarks[0],
+              data.averageMarks[1],
+              data.averageMarks[2],
+              data.averageMarks[3],
+              data.averageMarks[4],
+              data.averageMarks[5],
+              data.averageMarks[6],
+              data.averageMarks[7],
+              data.averageMarks[8],
+              data.averageMarks[9],
+            ],
+          },
+        ],
+      };
+    }
     const options = {
       tooltips: {
         enabled: false,
-        custom: CustomTooltips
+        custom: CustomTooltips,
       },
-      maintainAspectRatio: false
-    }
-    //console.log(data);
+      maintainAspectRatio: false,
+    };
+    console.log(data);
     return (
       <Grid className="mt-4" container>
         <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -142,11 +166,11 @@ class HomePage extends React.Component {
             <form>
               <CardHeader
                 avatar={<AssessmentIcon></AssessmentIcon>}
-                title="Середня оцінка"
+                title="Успішність"
               />
-              
+
               <CardContent>
-                {data.averageMark1 == null ? (
+                {data.averageMarks == null ? (
                   <Skeleton
                     animation="wave"
                     height={248}
@@ -154,50 +178,62 @@ class HomePage extends React.Component {
                     style={{ marginBottom: 6 }}
                   />
                 ) : (
-                  <div className="chart-wrapper">
-                <Line data={line} options={options} />
-              </div>
+                  <div>
+                    <Typography variant="h4" gutterBottom>
+                       {data.averageMark}
+                    </Typography>
+                    <Typography variant="h6" gutterBottom>
+                      Середня оцінка
+                    </Typography>
+                    <div className="chart-wrapper">
+                      <Line data={line} options={options} />
+                    </div>
+                  </div>
                 )}
               </CardContent>
             </form>
           </Card>
-          <Card className="mt-3 mr-3">
+          <Card className="mt-3 mb-3 mr-3">
             <form>
               <CardHeader
                 avatar={<FaceIcon></FaceIcon>}
                 title="Відвідуваність"
               />
-             
+
               <CardContent>
                 {data.countOfDays == null ? (
                   <div className="d-flex justify-content-center align-items-center text-center">
                     <div className="d-flex flex-column">
-
-                    
-                  <Skeleton
-                    animation="wave"
-                    height={15}
-                    width="100%"
-                    style={{ marginBottom: 2 }}
-                  />
-                  <Skeleton
-                          animation="wave"
-                          variant="circle"
-                          width={200}
-                          height={200}
-                        />
-                        </div>
-                        </div>
-                ) : (           
-                  <div className="chart-wrapper">
-                  <Pie data={pie} />
+                      <Skeleton
+                        animation="wave"
+                        height={15}
+                        width="100%"
+                        style={{ marginBottom: 2 }}
+                      />
+                      <Skeleton
+                        animation="wave"
+                        variant="circle"
+                        width={200}
+                        height={200}
+                      />
+                    </div>
                   </div>
-                  
+                ) : (
+                  <div>
+                    <Typography variant="h4" gutterBottom>
+                       {data.countOfDays}%
+                    </Typography>
+                    <Typography variant="h6" gutterBottom>
+                      Пропущено
+                    </Typography>
+                  <div className="chart-wrapper">
+                    <Pie data={pie} />
+                  </div>
+                  </div>
                 )}
               </CardContent>
             </form>
           </Card>
-          
         </Grid>
         <Grid item lg={6} md={6} xl={6} xs={12}>
           <Card className="mt-3  mr-3" className="max-height">
@@ -207,7 +243,7 @@ class HomePage extends React.Component {
                 subheader="Нещодавні оцінки"
                 title="Оцінки"
               />
-              
+
               <CardContent>
                 {data.marks == null ? (
                   <div>
@@ -270,7 +306,7 @@ class HomePage extends React.Component {
               title="Розклад"
               subheader="Розклад на сьогодні"
             />
-            
+
             <CardContent>{LoadTimetable(data, data.day)}</CardContent>
             <CardActions>
               <div className="d-flex flex-column">

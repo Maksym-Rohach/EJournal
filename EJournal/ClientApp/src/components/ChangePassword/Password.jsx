@@ -51,9 +51,8 @@ class Password extends React.Component {
       return (
         <Card className="mt-3 mr-3">
           <form onSubmit={this.onSubmitForm}>
-            <CardHeader
-              subheader="Змінити пароль"
-              title="Пароль"
+            <CardHeader              
+              title="Зміна пароля"
             />
             <Divider />
             <CardContent>
