@@ -239,6 +239,7 @@ class addStudent extends Component {
           </Grid>
           <Grid container spacing={3} direction="column" alignItems="flex-end">
             <Grid item xs>
+              {LoadErrors(result)}
               <Button variant="outlined" color="primary" onClick={this.onSubmit}>
                 Додати
               </Button>
