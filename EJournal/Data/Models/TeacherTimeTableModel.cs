@@ -14,5 +14,6 @@ namespace EJournal.Data.Models
         public string SubjectName { get; set; }
         public string GroupName { get; set; }
         public string DayOfWeek { get; set; }
+        public string IsLessonBe { get; set; }
     }
 }

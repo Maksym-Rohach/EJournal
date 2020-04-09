@@ -1,105 +1,73 @@
   
 import React, { Component } from 'react';
-import { MDBDataTable } from 'mdbreact'; 
-import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
-
+import { MDBTable, MDBTableBody, MDBTableHead, MDBCardHeader, MDBCardBody, MDBBtn, MDBCard } from 'mdbreact';
 
 class Timetable extends Component {
-
-state = {
-  lessonNumber: null,
-  lessonTimeGap: ' ',
-  subjectName: ' ',
-  dayOfWeek: ' ',
-  auditoriumNumber: ' '
-}
-
-componentDidMount = () => {
-  const { lessonNumber, lessonTimeGap, subjectName, dayOfWeek, auditoriumNumber } = this.state;
-  this.props.getStudents({ lessonNumber, lessonTimeGap, subjectName, dayOfWeek, auditoriumNumber });
-}
+//   state = {
+//     date1: '',
+//     date2: '',       
+//   }
 
 
-render(){
-  const {listTimetable} = this.props;
-  console.log(listTimetable);
-  return ( 
+// componentDidMount = () => {  
+//     const{date1, date2} = this.state;
+//     this.props.getTimetable({date1, date2 });
+
+//   }
+//   componentWillReceiveProps = () => {
+//     const{date1, date2} = this.state;
+//     this.props.getTimetable({date1, date2});
+
+//   }
+  render() {
+return (
+  <div>
+    <MDBCard>
+    <MDBCardHeader>
+    <MDBBtn color="cyan">prev</MDBBtn>
+    <input type="text" className="form-control" id="formGroupExampleInput" disabled value = "30.04.2020"/>
+    <input type="text" className="form-control" id="formGroupExampleInput" disabled value = "05.05.2020"/>
+    <MDBBtn color="cyan">next</MDBBtn>
+    </MDBCardHeader>
+    <MDBCardBody>
     <MDBTable>
-      <MDBTableHead color="primary-color" textWhite>
-       <tr>
-        <th>#</th>
+       <MDBTableHead color="primary-color" textWhite>
+        <tr>
+         <th>#</th>
         <th>Понеділок</th>
-        <th>Вівторок</th>
-        <th>Середа</th>
-        <th>Четвер</th>
-        <th>П'ятниця</th>
-        <th>Субота</th>
-        <th>Неділя</th>    
-       </tr>
-      </MDBTableHead>
-      <MDBTableBody>
-       
+         <th>Вівторок</th>
+         <th>Середа</th>
+         <th>Четвер</th>
+         <th>П'ятниця</th>
+         <th>Субота</th>
+         <th>Неділя</th>    
+        </tr>
+       </MDBTableHead>
+       <MDBTableBody rows = '4'>
+
        </MDBTableBody>
-      </MDBTable>
-  );
-}
+       </MDBTable>
+       </MDBCardBody>
+       </MDBCard>
+  </div>
+)
+  
+  }
 }
 export default Timetable;
 
 // const mapStateToProps = state => {
 //   return {
-//      listTimetable: get(state, 'timetable.list.data'), 
+//       data: get(state,'timetable.list.data'), 
 //   };
 // }
 
 // const mapDispatchToProps = (dispatch) => {
 //   return {
-//      getTimetable: filter => {
+//       getTimetable: filter => {
 //       dispatch(getListActions.getTimetable(filter));
 //     }
 //   }
 // }
  
-// export default connect(mapStateToProps, mapDispatchToProps)(Timetable);
-
-//   const BasicTable = () => {
-//   return (
-//     <MDBTable>
-//       <MDBTableHead color="primary-color" textWhite>
-//         <tr>
-//           <th>#</th>
-//           <th>Понеділок</th>
-//           <th>Вівторок</th>
-//           <th>Середа</th>
-//           <th>Четвер</th>
-//           <th>П'ятниця</th>
-//           <th>Субота</th>
-//           <th>Неділя</th>
-
-
-//         </tr>
-//       </MDBTableHead>
-//       <MDBTableBody>
-//         <tr>
-//           <td>1</td>
-//           <td>Mark</td>
-//           <td>Otto</td>
-//           <td>@mdo</td>
-//         </tr>
-//         <tr>
-//           <td>2</td>
-//           <td>Jacob</td>
-//           <td>Thornton</td>
-//           <td>@fat</td>
-//         </tr>
-//         <tr>
-//           <td>3</td>
-//           <td>Larry</td>
-//           <td>the Bird</td>
-//           <td>@twitter</td>
-//         </tr>
-//       </MDBTableBody>
-//     </MDBTable>
-//   );
-// }
-// export default BasicTable;
+//export default connect(mapStateToProps, mapDispatchToProps)(Timetable);
