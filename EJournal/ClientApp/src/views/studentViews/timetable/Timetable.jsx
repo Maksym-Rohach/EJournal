@@ -251,12 +251,12 @@ render() {
           <div style={{wigth:'100%'}} className="d-flex justify-content-center">
             <div className="d-flex flex-row">
             
-            <KeyboardArrowLeft fontSize="large" onClick={this.prev}/>
+            <KeyboardArrowLeft className="hover-cursor" fontSize="large" onClick={this.prev}/>
                 <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
                 {this.getMonth(data,months)}
                 </Typography>
               
-            <KeyboardArrowRight fontSize="large" onClick={this.next}/>
+            <KeyboardArrowRight className="hover-cursor" fontSize="large" onClick={this.next}/>
             </div>
           </div>
           {/* <Dropdown value={this.state.month} className="mt-3 ml-1" options={monthSelectItems} onChange={(e)=>this.changeMonth(e)} placeholder="Оберіть місяць"/> */}
