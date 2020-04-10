@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EJournal.Data.EfContext;
 using EJournal.Data.Models;
 using EJournal.ViewModels;
+using EJournal.ViewModels.StudentViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -69,7 +70,7 @@ namespace EJournal.Controllers.StudentControllers
             }).OrderBy(x=>x.Date).Take(5).ToList();
             var avg = _context.Marks.Where(x => x.StudentId == userId && x.IsPresent == true).Include(t => t.JournalColumn).Include(t=>t.JournalColumn.Lesson);
             List<string> arr = new List<string>();
-            for (int i = 1; i <=12; i++)
+            for (int i = 9; i !=7; i++)
             {
                 if (i != 7 || i != 8)
                 {
@@ -81,6 +82,10 @@ namespace EJournal.Controllers.StudentControllers
                     {
                         arr.Add("0");
                     }
+                }
+                if (i == 12)
+                {
+                    i = 0;
                 }
             }
             
@@ -114,6 +119,43 @@ namespace EJournal.Controllers.StudentControllers
                 AverageMark=avg.Average(x => double.Parse(x.Value)).ToString()
             });
             
+        }
+
+
+        [HttpPost("homework")]
+        public IActionResult GetHomework([FromBody] GetHomeworkModel model)
+        {
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+            var group = _context.Groups.FirstOrDefault(x => x.Id == _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == userId && t.Group.YearTo.Year >= DateTime.Now.Year).GroupId).Id;
+            var lessons = new List<HomeworkModel>();
+            if (!string.IsNullOrEmpty(model.Subject))
+            {
+                lessons = _context.Lessons.Where(x => x.GroupId == group&&x.Subject.Id==int.Parse(model.Subject)).Select(t => new HomeworkModel()
+                {
+                    Teacher = t.Teacher.BaseProfile.Name + ' ' + t.Teacher.BaseProfile.Surname,
+                    Subject = t.Subject.Name,
+                    Topic = t.JournalColumn.Topic,
+                    Homework = "сторінка 49 вправи: 1,2,5",
+                    Date = t.LessonDate.ToString("dd.MM.yyyy")
+                }).Take(15).ToList();
+            }
+            
+            else {
+                lessons = _context.Lessons.Where(x => x.GroupId == group).Select(t => new HomeworkModel()
+                {
+                    Teacher = t.Teacher.BaseProfile.Name + ' ' + t.Teacher.BaseProfile.Surname,
+                    Subject = t.Subject.Name,
+                    Topic = t.JournalColumn.Topic,
+                    Homework="сторінка 49 вправи: 1,2,5",
+                    Date=t.LessonDate.ToString("dd.MM.yyyy")
+                }).Take(15).ToList();
+            }
+            return Ok(new HomeworkViewModel()
+            {
+                Homeworks = lessons,
+                Subjects= _context.GroupToSubjects.Where(x => x.Group.Id == group).Select(x=>x.Subject).ToList()
+        });
         }
     }
 }
