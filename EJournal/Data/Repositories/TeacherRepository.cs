@@ -4,6 +4,7 @@ using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
 using EJournal.Services;
+using EJournal.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace EJournal.Data.Repositories
     public class TeacherRepository : ITeachers
     {
         private readonly UserManager<DbUser> _userManager;
+
         private readonly EfDbContext _context;
         public TeacherRepository(EfDbContext context, UserManager<DbUser> userManager)
         {
@@ -90,6 +92,15 @@ namespace EJournal.Data.Repositories
             {
                 return false;
             }
+        }
+
+        public List<DropdownModel> GetRolesInDropdownModels()
+        {
+            return _context.Roles.Where(t=>t.Name!="Student").Select(t=>new DropdownModel
+            { 
+                Label= t.Description,
+                Value= t.Name
+            }).ToList();
         }
 
         public GetTeacherModel GetTeacherById(string id)

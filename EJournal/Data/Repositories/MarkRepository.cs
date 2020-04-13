@@ -29,7 +29,7 @@ namespace EJournal.Data.Repositories
             return marks;
         }
 
-        public IEnumerable<Mark> GetStudentMarks(string studentId, int subjectId = 0, string date = "")
+        public IEnumerable<Mark> GetStudentMarks(string studentId, int subjectId, string date)
         {
             var marks= _context.Marks.Where(t => t.StudentId == studentId);
             if (subjectId != 0)

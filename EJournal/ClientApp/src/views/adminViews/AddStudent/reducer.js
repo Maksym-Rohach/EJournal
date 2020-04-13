@@ -7,7 +7,6 @@ export const STUDENT_ADD_FAILED = "STUDENT_ADD_FAILED";
 
 const initialState = {
     list: {
-        result:{},
         loading: false,
         success: false,
         failed: false,
@@ -23,6 +22,7 @@ export const addStudent = (model) => {
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
             .catch(err=> {
+                console.log("err", err);
               dispatch(getListActions.failed(err));
             });
     }
@@ -34,16 +34,14 @@ export const getListActions = {
             type: STUDENT_ADD_STARTED
         }
     },  
-    success: (result) => {
+    success: (data) => {
         return {
-            type: STUDENT_ADD_SUCCESS,
-            payload: result.data
+            type: STUDENT_ADD_SUCCESS
         }
     },  
     failed: (error) => {
         return {           
-            type: STUDENT_ADD_FAILED,
-            errors: error
+            type: STUDENT_ADD_FAILED
         }
     }
   }
@@ -63,7 +61,6 @@ export const addStudentReducer = (state = initialState, action) => {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.failed', false);
           newState = update.set(newState, 'list.success', true);
-          newState = update.set(newState, 'list.result', action.payload);         
           break;
       }
       case STUDENT_ADD_FAILED: {

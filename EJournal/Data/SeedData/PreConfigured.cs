@@ -22,42 +22,50 @@ namespace EJournal.Data.SeedData
                     var roleName = "Director";
                     var result = roleManager.CreateAsync(new DbRole
                     {
-                        Name = roleName
+                        Name = roleName,
+                        Description="Директор"
                     }).Result;
                     roleName = "Student";
                     var result2 = roleManager.CreateAsync(new DbRole
                     {
-                        Name = roleName
+                        Name = roleName,
+                        Description="Студент"
                     }).Result;
                     roleName = "Teacher";
                     var result3 = roleManager.CreateAsync(new DbRole
                     {
-                        Name = roleName
+                        Name = roleName,
+                        Description = "Вчитель"
                     }).Result;
                     roleName = "DDeputy";
                     var result4 = roleManager.CreateAsync(new DbRole
                     {
-                        Name = roleName
+                        Name = roleName,
+                        Description = "Заступник директора"
                     }).Result;                  
                     roleName = "Curator";
                     var result5 = roleManager.CreateAsync(new DbRole
                     {
-                        Name = roleName
+                        Name = roleName,
+                        Description = "Куратор"
                     }).Result;
                     roleName = "StudyRoomHead";
                     var result6 = roleManager.CreateAsync(new DbRole
                     {
-                        Name = roleName
+                        Name = roleName,
+                        Description = "Зав. навч-метод каб."
                     }).Result;
                     roleName = "DepartmentHead";
                     var result7 = roleManager.CreateAsync(new DbRole
                     {
-                        Name = roleName
+                        Name = roleName,
+                        Description = "Зав. відділення"
                     }).Result;
                     roleName = "CycleCommisionHead";
                     var result8 = roleManager.CreateAsync(new DbRole
                     {
-                        Name = roleName
+                        Name = roleName,
+                        Description = "Голова цикл. комісії"
                     }).Result;
                 }
             }
