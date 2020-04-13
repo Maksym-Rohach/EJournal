@@ -16,6 +16,7 @@ import {changePasswordReducer} from '../components/ChangePassword/reducer';
 import {changeImageReducer} from '../components/ChangeImage/reducer';
 import {profileReducer} from '../components/Profile/reducer';
 import {studentHomePageReducer} from '../views/studentViews/home/reducer';
+import {homeworkReducer} from '../views/studentViews/homework/reducer';
 import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
 
 // Create browser history to use in the Redux store
@@ -36,6 +37,7 @@ export default function configureStore(history, initialState) {
     profile:profileReducer,
     studentHome:studentHomePageReducer,
     addStudent:addStudentReducer,
+    homework:homeworkReducer,
     getSubject:GetSubjectReducer,
   };
 
