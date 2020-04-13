@@ -1,13 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-// import { Button, Card, CardBody, CardGroup,
-//          Col, Container, Form, Input, InputGroup,
-//          InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-import classnames from 'classnames';
 import PropTypes, { object } from 'prop-types';
 import { connect } from "react-redux";
 import * as loginActions from './reducer';
-// import InputMask from 'react-input-mask';
 import get from "lodash.get";
 import Background from "../../../assets/images/back2.jpg";
 import "../../../assets/css/loginStyle.css";
@@ -61,7 +55,7 @@ class Login extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
   
     return { isLoading: nextProps.loading, errorsServer: nextProps.errors };
-}
+  }
 
   setStateByErrors = (name, value) => {
     if (!!this.state.errors[name]) {
@@ -87,13 +81,11 @@ class Login extends Component {
   onSubmitForm = (e) => {
     e.preventDefault();
     const { email, password } = this.state;
-console.log("onSubmitForm", this.state);
-    //const regex_phone = /^(?=\+?([0-9]{2})\(?([0-9]{3})\)?([0-9]{3})-?([0-9]{2})-?([0-9]{2})).{17}$/;
+    console.log("onSubmitForm", this.state);
 
     let errors = {};
 
     if (email === '') errors.email = "Поле є обов'язковим";
-    //if (!regex_phone.test(phone)) errors.phone = "Не вiрний формат +xx(xxx)xxx-xx-xx телефону";
 
     if (password === '') errors.password = "Поле є обов'язковим";
 
@@ -114,14 +106,7 @@ console.log("onSubmitForm", this.state);
   
   render() {
     const { iconInput, typeInput } = this.state;
-    //const {errors}=this.props;
     const { errors, isLoading, profileUrl, visible, errorsServer } = this.state;
-
-    //console.log("ERORR",errorsServer);
-                      {/* {!!errorsServer.invalid ?
-                          <div className="alert alert-danger">
-                              {errorsServer.invalid}.
-                          </div> : ""} */}
                      
     const form = (
    <div className="main-div background-image" style={{backgroundImage:"url("+Background+")"}}> 
@@ -153,9 +138,6 @@ console.log("onSubmitForm", this.state);
                 onIconMouseLeave={this.mouseLeave}
                 onChange={this.handleChange}
               />
-              
-              
-          {/* <MDBInput label="Type your password" icon="lock" group type="password" validate /> */}
         </div>
         <div className="text-center">
           <MDBBtn type="submit" color='primary'>Вхід</MDBBtn>
