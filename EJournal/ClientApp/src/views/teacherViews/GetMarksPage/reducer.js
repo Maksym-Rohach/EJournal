@@ -5,9 +5,9 @@ export const GETMARKS_TABLE_STARTED = "GETMARKS_TABLE_STARTED";
 export const GETMARKS_TABLE_SUCCESS = "GETMARKS_TABLE_SUCCESS";
 export const GETMARKS_TABLE_FAILED = "GETMARKS_TABLE_FAILED";
 
-// export const GETSUBJECT_STARTED = "GETSUBJECT_STARTED";
-// export const GETSUBJECT_SUCCESS = "GETSUBJECT_SUCCESS";
-// export const GETSUBJECT_FAILED = "GETSUBJECT_FAILED";
+export const GETSUBJECT_STARTED = "GETSUBJECT_STARTED";
+export const GETSUBJECT_SUCCESS = "GETSUBJECT_SUCCESS";
+export const GETSUBJECT_FAILED = "GETSUBJECT_FAILED";
 
 const initialState = {
     list: {
@@ -66,25 +66,25 @@ export const getListActions = {
     }
   }
 
-//   export const getSubjectActions = {
-//     started: () => {
-//         return {
-//             type: GETSUBJECT_STARTED
-//         }
-//     },  
-//     success: (data) => {
-//         return {
-//             type: GETSUBJECT_SUCCESS,
-//             payload: data.data
-//         }
-//     },  
-//     failed: (error) => {
-//         return {           
-//             type: GETSUBJECT_FAILED,
-//             errors: error
-//         }
-//     }
-//   }
+  export const getSubjectActions = {
+    started: () => {
+        return {
+            type: GETSUBJECT_STARTED
+        }
+    },  
+    success: (data) => {
+        return {
+            type: GETSUBJECT_SUCCESS,
+            payload: data.data
+        }
+    },  
+    failed: (error) => {
+        return {           
+            type: GETSUBJECT_FAILED,
+            errors: error
+        }
+    }
+  }
 
 export const GetMarksTableReducer = (state = initialState, action) => { 
   let newState = state;
@@ -119,35 +119,35 @@ export const GetMarksTableReducer = (state = initialState, action) => {
   return newState;
 }
 
-// export const GetSubjectReducer = (state = initialState, action) => { 
-//     let newState = state;
+export const GetSubjectReducer = (state = initialState, action) => { 
+    let newState = state;
   
-//     switch (action.type) {
+    switch (action.type) {
   
-//         case GETSUBJECT_STARTED: {
-//             newState = update.set(state, 'list.loading', true);
-//             newState = update.set(newState, 'list.success', false);
-//             newState = update.set(newState, 'list.failed', false);
-//             break;
-//         }
-//         case GETSUBJECT_SUCCESS: {
-//             newState = update.set(state, 'list.loading', false);
-//             newState = update.set(newState, 'list.failed', false);
-//             newState = update.set(newState, 'list.success', true);
-//             newState = update.set(newState, 'list.data', action.payload);         
-//             break;
-//         }
-//         case GETSUBJECT_SUCCESS: {
-//             newState = update.set(state, 'list.loading', false);
-//             newState = update.set(newState, 'list.success', false);
-//             newState = update.set(newState, 'list.failed', true);
-//             break;
-//         }
-//         default: {
-//             return newState;
-//         }
-//     }
+        case GETSUBJECT_STARTED: {
+            newState = update.set(state, 'list.loading', true);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', false);
+            break;
+        }
+        case GETSUBJECT_SUCCESS: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.failed', false);
+            newState = update.set(newState, 'list.success', true);
+            newState = update.set(newState, 'list.data', action.payload);         
+            break;
+        }
+        case GETSUBJECT_SUCCESS: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', true);
+            break;
+        }
+        default: {
+            return newState;
+        }
+    }
   
     
-//     return newState;
-//   }
+    return newState;
+  }

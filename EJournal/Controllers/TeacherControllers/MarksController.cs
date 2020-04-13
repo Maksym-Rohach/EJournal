@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EJournal.Controllers.TeacherControllers
 {
-    [Authorize(Roles = "Teacher")]
+    [Authorize(Roles ="Teacher")]
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class MarksController : ControllerBase
@@ -43,7 +43,7 @@ namespace EJournal.Controllers.TeacherControllers
                 var claims = User.Claims;
                 var userId = claims.FirstOrDefault().Value;
                 //var curator = _context.TeacherProfiles.FirstOrDefault(x => x.Id == userId);
-                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year));
+                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId /*&&*/ /*(x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year)*/);
                 List<SubjectsViewModel> subjects = _context.GroupToSubjects.Where(x => x.GroupId == group.Id)
                     .Select(x => new SubjectsViewModel
                     {
@@ -93,10 +93,14 @@ namespace EJournal.Controllers.TeacherControllers
             {
                 MarksTableModel table = new MarksTableModel();
                 List<MarksRowModel> tableList = new List<MarksRowModel>();
+                
                 var claims = User.Claims;
                 var userId = claims.FirstOrDefault().Value;
-                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year));
+
+                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId/* && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year)*/);
+                
                 int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == group.Id).Id;
+                
                 var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.Lesson.SubjectId == model.SubjectId);
                 var lessonDates = jourCols.Select(t => t.Lesson.LessonDate).ToList();
                 lessonDates.OrderByDescending(d => d);
