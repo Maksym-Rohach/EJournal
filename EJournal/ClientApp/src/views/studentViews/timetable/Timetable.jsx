@@ -186,7 +186,6 @@ class Timetable extends Component {
     
     state = {
         month: '',        
-        currentMonthName:''
       }
    
    

@@ -140,7 +140,7 @@ class Login extends Component {
               />
         </div>
         <div className="text-center">
-          <MDBBtn type="submit" color='primary'>Вхід</MDBBtn>
+          <MDBBtn gradient="aqua" type="submit" color='primary'>Вхід</MDBBtn>
         </div>
       </form>
     </MDBCol>
