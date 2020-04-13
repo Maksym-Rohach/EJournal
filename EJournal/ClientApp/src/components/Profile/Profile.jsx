@@ -10,6 +10,7 @@ import {
   TextField,
   Grid
 } from '@material-ui/core';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 class Profile extends React.Component {
   
   
@@ -25,6 +26,7 @@ class Profile extends React.Component {
         <CardHeader
           subheader="Щоб змінити інформацію зверніться в навчальну частину"
           title="Профіль"
+          avatar={<AccountCircleIcon/>}
         />
         <Divider />
         <CardContent>

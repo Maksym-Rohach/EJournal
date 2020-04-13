@@ -12,6 +12,7 @@ import {
   TextField,
   FormHelperText
 } from '@material-ui/core';
+
 class Password extends React.Component {
   state = {
     password: '',
@@ -53,6 +54,7 @@ class Password extends React.Component {
           <form onSubmit={this.onSubmitForm}>
             <CardHeader              
               title="Зміна пароля"
+              
             />
             <Divider />
             <CardContent>

@@ -14,6 +14,7 @@ namespace EJournal.ViewModels.StudentViewModels
     public class GetHomeworkModel
     {
         public string Subject { get; set; }
+        public string Date { get; set; }
     }
     public class HomeworkModel
     {

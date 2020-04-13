@@ -35,7 +35,7 @@ export default function configureStore(history, initialState) {
     changeImage: changeImageReducer,
     profile:profileReducer,
     studentHome:studentHomePageReducer,
-    addStudent:addStudentReducer 
+    addStudent:addStudentReducer,
     homework:homeworkReducer
   };
 

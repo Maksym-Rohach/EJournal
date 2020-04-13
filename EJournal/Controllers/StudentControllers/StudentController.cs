@@ -140,7 +140,18 @@ namespace EJournal.Controllers.StudentControllers
                     Date = t.LessonDate.ToString("dd.MM.yyyy")
                 }).Take(15).ToList();
             }
-            
+            else if (!string.IsNullOrEmpty(model.Date))
+            {
+                var date = Convert.ToDateTime(model.Date);
+                lessons = _context.Lessons.Where(x => x.GroupId == group && x.LessonDate.Date== date.Date).Select(t => new HomeworkModel()
+                {
+                    Teacher = t.Teacher.BaseProfile.Name + ' ' + t.Teacher.BaseProfile.Surname,
+                    Subject = t.Subject.Name,
+                    Topic = t.JournalColumn.Topic,
+                    Homework = "сторінка 49 вправи: 1,2,5",
+                    Date = t.LessonDate.ToString("dd.MM.yyyy")
+                }).Take(15).ToList();
+            }
             else {
                 lessons = _context.Lessons.Where(x => x.GroupId == group).Select(t => new HomeworkModel()
                 {

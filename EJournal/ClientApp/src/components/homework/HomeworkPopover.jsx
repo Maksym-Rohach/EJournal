@@ -4,8 +4,6 @@ import {
   Card,
   CardHeader,
   CardContent,
-  CardActions,
-  Divider,
 } from "@material-ui/core";
 import InfoIcon from "@material-ui/icons/Info";
 import "./homeworkStyle.css";
@@ -38,7 +36,7 @@ class HomeworkPopover extends Component {
         <CardHeader
           avatar={
             <div>
-              <InfoIcon onMouseEnter={this.toggle} onMouseLeave={this.toggle} id={"Popover"+count} className="hover"></InfoIcon>
+              <InfoIcon onClick={this.toggle} id={"Popover"+count} className="hover"></InfoIcon>
               <Popover
                 isOpen={this.state.popoverOpen} 
                 target={'Popover'+count} toggle={this.toggle} 
