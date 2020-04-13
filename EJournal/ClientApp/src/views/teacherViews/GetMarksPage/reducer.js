@@ -11,7 +11,8 @@ export const GETSUBJECT_FAILED = "GETSUBJECT_FAILED";
 
 const initialState = {
     list: {
-        data: [],
+        subject: [],
+        marks: [],
         loading: false,
         success: false,
         failed: false,
@@ -34,14 +35,14 @@ export const getMarks = (model) => {
 
 export const getSubject = () => {
     return (dispatch) => {
-        dispatch(getListActions.started());
+        dispatch(getSubjectActions.started());
         GetMarksService.getSubject()
             .then((response) => {
                 console.log("response", response);
-                dispatch(getListActions.success(response));               
+                dispatch(getSubjectActions.success(response));               
             }, err=> { throw err; })
             .catch(err=> {
-              dispatch(getListActions.failed(err));
+              dispatch(getSubjectActions.failed(err));
             });
     }
 }
@@ -86,38 +87,38 @@ export const getListActions = {
     }
   }
 
-export const GetMarksTableReducer = (state = initialState, action) => { 
-  let newState = state;
+// export const GetMarksTableReducer = (state = initialState, action) => { 
+//   let newState = state;
 
-  switch (action.type) {
+//   switch (action.type) {
 
-      case GETMARKS_TABLE_STARTED: {
-          newState = update.set(state, 'list.loading', true);
-          newState = update.set(newState, 'list.success', false);
-          newState = update.set(newState, 'list.failed', false);
-          break;
-      }
-      case GETMARKS_TABLE_SUCCESS: {
-          newState = update.set(state, 'list.loading', false);
-          newState = update.set(newState, 'list.failed', false);
-          newState = update.set(newState, 'list.success', true);
-          newState = update.set(newState, 'list.data', action.payload);         
-          break;
-      }
-      case GETMARKS_TABLE_SUCCESS: {
-          newState = update.set(state, 'list.loading', false);
-          newState = update.set(newState, 'list.success', false);
-          newState = update.set(newState, 'list.failed', true);
-          break;
-      }
-      default: {
-          return newState;
-      }
-  }
+//       case GETMARKS_TABLE_STARTED: {
+//           newState = update.set(state, 'list.loading', true);
+//           newState = update.set(newState, 'list.success', false);
+//           newState = update.set(newState, 'list.failed', false);
+//           break;
+//       }
+//       case GETMARKS_TABLE_SUCCESS: {
+//           newState = update.set(state, 'list.loading', false);
+//           newState = update.set(newState, 'list.failed', false);
+//           newState = update.set(newState, 'list.success', true);
+//           newState = update.set(newState, 'list.data', action.payload);         
+//           break;
+//       }
+//       case GETMARKS_TABLE_SUCCESS: {
+//           newState = update.set(state, 'list.loading', false);
+//           newState = update.set(newState, 'list.success', false);
+//           newState = update.set(newState, 'list.failed', true);
+//           break;
+//       }
+//       default: {
+//           return newState;
+//       }
+//   }
 
   
-  return newState;
-}
+//   return newState;
+// }
 
 export const GetSubjectReducer = (state = initialState, action) => { 
     let newState = state;
@@ -134,10 +135,29 @@ export const GetSubjectReducer = (state = initialState, action) => {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.success', true);
-            newState = update.set(newState, 'list.data', action.payload);         
+            newState = update.set(newState, 'list.subject', action.payload);         
             break;
         }
         case GETSUBJECT_SUCCESS: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', true);
+            break;
+        }
+        case GETMARKS_TABLE_STARTED: {
+            newState = update.set(state, 'list.loading', true);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', false);
+            break;
+        }
+        case GETMARKS_TABLE_SUCCESS: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.failed', false);
+            newState = update.set(newState, 'list.success', true);
+            newState = update.set(newState, 'list.marks', action.payload);         
+            break;
+        }
+        case GETMARKS_TABLE_SUCCESS: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);

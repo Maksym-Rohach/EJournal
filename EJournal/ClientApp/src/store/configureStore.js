@@ -16,6 +16,7 @@ import {changePasswordReducer} from '../components/ChangePassword/reducer';
 import {changeImageReducer} from '../components/ChangeImage/reducer';
 import {profileReducer} from '../components/Profile/reducer';
 import {studentHomePageReducer} from '../views/studentViews/home/reducer';
+import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -34,7 +35,8 @@ export default function configureStore(history, initialState) {
     changeImage: changeImageReducer,
     profile:profileReducer,
     studentHome:studentHomePageReducer,
-    addStudent:addStudentReducer
+    addStudent:addStudentReducer,
+    getSubject:GetSubjectReducer,
   };
 
   const middleware = [

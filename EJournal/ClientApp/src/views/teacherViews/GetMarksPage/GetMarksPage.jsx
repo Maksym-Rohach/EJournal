@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import * as getListActions from './reducer';
+import * as getSubjectActions from './reducer';
 import { connect } from 'react-redux';
 import get from "lodash.get";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdbreact';
 import{ ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'; 
 import {Dropdown} from 'primereact/dropdown';
+import './GetMarksService';
+
 class GetMarks extends Component {
 
     constructor(props) {
@@ -12,9 +15,8 @@ class GetMarks extends Component {
     
         this.toggle = this.toggle.bind(this);
         this.state = {
-          dropdownOpen: new Array(19).fill(false),
+          dropdownOpen: false,
           subject: '',
-          month: '',
         };
       }
     
@@ -36,17 +38,15 @@ class GetMarks extends Component {
 
     render() { 
 
-        const {listMarks} = this.props;
-        
+        const {listMarks, listSubject} = this.props;
         console.log("RENDER");
         return ( 
             <div>
-                <select className="browser-default custom-select" color="info-color">
-          <option>Оберіть предмет</option>
-          <option value="1">Option 1</option>
-          <option value="2">Option 2</option>
-          <option value="3">Option 3</option>
+              <div className="div-select">
+                <select className="browser-default custom-select"
+                 options={listSubject}>
         </select>
+        </div>
 
 <MDBTable>
       <MDBTableHead color="info-color" textWhite>
@@ -84,9 +84,10 @@ class GetMarks extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("mapStateto props");
+  console.log("mapStateto props", state);
     return {
-        listMarks: get(state, 'list.data'), 
+        listMarks: get(state, 'getSubject.list.marks'),
+        listSubject: get(state, 'getSubject.list.subject') 
     };
   }
   
@@ -97,7 +98,7 @@ const mapStateToProps = state => {
         dispatch(getListActions.getMarks(filter));
       },
       getSubject:()=>{
-        dispatch(getListActions.getSubject());
+        dispatch(getSubjectActions.getSubject());
       }
     }
   }
