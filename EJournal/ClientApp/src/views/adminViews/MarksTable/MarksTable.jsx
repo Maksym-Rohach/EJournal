@@ -7,7 +7,7 @@ import { Table } from 'reactstrap';
 function mapHeadTable(data) {
     console.log("head " + data.columns);
     if (data.columns != undefined) {
-        return data.columns.map(function(item) {
+        return data.columns.map(function (item) {
             return (<th key={item}>{item}</th>);
         });
     }
@@ -34,6 +34,7 @@ function mapBodyTable(data) {
     }
 }
 class MarksTable extends Component {
+    
     constructor(props) {
         super(props);
         this.state = {
@@ -45,7 +46,6 @@ class MarksTable extends Component {
         this.changeSpec = this.changeSpec.bind(this);
         this.changeGroup = this.changeGroup.bind(this);
         this.changeSubj = this.changeSubj.bind(this);
-
 
     }
 

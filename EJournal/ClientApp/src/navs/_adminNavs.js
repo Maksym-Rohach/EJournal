@@ -16,7 +16,7 @@ export default {
       },
       {
         name: 'Реєстрація учня',
-        url: '',
+        url: '/admin/addStudent',
         icon: 'icon-drop',
       },
       {

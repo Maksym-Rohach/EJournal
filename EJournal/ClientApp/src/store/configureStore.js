@@ -10,6 +10,7 @@ import {loginReducer} from '../views/defaultViews/LoginPage/reducer';
 import {studentTableReducer} from '../views/adminViews/StudentsTable/reducer';
 import {teachersTableReducer} from '../views/adminViews/TeachersTable/reducer';
 import {marksTableReducer} from '../views/adminViews/MarksTable/reducer';
+import {addStudentReducer} from '../views/adminViews/AddStudent/reducer';
 import {timetableReducer} from '../views/studentViews/timetable/reducer';
 import {changePasswordReducer} from '../components/ChangePassword/reducer';
 import {changeImageReducer} from '../components/ChangeImage/reducer';
@@ -32,7 +33,8 @@ export default function configureStore(history, initialState) {
     password: changePasswordReducer,
     changeImage: changeImageReducer,
     profile:profileReducer,
-    studentHome:studentHomePageReducer
+    studentHome:studentHomePageReducer,
+    addStudent:addStudentReducer
   };
 
   const middleware = [
