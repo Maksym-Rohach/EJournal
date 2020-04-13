@@ -1,7 +1,7 @@
 export default {
     items: [
       {
-        name: 'Домашня сторінка',
+        name: 'Головна сторінка',
         url: '/student',
         icon: 'icon-home'
       },
@@ -9,6 +9,11 @@ export default {
         name: 'Мої оцінки',
         url: '/student/marks',
         icon: 'icon-calculator'
+      },
+      {
+        name: 'Домашні завдання',
+        url: '/student/homework',
+        icon: 'icon-envelope-letter'
       },
     //   {
     //     title: true,

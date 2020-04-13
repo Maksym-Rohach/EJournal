@@ -30,12 +30,34 @@ function LoadTimetable(data, date) {
         if (el.topic != null) {
           return (
             <div>
-              <h3>{el.subjectName}</h3>
-              <h4>{el.topic}</h4>
-              <p>{el.teacherName}</p>
+              <Typography className="text-color" variant="h4" gutterBottom>
+                {el.subjectName}
+              </Typography>
+              <div
+                className="d-flex flex-row justify-content-start"
+                style={{ width: "100%" }}
+              >
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  className="mr-2 text-color"
+                >
+                  Тема:
+                </Typography>
+                <Typography variant="h5" gutterBottom>
+                  {el.topic}
+                </Typography>
+              </div>
 
-              <p>{el.lessonTimeGap}</p>
-              <p>{el.auditoriumNumber}</p>
+              <Typography variant="h6" gutterBottom>
+                {el.teacherName}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {el.lessonTimeGap}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {el.auditoriumNumber}
+              </Typography>
 
               <hr />
             </div>
@@ -43,11 +65,19 @@ function LoadTimetable(data, date) {
         } else {
           return (
             <div>
-              <h3>{el.subjectName}</h3>
+              <Typography className="text-color" variant="h4" gutterBottom>
+                {el.subjectName}
+              </Typography>
 
-              <p>{el.teacherName}</p>
-              <p>{el.lessonTimeGap}</p>
-              <p>{el.auditoriumNumber}</p>
+              <Typography variant="h6" gutterBottom>
+                {el.teacherName}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {el.lessonTimeGap}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {el.auditoriumNumber}
+              </Typography>
               <hr />
             </div>
           );
@@ -71,14 +101,19 @@ function LoadMarks(data) {
     return data.marks.map(function (el) {
       if (el.value != 0) {
         return (
-          <div className="mt-1">
-            <div  className="d-flex flex-row">
-              <h2>{el.subject}</h2>
-              <div style={{width:'100%'}} className="d-flex justify-content-end">
+          <div>
+            <div className="mt-1 d-flex flex-row">
+              <div className="d-flex flex-column">
+                <h2>{el.subject}</h2>
+                <p className="text-muted">{el.date}</p>
+              </div>
+              <div
+                style={{ width: "100%" }}
+                className="d-flex justify-content-end align-items-center"
+              >
                 <div className="mark text-center mr-4">{el.value}</div>
               </div>
             </div>
-            <p className="text-muted">{el.date}</p>
             <Divider></Divider>
           </div>
         );
@@ -107,16 +142,16 @@ class HomePage extends React.Component {
     if (data.averageMarks != undefined) {
       line = {
         labels: [
+          "Вересень",
+          "Жовтень",
+          "Листопад",
+          "Грудень",
           "Січень",
           "Лютий",
           "Березень",
           "Квітень",
           "Травень",
           "Червень",
-          "Вересень",
-          "Жовтень",
-          "Листопад",
-          "Грудень",
         ],
         datasets: [
           {
@@ -179,8 +214,12 @@ class HomePage extends React.Component {
                   />
                 ) : (
                   <div>
-                    <Typography variant="h4" gutterBottom>
-                       {data.averageMark}
+                    <Typography
+                      className="text-color"
+                      variant="h4"
+                      gutterBottom
+                    >
+                      {data.averageMark}
                     </Typography>
                     <Typography variant="h6" gutterBottom>
                       Середня оцінка
@@ -220,15 +259,19 @@ class HomePage extends React.Component {
                   </div>
                 ) : (
                   <div>
-                    <Typography variant="h4" gutterBottom>
-                       {data.countOfDays}%
+                    <Typography
+                      className="text-color"
+                      variant="h4"
+                      gutterBottom
+                    >
+                      {100 - data.countOfDays}%
                     </Typography>
                     <Typography variant="h6" gutterBottom>
-                      Пропущено
+                      Відвідано
                     </Typography>
-                  <div className="chart-wrapper">
-                    <Pie data={pie} />
-                  </div>
+                    <div className="chart-wrapper">
+                      <Pie data={pie} />
+                    </div>
                   </div>
                 )}
               </CardContent>
@@ -247,43 +290,57 @@ class HomePage extends React.Component {
               <CardContent>
                 {data.marks == null ? (
                   <div>
-                    <div className="mt-1">
-                      <div className="d-flex flex-row">
+                  <div>
+                    <div className="mt-1 d-flex flex-row">
+                      <div className="d-flex flex-column">
+                        <Skeleton animation="wave" height={20} width="150px" />
+                        <Skeleton
+                          animation="wave"
+                          height={10}
+                          width="100%"
+                          className="mt-1"
+                        />
+                      </div>
+                      <div
+                        
+                        className="d-flex justify-content-end align-items-center"
+                      >
                         <Skeleton
                           animation="wave"
                           variant="circle"
                           width={40}
                           height={40}
                         />
-                        <Skeleton animation="wave" height={15} width="25%" />
                       </div>
-                      <Skeleton
-                        animation="wave"
-                        height={10}
-                        width="8%"
-                        className="mt-1"
-                      />
-                      <Divider></Divider>
                     </div>
-                    <div className="mt-1">
-                      <div className="d-flex flex-row">
-                        <Skeleton
-                          animation="wave"
-                          variant="circle"
-                          width={40}
-                          height={40}
-                        />
-                        <Skeleton animation="wave" height={15} width="25%" />
-                      </div>
+                    <Divider></Divider>
+                  </div>
+                  <div>
+                  <div className="mt-1 d-flex flex-row">
+                    <div className="d-flex flex-column">
+                      <Skeleton animation="wave" height={20} width="150px" />
                       <Skeleton
-                        className="mt-1"
                         animation="wave"
                         height={10}
-                        width="8%"
+                        width="100%"
+                        className="mt-1"
                       />
-                      <Divider></Divider>
+                    </div>
+                    <div
+                      
+                      className="d-flex justify-content-end align-items-center"
+                    >
+                      <Skeleton
+                        animation="wave"
+                        variant="circle"
+                        width={40}
+                        height={40}
+                      />
                     </div>
                   </div>
+                  <Divider></Divider>
+                </div>
+                </div>
                 ) : (
                   LoadMarks(data)
                 )}
