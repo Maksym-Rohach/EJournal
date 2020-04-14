@@ -71,17 +71,7 @@ class ManagerLayout extends Component {
                 </Suspense>
               </Container>
             </main>
-            {/* <AppAside fixed>
-              <Suspense fallback={this.loading()}>
-                <DefaultAside />
-              </Suspense>
-            </AppAside> */}
           </div>
-          {/* <AppFooter>
-            <Suspense fallback={this.loading()}>
-              <DefaultFooter />
-            </Suspense>
-          </AppFooter> */}
         </div>
       );
     }
