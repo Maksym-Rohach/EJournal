@@ -4,50 +4,68 @@ import * as getSubjectActions from './reducer';
 import { connect } from 'react-redux';
 import get from "lodash.get";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdbreact';
+import { Dropdown } from 'primereact/dropdown';
 import{ ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'; 
-import {Dropdown} from 'primereact/dropdown';
 import './GetMarksService';
+
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
 class GetMarks extends Component {
 
-    constructor(props) {
-        super(props);
+  state = {
+    subject: '',
+    marks:null
+  }
+    // constructor(props) {
+    //     super(props);
     
-        this.toggle = this.toggle.bind(this);
-        this.state = {
-          dropdownOpen: false,
-          subject: '',
-        };
-      }
+    //     this.toggle = this.toggle.bind(this);
+    //     this.state = {
+    //       dropdownOpen: false,
+    //       subject: '',
+    //       marks:[]
+    //     };
+    //   }
     
-      toggle(i) {
-        const newArray = this.state.dropdownOpen.map((element, index) => { return (index === i ? !element : false); });
-        this.setState({
-          dropdownOpen: newArray,
-          subject:"math",
-        });
-      }
+    //   toggle(i) {
+    //     const newArray = this.state.dropdownOpen.map((element, index) => { return (index === i ? !element : false); });
+    //     this.setState({
+    //       dropdownOpen: newArray,
+    //       subject:"math",
+    //     });
+    //   }
 
     componentDidMount = () => {
         this.props.getSubject();
       }
 
-      changeMonth=(e)=>{
-        this.setState({month: e.value});
-      }
+      // changeMonth=(e)=>{
+      //   this.setState({month: e.value});
+      // }
 
     render() { 
 
         const {listMarks, listSubject} = this.props;
-        console.log("RENDER");
+        console.log("ListSubject", listSubject);
         return ( 
             <div>
-              <div className="div-select">
-                <select className="browser-default custom-select"
-                 options={listSubject}>
-        </select>
-        </div>
-
+              <InputLabel>Оберіть предмет:</InputLabel>
+          <Select
+            className="mr-3"
+            style={{ minWidth: 150 }}
+            value={listSubject}
+            onChange={(e) => {
+              this.setState({ subject: e.target.value, marks:null });
+            }}
+            // onChange={handleChange}
+>
+<MenuItem value={""}>Всі</MenuItem>
+            {listSubject.map(function (el) {
+              return <MenuItem value={el.id}>{el.name}</MenuItem>;
+            })}
+          </Select>
 <MDBTable>
       <MDBTableHead color="info-color" textWhite>
         <tr>

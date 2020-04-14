@@ -47,7 +47,8 @@ namespace EJournal.Controllers.TeacherControllers
                 List<SubjectsViewModel> subjects = _context.GroupToSubjects.Where(x => x.GroupId == group.Id)
                     .Select(x => new SubjectsViewModel
                     {
-                        Name = x.Subject.Name
+                        Name = x.Subject.Name,
+                        //Id = x.Subject.Id
                     }).ToList();
 
 
