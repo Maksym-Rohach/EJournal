@@ -31,7 +31,6 @@ class addTeacher extends Component {
     state = {
         success: false,
         failed: false,
-        //roles: [],
         selectedRoles: [],
         errors: {},
         dateOfBirth: null,
@@ -42,12 +41,13 @@ class addTeacher extends Component {
         email: '',
         phoneNumber: '',
         passportString: '',
+        //degree:'',
         identificationCode: ''
     };
 
     mapToSelect = (data) => {
         if (data != undefined) {
-            console.log(this.state.selectedRoles);
+            //console.log(this.state.selectedRoles);
             return data.map((role) => (
                 <MenuItem key={role.value} value={role.value}>
                     <Checkbox checked={this.state.selectedRoles.indexOf(role.value) > -1} />
@@ -127,7 +127,8 @@ class addTeacher extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         let errors = {};
-        const { name, surname, lastName, adress, email, phoneNumber, passportString, identificationCode, dateOfBirth } = this.state;
+        const { name, surname, lastName, adress, email, phoneNumber, passportString, identificationCode, dateOfBirth,selectedRoles } = this.state;
+        //const degree
         function pad(s) { return (s < 10) ? '0' + s : s; };
         let today = new Date();
         const nowDate = [pad(today.getDate()), pad(today.getMonth() + 1), today.getFullYear()].join('.');
@@ -148,7 +149,6 @@ class addTeacher extends Component {
 
         const isValid = Object.keys(errors).length === 0
         if (isValid) {
-            const rolename = "Student";
 
             this.props.addTeacher({
                 name,
@@ -160,8 +160,8 @@ class addTeacher extends Component {
                 passportString,
                 identificationCode,
                 dateOfBirth: birthDate,
-                rolename,
-                degree: ''
+                rolename:selectedRoles,
+                //degree: degree
             });
 
         }

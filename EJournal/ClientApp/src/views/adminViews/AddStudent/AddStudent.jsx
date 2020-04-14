@@ -32,7 +32,7 @@ class addStudent extends Component {
     email: '',
     phoneNumber: '',
     passportString: '',
-    identificationCode: ''
+    identificationCode: '',
   };
 
   componentWillReceiveProps=(nextProps)=>{
@@ -121,7 +121,7 @@ class addStudent extends Component {
 
     const isValid = Object.keys(errors).length === 0
     if (isValid) {
-      const rolename = "Student";
+      const rolename = ["Student"];
 
       this.props.addStudent({
         name,
@@ -134,7 +134,7 @@ class addStudent extends Component {
         identificationCode,
         dateOfBirth: birthDate,
         rolename,
-        degree: ''
+        //degree: ''
       });
 
     }

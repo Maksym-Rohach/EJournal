@@ -3,7 +3,7 @@ import {serverUrl} from '../../../config';
 
 export default class AddTeacherService {
     static addTeacher(model) {
-        return axios.post(`${serverUrl}api/admin/addteacher`, model)
+        return axios.post(`${serverUrl}api/admin/adduser`, model)
     };
     static getRoles() {
         return axios.get(`${serverUrl}api/admin/get/roles`)

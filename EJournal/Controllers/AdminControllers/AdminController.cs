@@ -41,7 +41,7 @@ namespace EJournal.Controllers.AdminControllers
             {
                 return BadRequest("Введіть коректні дані");
             }
-            if (model.Rolename == "Student")
+            if (model.Rolename.Contains("Student"))
             {
                 bool res = await _students.AddStudentAsync(new AddStudentModel
                 {
@@ -66,7 +66,7 @@ namespace EJournal.Controllers.AdminControllers
                 bool res = await _teachers.AddTeacherAsync(new AddTeacherModel
                 {
                     Rolename = model.Rolename,
-                    Degree = model.Degree,
+                    //Degree = model.Degree,
                     Name = model.Name,
                     LastName = model.LastName,
                     Surname = model.Surname,

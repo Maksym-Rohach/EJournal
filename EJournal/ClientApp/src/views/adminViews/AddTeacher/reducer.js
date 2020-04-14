@@ -49,17 +49,17 @@ export const getRoles = () => {
 export const getListActions = {
     started: () => {
         return {
-            type: ROLES_GET_STARTED
+            type: TEACHER_ADD_STARTED
         }
     },
     success: (data) => {
         return {
-            type: ROLES_GET_SUCCESS
+            type: TEACHER_ADD_SUCCESS
         }
     },
     failed: (error) => {
         return {
-            type: ROLES_GET_FAILED
+            type: TEACHER_ADD_FAILED
         }
     }
 }
@@ -94,9 +94,10 @@ export const addTeacherReducer = (state = initialState, action) => {
             break;
         }
         case ROLES_GET_SUCCESS: {
-            // newState = update.set(state, 'list.loading', false);
-            // newState = update.set(newState, 'list.failed', false);
-            // newState = update.set(newState, 'list.success', true);
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.failed', false);
+            //newState = update.set(newState, 'list.success', true);
+            newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.roles', action.payload);
             break;
         }

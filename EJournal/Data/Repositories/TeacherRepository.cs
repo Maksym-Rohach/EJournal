@@ -30,7 +30,7 @@ namespace EJournal.Data.Repositories
             {
                 DbUser user = new DbUser
                 {
-                    UserName = profile.UserName,
+                    UserName = profile.Email/*profile.UserName*/,
                     Email = profile.Email,
                     PhoneNumber = profile.PhoneNumber,
                 };
@@ -45,45 +45,47 @@ namespace EJournal.Data.Repositories
                     IdentificationCode = profile.IdentificationCode
                 };
                 string password = PasswordGenerator.GenerationPassword();
+                if (profile.Rolename == null)
+                    return false;
                 await _userManager.CreateAsync(user, password);
-                switch (profile.Rolename)
+                if (profile.Rolename.Contains("Teacher"))
                 {
-                    case "Teacher":
-                        await _userManager.CreateAsync(user, password);
-                        await _userManager.AddToRoleAsync(user, "Teacher");
-                        break;
-                    case "Director":
-                        await _userManager.CreateAsync(user, password);
-                        await _userManager.AddToRoleAsync(user, "Director");
-                        break;
-                    case "Curator":
-                        await _userManager.CreateAsync(user, password);
-                        await _userManager.AddToRoleAsync(user, "Curator");
-                        break;
-                    case "Director deputy":
-                        await _userManager.CreateAsync(user, password);
-                        await _userManager.AddToRoleAsync(user, "DDeputy");
-                        break;
-                    case "Department head":
-                        await _userManager.CreateAsync(user, password);
-                        await _userManager.AddToRoleAsync(user, "DepartmentHead");
-                        break;
-                    case "Cycle commision head":
-                        await _userManager.CreateAsync(user, password);
-                        await _userManager.AddToRoleAsync(user, "CycleCommisionHead");
-                        break;
-                    case "Study room head":
-                        await _userManager.CreateAsync(user, password);
-                        await _userManager.AddToRoleAsync(user, "StudyRoomHead");
-                        break;
-                    default:
-                        return false;
+                    await _userManager.AddToRoleAsync(user, "Teacher");
                 }
+                if (profile.Rolename.Contains("Director"))
+                {
+                    await _userManager.AddToRoleAsync(user, "Director");
+                }
+                if (profile.Rolename.Contains("Curator"))
+                {
+                    await _userManager.AddToRoleAsync(user, "Curator");
+                }
+                if (profile.Rolename.Contains("DDeputy"))
+                {
+                    await _userManager.AddToRoleAsync(user, "DDeputy");
+                }
+                if (profile.Rolename.Contains("DepartmentHead"))
+                {
+                    await _userManager.AddToRoleAsync(user, "DepartmentHead");
+                }
+                if (profile.Rolename.Contains("CycleCommisionHead"))
+                {
+                    await _userManager.AddToRoleAsync(user, "CycleCommisionHead");
+                }
+                if (profile.Rolename.Contains("StudyRoomHead"))
+                {
+                    await _userManager.AddToRoleAsync(user, "StudyRoomHead");
+                }
+                
+
                 prof.Id = user.Id;
                 await _context.BaseProfiles.AddAsync(prof);
                 await _context.SaveChangesAsync();
 
-                await _context.TeacherProfiles.AddAsync(new TeacherProfile { Id = prof.Id, Degree = profile.Degree });
+                await _context.TeacherProfiles.AddAsync(new TeacherProfile { 
+                    Id = prof.Id, 
+                    //Degree = profile.Degree 
+                });
                 await _context.SaveChangesAsync();
 
                 return true;
@@ -96,10 +98,10 @@ namespace EJournal.Data.Repositories
 
         public List<DropdownModel> GetRolesInDropdownModels()
         {
-            return _context.Roles.Where(t=>t.Name!="Student").Select(t=>new DropdownModel
-            { 
-                Label= t.Description,
-                Value= t.Name
+            return _context.Roles.Where(t => t.Name != "Student").Select(t => new DropdownModel
+            {
+                Label = t.Description,
+                Value = t.Name
             }).ToList();
         }
 
