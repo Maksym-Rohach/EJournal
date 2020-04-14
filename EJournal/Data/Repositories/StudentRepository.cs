@@ -5,6 +5,7 @@ using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
 using EJournal.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,47 @@ namespace EJournal.Data.Repositories
             var group = _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == studentId && t.Group.YearTo.Year >= DateTime.Now.Year).Group;
             var count = _context.Marks.Where(x => x.StudentId == studentId && x.IsPresent == false && x.JournalColumn.Lesson.GroupId == group.Id && x.JournalColumn.Lesson.LessonDate.Year == DateTime.Now.Year).Count();
             return count;
+        }
+
+        public IEnumerable<GetStudentModel> GetAllStudentsBySpecialities(string teacherId)
+        {
+            List<int> specialitiesId = _context.Specialities
+                .Where(x => x.TeacherId == teacherId)
+                .Select(x => x.Id).ToList();
+
+            List<int> groupsId = new List<int>();
+
+            for(int i = 0; i < specialitiesId.Count; i++)
+            {
+                List<int> groupId = _context.Groups
+                    .Where(x => x.SpecialityId == specialitiesId[i] && (x.YearFrom.Year == DateTime.Now.Year || x.YearTo.Year == DateTime.Now.Year))
+                    .Select(s => s.Id)
+                    .ToList();
+
+                groupsId.AddRange(groupId);
+            }
+
+            List<GetStudentModel> allStudents = new List<GetStudentModel>();
+
+            for(int i = 0; i < groupsId.Count; i++)
+            {
+                List<GetStudentModel> studentsBySingleGroup = _context.GroupsToStudents
+                    //.Include(x => x.Student.BaseProfile.DbUser)
+                    .Where(x => x.GroupId == groupsId[i])
+                    .Select(s => new GetStudentModel
+                    {
+                        Id = s.Student.BaseProfile.Id,
+                        Name = s.Student.BaseProfile.Name,
+                        Surname = s.Student.BaseProfile.Surname,
+                        LastName = s.Student.BaseProfile.Adress,
+                        DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString(),
+                        Email = s.Student.BaseProfile.DbUser.Email,
+                        PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber
+                    }).ToList();
+
+                allStudents.AddRange(studentsBySingleGroup);
+            }
+            return allStudents;            
         }
 
         public int GetAverageMarkStudent(string studentId, int subjectId = 0)
