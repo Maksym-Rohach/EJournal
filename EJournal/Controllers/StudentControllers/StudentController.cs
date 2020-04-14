@@ -61,13 +61,14 @@ namespace EJournal.Controllers.StudentControllers
         {
             var claims = User.Claims;
             var userId = claims.FirstOrDefault().Value;
+            var marks = _context.Marks.Where(x => x.StudentId == userId).OrderByDescending(x => x.JournalColumn.Lesson.LessonDate).Take(5);
             var res = new List<MarkViewModel>();
-            res = _context.Marks.Where(x => x.StudentId == userId).Select(t => new MarkViewModel
+            res = marks.Select(t => new MarkViewModel
             {
                 Value = t.Value,
                 Date = t.JournalColumn.Lesson.LessonDate.ToString("dd/MM/yyyy"),
                 Subject = t.JournalColumn.Lesson.Subject.Name
-            }).OrderBy(x=>x.Date).Take(5).ToList();
+            }).ToList();
             var avg = _context.Marks.Where(x => x.StudentId == userId && x.IsPresent == true).Include(t => t.JournalColumn).Include(t=>t.JournalColumn.Lesson);
             List<string> arr = new List<string>();
             for (int i = 9; i !=7; i++)
@@ -131,36 +132,36 @@ namespace EJournal.Controllers.StudentControllers
             var lessons = new List<HomeworkModel>();
             if (!string.IsNullOrEmpty(model.Subject))
             {
-                lessons = _context.Lessons.Where(x => x.GroupId == group&&x.Subject.Id==int.Parse(model.Subject)).Select(t => new HomeworkModel()
+                lessons = _context.Lessons.Where(x => x.GroupId == group&&x.Subject.Id==int.Parse(model.Subject)).OrderByDescending(x => x.LessonDate).Take(15).Select(t => new HomeworkModel()
                 {
                     Teacher = t.Teacher.BaseProfile.Name + ' ' + t.Teacher.BaseProfile.Surname,
                     Subject = t.Subject.Name,
                     Topic = t.JournalColumn.Topic,
                     Homework = "сторінка 49 вправи: 1,2,5",
                     Date = t.LessonDate.ToString("dd.MM.yyyy")
-                }).Take(15).ToList();
+                }).ToList();
             }
             else if (!string.IsNullOrEmpty(model.Date))
             {
                 var date = Convert.ToDateTime(model.Date);
-                lessons = _context.Lessons.Where(x => x.GroupId == group && x.LessonDate.Date== date.Date).Select(t => new HomeworkModel()
+                lessons = _context.Lessons.Where(x => x.GroupId == group && x.LessonDate.Date== date.Date).OrderByDescending(x => x.LessonDate).Take(15).Select(t => new HomeworkModel()
                 {
                     Teacher = t.Teacher.BaseProfile.Name + ' ' + t.Teacher.BaseProfile.Surname,
                     Subject = t.Subject.Name,
                     Topic = t.JournalColumn.Topic,
                     Homework = "сторінка 49 вправи: 1,2,5",
                     Date = t.LessonDate.ToString("dd.MM.yyyy")
-                }).Take(15).ToList();
+                }).ToList();
             }
             else {
-                lessons = _context.Lessons.Where(x => x.GroupId == group).Select(t => new HomeworkModel()
+                lessons = _context.Lessons.Where(x => x.GroupId == group).OrderByDescending(x => x.LessonDate).Take(15).Select(t => new HomeworkModel()
                 {
                     Teacher = t.Teacher.BaseProfile.Name + ' ' + t.Teacher.BaseProfile.Surname,
                     Subject = t.Subject.Name,
                     Topic = t.JournalColumn.Topic,
                     Homework="сторінка 49 вправи: 1,2,5",
                     Date=t.LessonDate.ToString("dd.MM.yyyy")
-                }).Take(15).ToList();
+                }).ToList();
             }
             return Ok(new HomeworkViewModel()
             {

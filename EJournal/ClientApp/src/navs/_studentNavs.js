@@ -15,6 +15,11 @@ export default {
         url: '/student/homework',
         icon: 'icon-envelope-letter'
       },
+      {
+        name: 'Новини',
+        url: '/student/news',
+        icon: 'icon-envelope'
+      },
     //   {
     //     title: true,
     //     name: 'Розклад',
