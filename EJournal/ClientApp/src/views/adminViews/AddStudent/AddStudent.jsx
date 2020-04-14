@@ -21,8 +21,8 @@ import Paper from '@material-ui/core/Paper';
 
 class addStudent extends Component {
   state = {
-    success:false,
-    failed:false,
+    success: false,
+    failed: false,
     errors: {},
     dateOfBirth: null,
     name: '',
@@ -35,11 +35,10 @@ class addStudent extends Component {
     identificationCode: '',
   };
 
-  componentWillReceiveProps=(nextProps)=>{
-    if(nextProps!==this.props)
-    {
-      console.log("np: ",nextProps);
-      this.setState({success:nextProps.success,failed:nextProps.failed});
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps !== this.props) {
+      console.log("np: ", nextProps);
+      this.setState({ success: nextProps.success, failed: nextProps.failed });
     }
   }
   handleDateChange = (date) => {
@@ -65,12 +64,12 @@ class addStudent extends Component {
 
     if (success == true && failed == false) {
       this.growl.show({ life: 6000, severity: 'success', summary: 'Successfully added', detail: 'Add student' });
-      this.setState({success:false,failed:false});
-    
+      this.setState({ success: false, failed: false });
+
     }
     if (success == false && failed == true) {
       this.growl.show({ life: 6000, severity: 'error', summary: 'Error', detail: 'Registration student failed' });
-      this.setState({success:false,failed:false});
+      this.setState({ success: false, failed: false });
     }
   }
   LoadInputErrors(fieldName) {
@@ -105,14 +104,16 @@ class addStudent extends Component {
     let today = new Date();
     const nowDate = [pad(today.getDate()), pad(today.getMonth() + 1), today.getFullYear()].join('.');
     const regex_phone = /\(\+38\)\d{3} \d{3} \d{2} \d{2}/;
-    
+    let birthDate;
     if (name === '') errors.name = "Field is important";
     if (surname === '') errors.surname = "Field is important";
     if (lastName === '') errors.lastName = "Field is important";
     if (adress === '') errors.adress = "Field is important";
-    if (!dateOfBirth ) errors.dateOfBirth = "Field is empty";
-    const birthDate = [pad(dateOfBirth.getDate()), pad(dateOfBirth.getMonth() + 1), dateOfBirth.getFullYear()].join('.');
-    if (birthDate >= nowDate) errors.dateOfBirth = "Field not in correct format";
+    if (!dateOfBirth) errors.dateOfBirth = "Field is empty";
+    else {
+      birthDate = [pad(dateOfBirth.getDate()), pad(dateOfBirth.getMonth() + 1), dateOfBirth.getFullYear()].join('.');
+      if (birthDate >= nowDate) errors.dateOfBirth = "Field not in correct format";
+    }
     if (email === '') errors.email = "Field is important";
     if (phoneNumber === '') errors.phoneNumber = "Field is important";
     if (!regex_phone.test(phoneNumber)) errors.phoneNumber = "Please fill all number";
@@ -145,7 +146,7 @@ class addStudent extends Component {
 
 
   render() {
-    console.log("s ",this.state.success," f ",this.state.failed);
+    console.log("s ", this.state.success, " f ", this.state.failed);
     return (
       <Paper elevation={7} className="p-3 mt-4">
         <div>

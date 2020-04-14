@@ -127,20 +127,23 @@ class addTeacher extends Component {
     onSubmit = (e) => {
         e.preventDefault();
         let errors = {};
-        const { name, surname, lastName, adress, email, phoneNumber, passportString, identificationCode, dateOfBirth,selectedRoles } = this.state;
+        const { name, surname, lastName, adress, email, phoneNumber, passportString, identificationCode, dateOfBirth, selectedRoles } = this.state;
         //const degree
         function pad(s) { return (s < 10) ? '0' + s : s; };
         let today = new Date();
         const nowDate = [pad(today.getDate()), pad(today.getMonth() + 1), today.getFullYear()].join('.');
         const regex_phone = /\(\+38\)\d{3} \d{3} \d{2} \d{2}/;
-
+        let birthDate;
+        
         if (name === '') errors.name = "Field is important";
         if (surname === '') errors.surname = "Field is important";
         if (lastName === '') errors.lastName = "Field is important";
         if (adress === '') errors.adress = "Field is important";
         if (!dateOfBirth) errors.dateOfBirth = "Field is empty";
-        const birthDate = [pad(dateOfBirth.getDate()), pad(dateOfBirth.getMonth() + 1), dateOfBirth.getFullYear()].join('.');
-        if (birthDate >= nowDate) errors.dateOfBirth = "Field not in correct format";
+        else {
+            birthDate = [pad(dateOfBirth.getDate()), pad(dateOfBirth.getMonth() + 1), dateOfBirth.getFullYear()].join('.');
+            if (birthDate >= nowDate) errors.dateOfBirth = "Field not in correct format";
+        }
         if (email === '') errors.email = "Field is important";
         if (phoneNumber === '') errors.phoneNumber = "Field is important";
         if (!regex_phone.test(phoneNumber)) errors.phoneNumber = "Please fill all number";
@@ -160,7 +163,7 @@ class addTeacher extends Component {
                 passportString,
                 identificationCode,
                 dateOfBirth: birthDate,
-                rolename:selectedRoles,
+                rolename: selectedRoles,
                 //degree: degree
             });
 
@@ -180,7 +183,7 @@ class addTeacher extends Component {
                 <div>
                     <Grid container spacing={3}>
                         <Grid item lg={4} md={6} xs={12}>
-                            <FormControl style={{width:"250px"}} className="pr-2" >
+                            <FormControl style={{ width: "250px" }} className="pr-2" >
                                 <InputLabel id="checkbox-label">Оберіть ролі</InputLabel>
                                 <Select
                                     labelId="checkbox-label"
@@ -188,7 +191,7 @@ class addTeacher extends Component {
                                     value={this.state.selectedRoles}
                                     onChange={this.handleSelectChange}
                                     input={<Input />}
-                                    renderValue={(selected) => (roles.filter(x=>selected.some(s=>s==x.value)).map(x=>x.label)).join(', ')}
+                                    renderValue={(selected) => (roles.filter(x => selected.some(s => s == x.value)).map(x => x.label)).join(', ')}
                                 >
                                     {this.mapToSelect(roles)}
                                 </Select>
