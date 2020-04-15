@@ -23,11 +23,12 @@ const store = configureStore(history, initialState);
 if(localStorage.jwtToken) {
     let data = {token: localStorage.jwtToken, refToken: localStorage.refreshToken};
     let user = jwt.decode(data.token);
+
     if (!Array.isArray(user.roles)) {
         user.roles = Array.of(user.roles);
     }
+    
     loginActions.loginByJWT(data, store.dispatch);
-
 }
 
 const rootElement = document.getElementById('root');

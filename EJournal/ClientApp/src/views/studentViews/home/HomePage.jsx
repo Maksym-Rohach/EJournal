@@ -5,7 +5,9 @@ import FaceIcon from "@material-ui/icons/Face";
 import AssessmentIcon from "@material-ui/icons/Assessment";
 import SchoolIcon from "@material-ui/icons/School";
 import ScheduleIcon from "@material-ui/icons/Schedule";
-import InsertEmoticonIcon from "@material-ui/icons/InsertEmoticon";
+import Typography from "@material-ui/core/Typography";
+import { CustomTooltips } from "@coreui/coreui-plugin-chartjs-custom-tooltips";
+import { Pie, Line } from "react-chartjs-2";
 import get from "lodash.get";
 import Skeleton from "@material-ui/lab/Skeleton";
 import {
@@ -28,12 +30,34 @@ function LoadTimetable(data, date) {
         if (el.topic != null) {
           return (
             <div>
-              <h3>{el.subjectName}</h3>
-              <h4>{el.topic}</h4>
-              <p>{el.teacherName}</p>
+              <Typography className="text-color" variant="h4" gutterBottom>
+                {el.subjectName}
+              </Typography>
+              <div
+                className="d-flex flex-row justify-content-start"
+                style={{ width: "100%" }}
+              >
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  className="mr-2 text-color"
+                >
+                  Тема:
+                </Typography>
+                <Typography variant="h5" gutterBottom>
+                  {el.topic}
+                </Typography>
+              </div>
 
-              <p>{el.lessonTimeGap}</p>
-              <p>{el.auditoriumNumber}</p>
+              <Typography variant="h6" gutterBottom>
+                {el.teacherName}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {el.lessonTimeGap}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {el.auditoriumNumber}
+              </Typography>
 
               <hr />
             </div>
@@ -41,11 +65,19 @@ function LoadTimetable(data, date) {
         } else {
           return (
             <div>
-              <h3>{el.subjectName}</h3>
+              <Typography className="text-color" variant="h4" gutterBottom>
+                {el.subjectName}
+              </Typography>
 
-              <p>{el.teacherName}</p>
-              <p>{el.lessonTimeGap}</p>
-              <p>{el.auditoriumNumber}</p>
+              <Typography variant="h6" gutterBottom>
+                {el.teacherName}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {el.lessonTimeGap}
+              </Typography>
+              <Typography variant="h6" gutterBottom>
+                {el.auditoriumNumber}
+              </Typography>
               <hr />
             </div>
           );
@@ -69,12 +101,19 @@ function LoadMarks(data) {
     return data.marks.map(function (el) {
       if (el.value != 0) {
         return (
-          <div className="mt-1">
-            <div className="d-flex flex-row">
-              <div className="mark text-center mr-4">{el.value}</div>
-              <h2>{el.subject}</h2>
+          <div>
+            <div className="mt-1 d-flex flex-row">
+              <div className="d-flex flex-column">
+                <h2>{el.subject}</h2>
+                <p className="text-muted">{el.date}</p>
+              </div>
+              <div
+                style={{ width: "100%" }}
+                className="d-flex justify-content-end align-items-center"
+              >
+                <div className="mark text-center mr-4">{el.value}</div>
+              </div>
             </div>
-            <p className="text-muted">{el.date}</p>
             <Divider></Divider>
           </div>
         );
@@ -88,6 +127,72 @@ class HomePage extends React.Component {
   }
   render() {
     const { data } = this.props;
+
+    const pie = {
+      labels: ["Пропущено %", "Відвідано %"],
+      datasets: [
+        {
+          data: [data.countOfDays, 100 - data.countOfDays],
+          backgroundColor: ["#FF6384", "#FFCE56"],
+          hoverBackgroundColor: ["#FF6384", "#FFCE56"],
+        },
+      ],
+    };
+    let line = {};
+    if (data.averageMarks != undefined) {
+      line = {
+        labels: [
+          "Вересень",
+          "Жовтень",
+          "Листопад",
+          "Грудень",
+          "Січень",
+          "Лютий",
+          "Березень",
+          "Квітень",
+          "Травень",
+          "Червень",
+        ],
+        datasets: [
+          {
+            label: "Успішність",
+            fill: false,
+            lineTension: 0.1,
+            backgroundColor: "#FFCE56",
+            borderColor: "#FFCE56",
+            borderCapStyle: "butt",
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: "miter",
+            pointBorderColor: "#FFCE56",
+
+            pointHoverBorderColor: "#FFCE56",
+            pointHoverBorderWidth: 2,
+            pointRadius: 1,
+            pointHitRadius: 10,
+            data: [
+              data.averageMarks[0],
+              data.averageMarks[1],
+              data.averageMarks[2],
+              data.averageMarks[3],
+              data.averageMarks[4],
+              data.averageMarks[5],
+              data.averageMarks[6],
+              data.averageMarks[7],
+              data.averageMarks[8],
+              data.averageMarks[9],
+            ],
+          },
+        ],
+      };
+    }
+    const options = {
+      tooltips: {
+        enabled: false,
+        custom: CustomTooltips,
+      },
+      maintainAspectRatio: false,
+    };
     console.log(data);
     return (
       <Grid className="mt-4" container>
@@ -96,61 +201,81 @@ class HomePage extends React.Component {
             <form>
               <CardHeader
                 avatar={<AssessmentIcon></AssessmentIcon>}
-                title="Середня оцінка"
+                title="Успішність"
               />
-              
+
               <CardContent>
-                {data.averageMark == null ? (
+                {data.averageMarks == null ? (
                   <Skeleton
                     animation="wave"
-                    height={15}
-                    width="5%"
+                    height={248}
+                    width="100%"
                     style={{ marginBottom: 6 }}
                   />
                 ) : (
-                  data.averageMark
+                  <div>
+                    <Typography
+                      className="text-color"
+                      variant="h4"
+                      gutterBottom
+                    >
+                      {data.averageMark}
+                    </Typography>
+                    <Typography variant="h6" gutterBottom>
+                      Середня оцінка
+                    </Typography>
+                    <div className="chart-wrapper">
+                      <Line data={line} options={options} />
+                    </div>
+                  </div>
                 )}
               </CardContent>
             </form>
           </Card>
-          <Card className="mt-3 mr-3">
+          <Card className="mt-3 mb-3 mr-3">
             <form>
               <CardHeader
                 avatar={<FaceIcon></FaceIcon>}
                 title="Відвідуваність"
               />
-             
+
               <CardContent>
                 {data.countOfDays == null ? (
-                  <Skeleton
-                    animation="wave"
-                    height={15}
-                    width="70%"
-                    style={{ marginBottom: 6 }}
-                  />
+                  <div className="d-flex justify-content-center align-items-center text-center">
+                    <div className="d-flex flex-column">
+                      <Skeleton
+                        animation="wave"
+                        height={15}
+                        width="100%"
+                        style={{ marginBottom: 2 }}
+                      />
+                      <Skeleton
+                        animation="wave"
+                        variant="circle"
+                        width={200}
+                        height={200}
+                      />
+                    </div>
+                  </div>
                 ) : (
-                  `К-сть пропущених занять за цей семестр - ${data.countOfDays}`
+                  <div>
+                    <Typography
+                      className="text-color"
+                      variant="h4"
+                      gutterBottom
+                    >
+                      {100 - data.countOfDays}%
+                    </Typography>
+                    <Typography variant="h6" gutterBottom>
+                      Відвідано
+                    </Typography>
+                    <div className="chart-wrapper">
+                      <Pie data={pie} />
+                    </div>
+                  </div>
                 )}
               </CardContent>
             </form>
-          </Card>
-          <Card className="mt-3 mr-3">
-            <CardHeader
-              avatar={<ScheduleIcon></ScheduleIcon>}
-              title="Розклад"
-              subheader="Розклад на сьогодні"
-            />
-            
-            <CardContent>{LoadTimetable(data, data.day)}</CardContent>
-            <CardActions>
-              <div className="d-flex flex-column">
-                <Link href="/#/student/timetable">
-                  <Button size="small" color="primary">
-                    Більше інформації
-                  </Button>
-                </Link>
-              </div>
-            </CardActions>
           </Card>
         </Grid>
         <Grid item lg={6} md={6} xl={6} xs={12}>
@@ -161,47 +286,61 @@ class HomePage extends React.Component {
                 subheader="Нещодавні оцінки"
                 title="Оцінки"
               />
-              
+
               <CardContent>
                 {data.marks == null ? (
                   <div>
-                    <div className="mt-1">
-                      <div className="d-flex flex-row">
+                  <div>
+                    <div className="mt-1 d-flex flex-row">
+                      <div className="d-flex flex-column">
+                        <Skeleton animation="wave" height={20} width="150px" />
+                        <Skeleton
+                          animation="wave"
+                          height={10}
+                          width="100%"
+                          className="mt-1"
+                        />
+                      </div>
+                      <div
+                        
+                        className="d-flex justify-content-end align-items-center"
+                      >
                         <Skeleton
                           animation="wave"
                           variant="circle"
                           width={40}
                           height={40}
                         />
-                        <Skeleton animation="wave" height={15} width="25%" />
                       </div>
-                      <Skeleton
-                        animation="wave"
-                        height={10}
-                        width="8%"
-                        className="mt-1"
-                      />
-                      <Divider></Divider>
                     </div>
-                    <div className="mt-1">
-                      <div className="d-flex flex-row">
-                        <Skeleton
-                          animation="wave"
-                          variant="circle"
-                          width={40}
-                          height={40}
-                        />
-                        <Skeleton animation="wave" height={15} width="25%" />
-                      </div>
+                    <Divider></Divider>
+                  </div>
+                  <div>
+                  <div className="mt-1 d-flex flex-row">
+                    <div className="d-flex flex-column">
+                      <Skeleton animation="wave" height={20} width="150px" />
                       <Skeleton
-                        className="mt-1"
                         animation="wave"
                         height={10}
-                        width="8%"
+                        width="100%"
+                        className="mt-1"
                       />
-                      <Divider></Divider>
+                    </div>
+                    <div
+                      
+                      className="d-flex justify-content-end align-items-center"
+                    >
+                      <Skeleton
+                        animation="wave"
+                        variant="circle"
+                        width={40}
+                        height={40}
+                      />
                     </div>
                   </div>
+                  <Divider></Divider>
+                </div>
+                </div>
                 ) : (
                   LoadMarks(data)
                 )}
@@ -217,6 +356,24 @@ class HomePage extends React.Component {
                 </div>
               </CardActions>
             </form>
+          </Card>
+          <Card className="mt-3 mr-3">
+            <CardHeader
+              avatar={<ScheduleIcon></ScheduleIcon>}
+              title="Розклад"
+              subheader="Розклад на сьогодні"
+            />
+
+            <CardContent>{LoadTimetable(data, data.day)}</CardContent>
+            <CardActions>
+              <div className="d-flex flex-column">
+                <Link href="/#/student/timetable">
+                  <Button size="small" color="primary">
+                    Більше інформації
+                  </Button>
+                </Link>
+              </div>
+            </CardActions>
           </Card>
         </Grid>
       </Grid>
