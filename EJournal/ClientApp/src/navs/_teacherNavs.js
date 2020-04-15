@@ -15,15 +15,15 @@ export default {
         class: ''             // optional class names space delimited list for title item ex: "text-center"
       },
       {
-        name: 'Навантаження',
+        name: 'Розклад',
         url: '/teacher/comments',
-        icon: 'icon-energy',
-      },
-      {
-        name: 'Календарне планування',
-        url: '/teacher/clients',
         icon: 'icon-calendar',
       },
+      // {
+      //   name: 'Календарне планування',
+      //   url: '/teacher/clients',
+      //   icon: 'icon-calendar',
+      // },
       {
         title: true,
         name: 'Робота з учнями',

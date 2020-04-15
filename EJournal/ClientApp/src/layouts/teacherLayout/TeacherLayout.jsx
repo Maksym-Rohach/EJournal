@@ -2,6 +2,10 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
+import { connect } from "react-redux";
+import get from "lodash.get";
+import {serverUrl} from '../../config';
+import { logout } from '../../views/defaultViews/LoginPage/reducer';
 
 import {
   AppAside,
@@ -30,10 +34,29 @@ class TeacherLayout extends Component {
 
   signOut(e) {
     e.preventDefault()
-    this.props.history.push('/login')
+    this.props.history.push('/')
   }
+  
 
   render() {
+    const {login} = this.props;
+    console.log(login);
+    let isAccess = false;
+    if(login.isAuthenticated===undefined){
+        return (
+            <Redirect to="/" />  
+          );
+    }
+    if(login.isAuthenticated)
+    {
+      const { roles } = login.user;
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i] === 'Curator')
+          isAccess = true;
+        else if(roles[i] === 'Teacher')
+          isAccess = true;
+      }
+    }
     return (
       <div className="app">
         <AppHeader fixed>
@@ -88,5 +111,11 @@ class TeacherLayout extends Component {
     );
   }
 }
+const mapStateToProps = (state) => {
+  return {
+    login: get(state, 'login')
+  };
+}
 
-export default TeacherLayout;
+export default connect(mapStateToProps, { logout }) (TeacherLayout);
+

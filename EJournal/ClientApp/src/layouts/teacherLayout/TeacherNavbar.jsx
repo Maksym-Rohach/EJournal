@@ -20,10 +20,10 @@ const defaultProps = {};
 
 class TeacherNavbar extends Component {
 
-  signOut(e) {
-    e.preventDefault()
-    this.props.history.push('/login')
-  }
+  // signOut(e) {
+  //   e.preventDefault()
+  //   this.props.history.push('/login')
+  // }
   render() {
     const { login } = this.props;
     console.log(login);
@@ -82,7 +82,7 @@ class TeacherNavbar extends Component {
               {/* <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem> */}
               <DropdownItem><i className="fa fa-user"></i>Мій профіль</DropdownItem>
               {/* <DropdownItem divider /> */}
-              <DropdownItem onClick={e => this.signOut(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
