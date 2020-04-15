@@ -8,6 +8,7 @@ using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
 using EJournal.ViewModels;
+using EJournal.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -302,6 +303,13 @@ namespace EJournal.Controllers.AdminControllers
             }
             return BadRequest("Введені не всі дані");
         }
+        //[HttpPost]
+        //[Route("get/groups")]
+        //public IActionResult GetGroups([FromBody] GetGroupFiltersModel model)
+        //{
+
+        //}
+
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)
         //{
