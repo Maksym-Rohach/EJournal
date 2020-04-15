@@ -168,5 +168,22 @@ namespace EJournal.Controllers.StudentControllers
                 Subjects= _context.GroupToSubjects.Where(x => x.Group.Id == group).Select(x=>x.Subject).ToList()
         });
         }
+        [HttpPost("marks")]
+        public IActionResult GetMarks([FromBody] GetMarksModel model)
+        {
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+            var res = new List<MarksModel>();
+            res = _context.Marks.Where(x => x.StudentId == userId).Select(t => new MarksModel
+            {
+                Value = t.Value,
+                Date = t.JournalColumn.Lesson.LessonDate.ToString("dd/MM/yyyy"),
+                Subject = t.JournalColumn.Lesson.Subject.Name,
+                MarkType = t.MarkTypeId
+            }).OrderBy(x => x.Date).ToList();
+
+
+            return Ok();
+        }
     }
 }
