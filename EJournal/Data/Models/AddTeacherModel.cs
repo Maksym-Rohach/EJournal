@@ -7,8 +7,8 @@ namespace EJournal.Data.Models
 {
     public class AddTeacherModel
     {
-        public string Rolename { get; set; }
-        public string Degree { get; set; }
+        public List<string> Rolename { get; set; }
+        //public string Degree { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string LastName { get; set; }
