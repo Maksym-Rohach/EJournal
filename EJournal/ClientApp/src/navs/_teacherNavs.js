@@ -1,10 +1,10 @@
 export default {
     items: [
-      {
-        name: 'Login',
-        url: '/teacher',
-        icon: 'icon-speedometer',
-      },
+      // {
+      //   name: 'Login',
+      //   url: '/teacher',
+      //   icon: 'icon-speedometer',
+      // },
       {
         title: true,
         name: 'Розклад',
