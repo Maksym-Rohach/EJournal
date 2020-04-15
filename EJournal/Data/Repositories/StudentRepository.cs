@@ -90,9 +90,9 @@ namespace EJournal.Data.Repositories
             }).First();
         }
 
-        public IEnumerable<GetStudentModel> GetStudents(int groupId=0)
+        public IEnumerable<GetStudentModel> GetStudents(int groupId)
         {
-            if (groupId != 0)
+            if (groupId == 0)
             {
                 return _context.StudentProfiles.Select(t => new GetStudentModel
                 {
