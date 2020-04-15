@@ -1,5 +1,6 @@
 ﻿using EJournal.Data.Entities;
 using EJournal.Data.Models;
+using EJournal.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace EJournal.Data.Interfaces
         IEnumerable<GetTeacherModel> GetTeachers(string rolename);
         GetTeacherModel GetTeacherById(string id);
         Task<bool> AddTeacherAsync(AddTeacherModel profile);
-
+        List<DropdownModel> GetRolesInDropdownModels();
     }
 }
