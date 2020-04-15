@@ -42,8 +42,8 @@ namespace EJournal.Data.Repositories
                     Surname = profile.Surname,
                     Adress = profile.Adress,
                     DateOfBirth = Convert.ToDateTime(profile.DateOfBirth),
-                    PassportString=profile.PassportString,
-                    IdentificationCode=profile.IdentificationCode
+                    PassportString = profile.PassportString,
+                    IdentificationCode = profile.IdentificationCode
                 };
                 string password = PasswordGenerator.GenerationPassword();
                 await _userManager.CreateAsync(user, password);
@@ -59,7 +59,7 @@ namespace EJournal.Data.Repositories
             {
                 return false;
             }
-            
+
         }
 
         public int CountOfTruancy(string studentId)
@@ -117,10 +117,44 @@ namespace EJournal.Data.Repositories
         public int GetAverageMarkStudent(string studentId, int subjectId = 0)
         {
             var stMarks = _context.Marks.Where(t => t.StudentId == studentId);
-            if(subjectId!=0)
-            stMarks = stMarks.Where(t => t.JournalColumn.Lesson.SubjectId == subjectId);
+            if (subjectId != 0)
+                stMarks = stMarks.Where(t => t.JournalColumn.Lesson.SubjectId == subjectId);
             int lenght = stMarks.Count();
-            return (stMarks.Select(t => Convert.ToInt32(t.Value)).Sum()/lenght);
+            return (stMarks.Select(t => Convert.ToInt32(t.Value)).Sum() / lenght);
+        }
+
+        public IEnumerable<GetStudentModel> GetFirstTenStudents(int groupId)
+        {
+            if (groupId == 0)
+            {
+                var students = _context.StudentProfiles.Take(10).Select(t => new GetStudentModel
+                {
+                    Name = t.BaseProfile.Name,
+                    LastName = t.BaseProfile.LastName,
+                    Surname = t.BaseProfile.Surname,
+                    Adress = t.BaseProfile.Adress,
+                    DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                    Email = t.BaseProfile.DbUser.Email,
+                    PhoneNumber = t.BaseProfile.DbUser.PhoneNumber
+                });
+                return students;
+            }
+            else
+            {
+                var students = _context.GroupsToStudents.Where(t => t.GroupId == groupId).Select(t => t.Student)
+                    .Take(10).Select(t => new GetStudentModel
+                    {
+                        Name = t.BaseProfile.Name,
+                        LastName = t.BaseProfile.LastName,
+                        Surname = t.BaseProfile.Surname,
+                        Adress = t.BaseProfile.Adress,
+                        DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                        Email = t.BaseProfile.DbUser.Email,
+                        PhoneNumber = t.BaseProfile.DbUser.PhoneNumber
+                    }); 
+                return students;
+            }
+            //students.OrderByDescending(t => t.DateOfRegister);
         }
 
         public IEnumerable<string> GetSpecialities()
@@ -130,22 +164,22 @@ namespace EJournal.Data.Repositories
 
         public GetStudentModel GetStudentById(string id)
         {
-            return _context.StudentProfiles.Where(s=>s.Id==id).Select(t => new GetStudentModel 
+            return _context.StudentProfiles.Where(s => s.Id == id).Select(t => new GetStudentModel
             {
-                Id=t.Id,
-                Email=t.BaseProfile.DbUser.Email,
-                PhoneNumber=t.BaseProfile.DbUser.PhoneNumber,
-                Name=t.BaseProfile.Name,
-                LastName=t.BaseProfile.LastName,
-                Surname=t.BaseProfile.Surname,
-                Adress=t.BaseProfile.Adress,
-                DateOfBirth=t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy")
+                Id = t.Id,
+                Email = t.BaseProfile.DbUser.Email,
+                PhoneNumber = t.BaseProfile.DbUser.PhoneNumber,
+                Name = t.BaseProfile.Name,
+                LastName = t.BaseProfile.LastName,
+                Surname = t.BaseProfile.Surname,
+                Adress = t.BaseProfile.Adress,
+                DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy")
             }).First();
         }
 
-        public IEnumerable<GetStudentModel> GetStudents(int groupId=0)
+        public IEnumerable<GetStudentModel> GetStudents(int groupId)
         {
-            if (groupId != 0)
+            if (groupId == 0)
             {
                 return _context.StudentProfiles.Select(t => new GetStudentModel
                 {
@@ -161,8 +195,8 @@ namespace EJournal.Data.Repositories
             }
             else
             {
-                return _context.GroupsToStudents.Where(g=>g.GroupId==groupId)
-                .Select(t=>t.Student)
+                return _context.GroupsToStudents.Where(g => g.GroupId == groupId)
+                .Select(t => t.Student)
                 .Select(t => new GetStudentModel
                 {
                     Id = t.Id,

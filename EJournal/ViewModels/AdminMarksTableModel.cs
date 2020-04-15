@@ -10,8 +10,8 @@ namespace EJournal.ViewModels
         public List<string> columns { get; set; }
         public List<AdminTableMarksRowModel> rows { get; set; }
 
-        public List<DropdownIntModel> Specialities { get; set; }
-        public List<DropdownIntModel> Groups { get; set; }
-        public List<DropdownIntModel> Subjects { get; set; }
+        public List<DropdownModel> Specialities { get; set; }
+        public List<DropdownModel> Groups { get; set; }
+        public List<DropdownModel> Subjects { get; set; }
     }
 }
