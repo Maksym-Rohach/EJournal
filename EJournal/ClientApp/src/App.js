@@ -35,6 +35,7 @@ class App extends Component {
           <Route path="/teacher" name="Teacher" render={props => <TeacherLayout {...props} />}/>
           <Route path="/manager" name="Manager" render={props => <ManagerLayout {...props} />}/>
 
+          
         </Switch>
       </Suspense>
       </Router> 

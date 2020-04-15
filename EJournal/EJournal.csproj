@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\AuthControllers\" />
     <Folder Include="Controllers\TeacherControllers\" />
     <Folder Include="Uploaded\UsersImages\" />
   </ItemGroup>
@@ -57,5 +58,7 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

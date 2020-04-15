@@ -20,6 +20,7 @@ import {addTeacherReducer} from '../views/adminViews/AddTeacher/reducer';
 import {homeworkReducer} from '../views/studentViews/homework/reducer';
 import {newsReducer} from '../views/studentViews/news/reducer';
 import {studentCardListReducer} from '../components/StudentCardList/reducer'
+import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
 
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -43,6 +44,7 @@ export default function configureStore(history, initialState) {
     homework:homeworkReducer,
     studentCardList:studentCardListReducer,
     news:newsReducer,
+    getSubject:GetSubjectReducer,
   };
 
   const middleware = [
