@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace EJournal.Data.Interfaces
 {
-    public interface ISpecialities
+    public interface IGroups
     {
-        List<GetSpecialityModel> GetSpecialitiesByManager(string managerId); 
+        List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId);
     }
 }

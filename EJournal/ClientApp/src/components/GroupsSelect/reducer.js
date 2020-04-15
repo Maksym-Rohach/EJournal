@@ -1,9 +1,29 @@
-import StudentCardListService from './StudentCardListService';
+import GroupsSelectService from './GroupsSelectService';
 import update from '../../helpers/update';
 
-export const STUDENTCARDLIST_STARTED = "STUDENTCARDLIST_STARTED";
-export const STUDENTCARDLIST_SUCCESS = "STUDENTCARDLIST_SUCCESS";
-export const STUDENTCARDLIST_FAILED = "STUDENTCARDLIST_FAILED";
+export const GROUPS_SELECT_STARTED = "GROUPS_SELECT_STARTED";
+export const GROUPS_SELECT_SUCCESS = "GROUPS_SELECT_SUCCESS";
+export const GROUPS_SELECT_FAILED = "GROUPS_SELECT_FAILED";
+
+export const getListActions = {
+    started: () => {
+        return {
+            type: GROUPS_SELECT_STARTED
+        }
+    },  
+    success: (data) => {
+        return {
+            type: GROUPS_SELECT_SUCCESS,
+            payload: data.data
+        }
+    },  
+    failed: (error) => {
+        return {           
+            type: GROUPS_SELECT_FAILED,
+            errors: error
+        }
+    }
+}
 
 const initialState = {
     list: {
@@ -14,13 +34,11 @@ const initialState = {
     },   
 }
 
-export const getStudentListCard = () => {
+export const getGroupsSelect = (specialityId) => {
     return (dispatch) => {
         dispatch(getListActions.started());
-        console.log("bober")
-        StudentCardListService.getStudentListCard()
+        GroupsSelectService.getGroupsSelect(specialityId)
             .then((response) => {
-                console.log("bober",response)
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
             .catch(err=> {
@@ -29,25 +47,25 @@ export const getStudentListCard = () => {
     }
 }
 
-export const studentCardListReducer = (state = initialState, action) => { 
+export const groupsSelectReducer = (state = initialState, action) => { 
     let newState = state;
   
     switch (action.type) {
 
-        case STUDENTCARDLIST_STARTED: {
+        case GROUPS_SELECT_STARTED: {
             newState = update.set(state, 'list.loading', true);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             break;
         }
-        case STUDENTCARDLIST_SUCCESS: {
+        case GROUPS_SELECT_SUCCESS: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.success', true);
             newState = update.set(newState, 'list.data', action.payload);         
             break;
         }
-        case STUDENTCARDLIST_FAILED: {
+        case GROUPS_SELECT_FAILED: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);
@@ -60,25 +78,4 @@ export const studentCardListReducer = (state = initialState, action) => {
     }
 
     return newState;
-}
-
-
-export const getListActions = {
-    started: () => {
-        return {
-            type: STUDENTCARDLIST_STARTED
-        }
-    },  
-    success: (data) => {
-        return {
-            type: STUDENTCARDLIST_SUCCESS,
-            payload: data.data
-        }
-    },  
-    failed: (error) => {
-        return {           
-            type: STUDENTCARDLIST_FAILED,
-            errors: error
-        }
-    }
 }

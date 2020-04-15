@@ -15,5 +15,6 @@ namespace EJournal.Data.Entities
         public ICollection<Group> Groups { get; set; }
         public ICollection<Lesson> Lessons { get; set; }
         public ICollection<News> News { get; set; }
+        public ICollection<GroupNews> GroupNews { get; set; }
     }
 }
