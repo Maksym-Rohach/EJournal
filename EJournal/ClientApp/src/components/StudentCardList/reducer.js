@@ -5,26 +5,6 @@ export const STUDENTCARDLIST_STARTED = "STUDENTCARDLIST_STARTED";
 export const STUDENTCARDLIST_SUCCESS = "STUDENTCARDLIST_SUCCESS";
 export const STUDENTCARDLIST_FAILED = "STUDENTCARDLIST_FAILED";
 
-export const getListActions = {
-    started: () => {
-        return {
-            type: STUDENTCARDLIST_STARTED
-        }
-    },  
-    success: (data) => {
-        return {
-            type: STUDENTCARDLIST_SUCCESS,
-            payload: data.data
-        }
-    },  
-    failed: (error) => {
-        return {           
-            type: STUDENTCARDLIST_FAILED,
-            errors: error
-        }
-    }
-}
-
 const initialState = {
     list: {
         data: [],
@@ -37,8 +17,10 @@ const initialState = {
 export const getStudentListCard = () => {
     return (dispatch) => {
         dispatch(getListActions.started());
+        console.log("bober")
         StudentCardListService.getStudentListCard()
             .then((response) => {
+                console.log("bober",response)
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
             .catch(err=> {
@@ -78,4 +60,25 @@ export const studentCardListReducer = (state = initialState, action) => {
     }
 
     return newState;
+}
+
+
+export const getListActions = {
+    started: () => {
+        return {
+            type: STUDENTCARDLIST_STARTED
+        }
+    },  
+    success: (data) => {
+        return {
+            type: STUDENTCARDLIST_SUCCESS,
+            payload: data.data
+        }
+    },  
+    failed: (error) => {
+        return {           
+            type: STUDENTCARDLIST_FAILED,
+            errors: error
+        }
+    }
 }

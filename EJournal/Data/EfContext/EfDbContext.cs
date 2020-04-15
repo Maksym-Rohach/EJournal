@@ -35,6 +35,7 @@ namespace EJournal.Data.EfContext
         public DbSet<DeductedUser> DeductedUsers { get; set; }
         public DbSet<DeductionType> DeductionTypes { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<GroupNews> GroupNews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -61,6 +62,7 @@ namespace EJournal.Data.EfContext
             modelBuilder.ApplyConfiguration(new DeductedUserConfiguration());
             modelBuilder.ApplyConfiguration(new DeductionTypeConfiguration());
             modelBuilder.ApplyConfiguration(new NewsConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupNewsConfiguration());            
         }
     }
 }

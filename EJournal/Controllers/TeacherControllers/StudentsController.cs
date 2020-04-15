@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using EJournal.Data.EfContext;
 using EJournal.Data.Entities.AppUeser;
+using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
+using EJournal.Data.Repositories;
 using EJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -20,39 +22,45 @@ namespace EJournal.Controllers.TeacherControllers
     {
         private readonly UserManager<DbUser> _userManager;
         private readonly EfDbContext _context;
-        public StudentsController(UserManager<DbUser> userManager, EfDbContext context)
+        private readonly IStudents _studentRepository;
+        public StudentsController(UserManager<DbUser> userManager, EfDbContext context, IStudents studentRepository)
         {
             _context = context;
             _userManager = userManager;
+            _studentRepository = studentRepository;
         }
-        [HttpPost("get/students")]
-        public IActionResult GetStudentsAsync(StudentsFiltersModel model)
+        [HttpGet("get/students")]
+        public IActionResult GetStudentsAsync()
         {
-            try
-            {
-                var query = _context.StudentProfiles.AsQueryable();
+            //try
+            //{
+                var claims = User.Claims;
+                var userId = claims.FirstOrDefault().Value;
+                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId);
+                IEnumerable<GetStudentModel> listStudents = _studentRepository.GetStudents(group.Id);
                 List<CuratorCardStudentModel> cards = new List<CuratorCardStudentModel>();
-                cards = query.Select(t => new CuratorCardStudentModel
-                {
-                    Name = t.BaseProfile.Name + " " + t.BaseProfile.LastName + " " + t.BaseProfile.Surname,
-                    Progress = t.Marks.Count.ToString(),
-                    Group = t.GroupToStudents.Last().Group.Name,
-                    Speciality = t.GroupToStudents.Last().Group.Speciality.Name,
-                    DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
-                    Phone = t.BaseProfile.DbUser.PhoneNumber,
-                    Email = t.BaseProfile.DbUser.Email,
-                    Address = t.BaseProfile.Adress
+
+                var cards1 = listStudents.Select(t => new CuratorCardStudentModel {
+                    Name = t.Name,
+                    Adress = t.Adress,
+                    DateOfBirth= t.DateOfBirth,
+                    Email = t.Email,
+                    Id = t.Id,
+                    LastName= t.LastName,
+                    PhoneNumber = t.PhoneNumber,
+                    Surname= t.Surname,
+                    AddressOfChummery = "a",
+                    Group = group.Name,
+                    Progress = "v",
+                    Speciality = "a"
 
                 }).ToList();
-               
-
-
-                return Ok(cards);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest("Error: " + ex.Message + " I: " + ex.InnerException);
-            }
+                return Ok(cards1);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest("Error: " + ex.Message + " I: " + ex.InnerException);
+            //}
         }
     }
 }

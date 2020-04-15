@@ -1,10 +1,10 @@
 export default {
     items: [
-      {
-        name: 'Login',
-        url: '/teacher',
-        icon: 'icon-speedometer',
-      },
+      // {
+      //   name: 'Login',
+      //   url: '/teacher',
+      //   icon: 'icon-speedometer',
+      // },
       {
         title: true,
         name: 'Розклад',
@@ -15,15 +15,15 @@ export default {
         class: ''             // optional class names space delimited list for title item ex: "text-center"
       },
       {
-        name: 'Навантаження',
+        name: 'Розклад',
         url: '/teacher/comments',
-        icon: 'icon-energy',
-      },
-      {
-        name: 'Календарне планування',
-        url: '/teacher/clients',
         icon: 'icon-calendar',
       },
+      // {
+      //   name: 'Календарне планування',
+      //   url: '/teacher/clients',
+      //   icon: 'icon-calendar',
+      // },
       {
         title: true,
         name: 'Робота з учнями',
@@ -49,7 +49,7 @@ export default {
           },
           {
             name: 'Перегляд',
-            url: '/base/carousels',
+            url: '/teacher/getmarks',
             icon: 'icon-eyeglass',
           },
         ],
@@ -70,6 +70,11 @@ export default {
             icon: 'icon-eyeglass',
           },
         ],
+      },
+      {
+        name: 'Перегляд студентів',
+        url: '/buttons',
+        icon: 'icon-eyeglass',
       },
     ],
   };

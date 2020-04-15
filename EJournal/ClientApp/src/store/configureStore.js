@@ -18,8 +18,12 @@ import {profileReducer} from '../components/Profile/reducer';
 import {studentHomePageReducer} from '../views/studentViews/home/reducer';
 import {addTeacherReducer} from '../views/adminViews/AddTeacher/reducer';
 import {homeworkReducer} from '../views/studentViews/homework/reducer';
+import {newsReducer} from '../views/studentViews/news/reducer';
 import {studentCardListReducer} from '../components/StudentCardList/reducer'
+import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
 
+import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer'
+//import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 export const history = createHistory({ basename: baseUrl });
@@ -40,7 +44,11 @@ export default function configureStore(history, initialState) {
     addStudent:addStudentReducer,
     addTeacher:addTeacherReducer,
     homework:homeworkReducer,
-    studentCardList:studentCardListReducer,
+    studentCardList: studentCardListReducer,
+    specialitiesSelect: specialitiesSelectReducer,
+    //groupsSelect: groupsSelectReducer,
+    news:newsReducer,
+    getSubject:GetSubjectReducer,
   };
 
   const middleware = [

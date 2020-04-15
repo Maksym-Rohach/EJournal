@@ -20,7 +20,7 @@ import {
   Link,
   Grid,
 } from "@material-ui/core";
-
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import "./HomePageStyle.css";
 
 function LoadTimetable(data, date) {
@@ -357,23 +357,13 @@ class HomePage extends React.Component {
               </CardActions>
             </form>
           </Card>
-          <Card className="mt-3 mr-3">
-            <CardHeader
-              avatar={<ScheduleIcon></ScheduleIcon>}
-              title="Розклад"
-              subheader="Розклад на сьогодні"
-            />
-
-            <CardContent>{LoadTimetable(data, data.day)}</CardContent>
-            <CardActions>
-              <div className="d-flex flex-column">
-                <Link href="/#/student/timetable">
-                  <Button size="small" color="primary">
-                    Більше інформації
-                  </Button>
-                </Link>
-              </div>
-            </CardActions>
+          <Card  className="mt-3">            
+            <CardContent className="card-bg-color">
+            <a className="link" href="/#/student/homework">                    
+                    <h2 className="mt-5 ml-2 mb-5">Виконуйте домашні завдання <ArrowForwardIosIcon className="animate"/></h2>
+            </a>
+            
+            </CardContent>            
           </Card>
         </Grid>
       </Grid>
