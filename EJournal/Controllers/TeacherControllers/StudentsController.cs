@@ -41,11 +41,11 @@ namespace EJournal.Controllers.TeacherControllers
                     DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
                     Phone = t.BaseProfile.DbUser.PhoneNumber,
                     Email = t.BaseProfile.DbUser.Email,
-                    Address = t.BaseProfile.Adress
+                    Address = t.BaseProfile.Adress,
+                    AddressOfChummery = t.BaseProfile.Adress
 
                 }).ToList();
                
-
 
                 return Ok(cards);
             }
