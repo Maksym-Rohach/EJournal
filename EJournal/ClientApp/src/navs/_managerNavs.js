@@ -16,7 +16,7 @@ export default {
       },
       {
         name: 'Список студентів',
-        url: '',
+        url: '/manager/students',
         icon: 'icon-user',
       },
       {

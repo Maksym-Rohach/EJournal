@@ -16,7 +16,7 @@ namespace EJournal.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<Lesson> GetLessonsInGroup(int groupId, string date = "")
+        public IEnumerable<Lesson> GetLessonsInGroup(int groupId, string date)
         {
             if(date!="")
                 return _context.Lessons.Where(t => t.GroupId == groupId&&t.LessonDate==DateTime.Parse(date));
@@ -29,7 +29,7 @@ namespace EJournal.Data.Repositories
             return _context.Subjects.Select(t => t.Name);
         }
 
-        public IEnumerable<Lesson> GetTeacherLessons(string teacherId, string date = "", int groupId = 0)
+        public IEnumerable<Lesson> GetTeacherLessons(string teacherId, string date, int groupId)
         {
             var lessons= _context.Lessons.Where(t => t.TeacherId == teacherId);
             if (date != "")

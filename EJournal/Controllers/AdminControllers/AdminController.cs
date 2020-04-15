@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using EJournal.Data.EfContext;
 using EJournal.Data.Entities;
 using EJournal.Data.Entities.AppUeser;
+using EJournal.Data.Interfaces;
+using EJournal.Data.Models;
 using EJournal.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -21,10 +23,14 @@ namespace EJournal.Controllers.AdminControllers
     {
         private readonly UserManager<DbUser> _userManager;
         private readonly EfDbContext _context;
-        public AdminController(UserManager<DbUser> userManager, EfDbContext context)
+        private readonly IStudents _students;
+        private readonly ITeachers _teachers;
+        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers)
         {
             _context = context;
             _userManager = userManager;
+            _students = students;
+            _teachers = teachers;
         }
 
         [HttpPost]
@@ -35,79 +41,58 @@ namespace EJournal.Controllers.AdminControllers
             {
                 return BadRequest("Введіть коректні дані");
             }
-            try
+            if (model.Rolename.Contains("Student"))
             {
-                DbUser user = new DbUser
-                {
-                    UserName = model.UserName,
-                    Email = model.Email,
-                    PhoneNumber = model.PhoneNumber,
-                };
-                BaseProfile prof = new BaseProfile
+                bool res = await _students.AddStudentAsync(new AddStudentModel
                 {
                     Name = model.Name,
                     LastName = model.LastName,
                     Surname = model.Surname,
                     Adress = model.Adress,
-                    DateOfBirth = Convert.ToDateTime(model.DateOfBirth)
-                };
+                    DateOfBirth = model.DateOfBirth,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    //UserName=model.UserName,
+                    IdentificationCode = model.IdentificationCode,
+                    PassportString = model.PassportString
+                });
+                if (res == false)
+                    return BadRequest("Помилка на етапі додавання");
 
-                switch (model.Rolename)
-                {
-                    case "Student":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "Student");
-                        break;
-                    case "Teacher":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "Teacher");
-                        break;
-                    case "Director":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "Director");
-                        break;
-                    case "Curator":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "Curator");
-                        break;
-                    case "Director deputy":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "DDeputy");
-                        break;
-                    case "Department head":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "DepartmentHead");
-                        break;
-                    case "Cycle commision head":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "CycleCommisionHead");
-                        break;
-                    case "Study room head":
-                        await _userManager.CreateAsync(user, model.Password);
-                        await _userManager.AddToRoleAsync(user, "StudyRoomHead");
-                        break;
-                    default:
-                        return "Введіть правильну роль";
-                }
-                prof.Id = user.Id;
-                await _context.BaseProfiles.AddAsync(prof);
-                await _context.SaveChangesAsync();
-                if (model.Rolename == "Student")
-                {
-                    await _context.StudentProfiles.AddAsync(new StudentProfile { Id = prof.Id });
-                    await _context.SaveChangesAsync();
-                }
-                else
-                {
-                    await _context.TeacherProfiles.AddAsync(new TeacherProfile { Id = prof.Id, Degree = model.Degree });
-                    await _context.SaveChangesAsync();
-                }
                 return Ok("Користувач успішно доданий");
             }
-            catch (Exception ex)
+            else
             {
-                return "Помилка: " + ex.Message;
+                bool res = await _teachers.AddTeacherAsync(new AddTeacherModel
+                {
+                    Rolename = model.Rolename,
+                    //Degree = model.Degree,
+                    Name = model.Name,
+                    LastName = model.LastName,
+                    Surname = model.Surname,
+                    Adress = model.Adress,
+                    DateOfBirth = model.DateOfBirth,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    //UserName = model.UserName,
+                    IdentificationCode = model.IdentificationCode,
+                    PassportString = model.PassportString
+                });
+                if (res == false)
+                    return BadRequest("Помилка на етапі додавання");
+
+                return Ok("Користувач успішно доданий");
             }
+        }
+        [HttpGet]
+        [Route("get/roles")]
+        public IActionResult GetRoles()
+        {
+            var roles = _teachers.GetRolesInDropdownModels();
+            if (roles != null)
+                return Ok(roles);
+            else 
+                return BadRequest();
         }
         [HttpPost]
         [Route("get/students")]
@@ -116,7 +101,7 @@ namespace EJournal.Controllers.AdminControllers
             try
             {
                 AdminStudentsTableModel table = new AdminStudentsTableModel();
-                var query = _context.StudentProfiles.AsQueryable();
+                var query = _students.GetFirstTenStudents().AsQueryable();
                 List<AdminTableStudentRowModel> tableList = new List<AdminTableStudentRowModel>();
                 if (model != null)
                 {
@@ -124,30 +109,29 @@ namespace EJournal.Controllers.AdminControllers
                     //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
                     if (model.SpecialityId != 0)
                     {
-                        table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                        table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
                         {
                             Label = t.Name,
-                            Value = t.Id
+                            Value = t.Id.ToString()
                         }).ToList();
                     }
                     if (model.GroupId != 0)
                     {
-                        table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                        table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
                         {
                             Label = t.Name,
-                            Value = t.Id
+                            Value = t.Id.ToString()
                         }).ToList();
-                        var grToStud = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId);
-                        query = _context.StudentProfiles.Where(t => grToStud.Any(g => g.StudentId == t.Id)).AsQueryable();
+                        query = _students.GetFirstTenStudents(model.GroupId).AsQueryable();
                     }
                 }
                 tableList = query.Select(t => new AdminTableStudentRowModel
                 {
-                    Name = t.BaseProfile.Name + " " + t.BaseProfile.LastName + " " + t.BaseProfile.Surname,
-                    Address = t.BaseProfile.Adress,
-                    DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
-                    Email = t.BaseProfile.DbUser.Email,
-                    Phone = t.BaseProfile.DbUser.PhoneNumber
+                    Name = t.Name + " " + t.LastName + " " + t.Surname,
+                    Address = t.Adress,
+                    DateOfBirth = t.DateOfBirth,
+                    Email = t.Email,
+                    Phone = t.PhoneNumber
                 }).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
                 {
@@ -157,10 +141,10 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Email",field="email",sort="asc",width=200},
                     new AdminTableColumnModel{label="Address",field="address",sort="asc",width=170}
                 };
-                List<DropdownIntModel> specs = _context.Specialities.Select(t => new DropdownIntModel
+                List<DropdownModel> specs = _context.Specialities.Select(t => new DropdownModel
                 {
                     Label = t.Name,
-                    Value = t.Id
+                    Value = t.Id.ToString()
                 }).ToList();
 
                 table.rows = tableList;
@@ -213,7 +197,7 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Address",field="address",sort="asc",width=150},
                     new AdminTableColumnModel{label="Degree",field="degree",sort="asc",width=120}
                 };
-                List<DropdownStrModel> roles = _context.Roles.Where(t => t.Name != "Student").Select(t => new DropdownStrModel
+                List<DropdownModel> roles = _context.Roles.Where(t => t.Name != "Student").Select(t => new DropdownModel
                 {
                     Label = t.Name,
                     Value = t.Name
@@ -239,23 +223,23 @@ namespace EJournal.Controllers.AdminControllers
                 AdminMarksTableModel table = new AdminMarksTableModel();
                 if (model.SpecialityId != 0)
                 {
-                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
                     {
                         Label = t.Name,
-                        Value = t.Id
+                        Value = t.Id.ToString()
                     }).ToList();
                 }
                 if (model.GroupId != 0)
                 {
-                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
                     {
                         Label = t.Name,
-                        Value = t.Id
+                        Value = t.Id.ToString()
                     }).ToList();
-                    table.Subjects = _context.GroupToSubjects.Where(t => t.GroupId == model.GroupId).Select(t => new DropdownIntModel 
+                    table.Subjects = _context.GroupToSubjects.Where(t => t.GroupId == model.GroupId).Select(t => new DropdownModel
                     {
-                        Label= t.Subject.Name,
-                        Value=t.SubjectId
+                        Label = t.Subject.Name,
+                        Value = t.SubjectId.ToString()
                     }).ToList();
                 }
                 if (model.SubjectId != 0)
@@ -274,9 +258,9 @@ namespace EJournal.Controllers.AdminControllers
                         foreach (var date in lessonDates)
                         {
                             var cell = studMarks.FirstOrDefault(m => m.JournalColumn.Lesson.LessonDate == date);
-                            if (cell != null)
+                            if (cell.IsPresent == true)
                                 marksFormatted.Add(cell.Value);
-                            else 
+                            else
                                 marksFormatted.Add("-");
                         }
                         var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
@@ -284,7 +268,7 @@ namespace EJournal.Controllers.AdminControllers
                         AdminTableMarksRowModel rowModel = new AdminTableMarksRowModel
                         {
                             Name = name,
-                            Marks=marksFormatted
+                            Marks = marksFormatted
                         };
                         tableList.Add(rowModel);
                     }
@@ -301,16 +285,16 @@ namespace EJournal.Controllers.AdminControllers
 
                     table.rows = tableList;
                     table.columns = cols;
-                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownIntModel
+                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
                     {
                         Label = t.Name,
-                        Value = t.Id
+                        Value = t.Id.ToString()
                     }).ToList();
                 }
-                List<DropdownIntModel> specs = _context.Specialities.Select(t => new DropdownIntModel
+                List<DropdownModel> specs = _context.Specialities.Select(t => new DropdownModel
                 {
                     Label = t.Name,
-                    Value = t.Id
+                    Value = t.Id.ToString()
                 }).ToList();
                 table.Specialities = specs;
 

@@ -6,6 +6,9 @@ import get from "lodash.get";
 import { Table } from 'reactstrap';
 import {Dropdown} from 'primereact/dropdown';
 import TimetableModal from "../../../components/TimetableModal";
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import Typography from "@material-ui/core/Typography";
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
@@ -34,6 +37,7 @@ import "./TimeTableStyle.css";
       
     if(data.timetable!=undefined||data===undefined){
       if(data.daysInMonth!=undefined){
+        
           let numOfDay=0;
           switch (data.dayOfWeek) {
               case "Monday":
@@ -199,32 +203,62 @@ class Timetable extends Component {
         this.props.getTimetable({month });
 
       }
-      changeMonth=(e)=>{
-        this.setState({month: e.value});
-       
+      // changeMonth=(e)=>{
+      //   this.setState({month: e.value});       
+      // }
+      
+      next=()=>{
+        const {data} = this.props;
+        if(data.month!='12'){
+          this.setState({month:  +data.month+1});
+        }
       }
-   
+      prev=()=>{
+        const {data} = this.props;
+        if(data.month!='1'){
+          this.setState({month:  +data.month-1});
+        }
+      }
+      getMonth=(data,arr)=>{
+        if(data.month!=undefined){        
+          return(
+            arr[+data.month-1]
+          )
+        }      
+      }
 render() {
     const {data} = this.props;
-    const monthSelectItems = [
-      {label: 'Січень', value: '01'},
-      {label: 'Лютий', value: '02'},
-      {label: 'Березень', value: '03'},
-      {label: 'Квітень', value: '04'},
-      {label: 'Травень', value: '05'},
-      {label: 'Червень', value: '06'},
-      {label: 'Липень', value: '07'},
-      {label: 'Серпень', value: '08'},
-      {label: 'Вересень', value: '09'},
-      {label: 'Жовтень', value: '10'},
-      {label: 'Листопад', value: '11'},
-      {label: 'Грудень', value: '12'},
-  ];
-
-
+  //   const monthSelectItems = [
+  //     {label: 'Січень', value: '01'},
+  //     {label: 'Лютий', value: '02'},
+  //     {label: 'Березень', value: '03'},
+  //     {label: 'Квітень', value: '04'},
+  //     {label: 'Травень', value: '05'},
+  //     {label: 'Червень', value: '06'},
+  //     {label: 'Липень', value: '07'},
+  //     {label: 'Серпень', value: '08'},
+  //     {label: 'Вересень', value: '09'},
+  //     {label: 'Жовтень', value: '10'},
+  //     {label: 'Листопад', value: '11'},
+  //     {label: 'Грудень', value: '12'},
+  // ];
+  const months=['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'];
+  //this.setMonth(data);
+  
     return (
-        <div>
-          <Dropdown value={this.state.month} className="mt-3 ml-1" options={monthSelectItems} onChange={(e)=>this.changeMonth(e)} placeholder="Оберіть місяць"/>
+        <div className="mt-3">
+          <div style={{wigth:'100%'}} className="d-flex justify-content-center">
+            <div className="d-flex flex-row">
+            
+            <KeyboardArrowLeft className="hover-cursor" fontSize="large" onClick={this.prev}/>
+                <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
+                {this.getMonth(data,months)}
+                </Typography>
+              
+            <KeyboardArrowRight className="hover-cursor" fontSize="large" onClick={this.next}/>
+            </div>
+          </div>
+          {/* <Dropdown value={this.state.month} className="mt-3 ml-1" options={monthSelectItems} onChange={(e)=>this.changeMonth(e)} placeholder="Оберіть місяць"/> */}
        <Table responsive borderless className="text-center mt-3 mr-3">
                   <thead>
                     <tr>

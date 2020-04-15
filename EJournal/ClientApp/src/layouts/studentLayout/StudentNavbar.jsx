@@ -57,7 +57,6 @@ console.log("IMAGE",image);
                     <MDBDropdownMenu id="dropMenu1" className='dropdown-default' right>
       {/* TODO перекидувати на те куди потрібно*/}
                       <MDBDropdownItem href='/#/student/profile'><i className="ml-2 icon-user"></i> Мій профіль</MDBDropdownItem>
-                      <MDBDropdownItem href='#!'><i className="ml-2 icon-settings"></i> Настройки</MDBDropdownItem>
                       <MDBDropdownItem href='#!'><i className="ml-2 icon-logout"></i> Вихід</MDBDropdownItem>
                     </MDBDropdownMenu>
                   </MDBDropdown>

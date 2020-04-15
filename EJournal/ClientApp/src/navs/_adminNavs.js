@@ -16,7 +16,7 @@ export default {
       },
       {
         name: 'Реєстрація учня',
-        url: '',
+        url: '/admin/addstudent',
         icon: 'icon-drop',
       },
       {
@@ -52,7 +52,7 @@ export default {
       },
       {
         name: 'Реєстрація вчителя',
-        url: '',
+        url: '/admin/addteacher',
         icon: 'icon-drop',
         // children: [
         //   {

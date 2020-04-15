@@ -15,5 +15,7 @@ namespace EJournal.Data.Interfaces
         IEnumerable<string> GetSpecialities();
         int GetAverageMarkStudent(string studentId, int subjectId=0);
         int CountOfTruancy(string studentId);
+        IEnumerable<GetStudentModel> GetFirstTenStudents(int groupId=0);
+        IEnumerable<GetStudentModel> GetAllStudentsBySpecialities(string teacherId);
     }
 }

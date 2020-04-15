@@ -42,7 +42,7 @@ export const getListActions = {
     failed: (error) => {
         return {           
             type: HOME_FAILED,
-            errors: error.data
+            errors: error
         }
     }
   }
