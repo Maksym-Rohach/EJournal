@@ -25,7 +25,7 @@ import "./sideBarStyle.css";
 //const DefaultFooter = React.lazy(() => import('./DefaultFooter'));
 
 
-class StudentLayout extends Component {
+class StudentSideBar extends Component {
 
   loading = () => <div className="animated fadeIn pt-1 text-center">Loading...</div>
 
@@ -73,4 +73,4 @@ class StudentLayout extends Component {
   }
 }
 
-export default StudentLayout;
+export default StudentSideBar;

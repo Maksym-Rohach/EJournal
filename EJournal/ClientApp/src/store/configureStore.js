@@ -18,6 +18,7 @@ import {profileReducer} from '../components/Profile/reducer';
 import {studentHomePageReducer} from '../views/studentViews/home/reducer';
 import {addTeacherReducer} from '../views/adminViews/AddTeacher/reducer';
 import {homeworkReducer} from '../views/studentViews/homework/reducer';
+import {newsReducer} from '../views/studentViews/news/reducer';
 import {studentCardListReducer} from '../components/StudentCardList/reducer'
 import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
 
@@ -42,6 +43,7 @@ export default function configureStore(history, initialState) {
     addTeacher:addTeacherReducer,
     homework:homeworkReducer,
     studentCardList:studentCardListReducer,
+    news:newsReducer,
     getSubject:GetSubjectReducer,
   };
 
