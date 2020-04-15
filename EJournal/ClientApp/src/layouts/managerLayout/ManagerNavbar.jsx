@@ -27,10 +27,7 @@ class ManagerNavbar extends Component {
         />
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
-        <Nav className="d-md-down-none" navbar>
-          <NavItem className="px-3">
-            <NavLink to="#" className="nav-link">Налаштування</NavLink>
-          </NavItem>
+        <Nav className="d-md-down-none" navbar>          
         </Nav>
         <Nav className="ml-auto" navbar>          
           <UncontrolledDropdown nav direction="down">

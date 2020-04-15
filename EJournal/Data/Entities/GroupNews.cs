@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EJournal.Data.Entities
 {
-    public class News
+    public class GroupNews
     {
         public int Id { get; set; }
         public string Topic { get; set; }
@@ -14,5 +14,8 @@ namespace EJournal.Data.Entities
 
         public string TeacherId { get; set; }
         public TeacherProfile TeacherProfile { get; set; }
+
+        public int GroupId { get; set; }
+        public Group Group { get; set; }
     }
 }

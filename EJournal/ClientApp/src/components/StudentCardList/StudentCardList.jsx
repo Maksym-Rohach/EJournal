@@ -7,7 +7,6 @@ import StudentCard from '../StudentCard/StudentCard'
 
 
 export class StudentCardList extends React.Component {
-
     state = {}
 
     componentDidMount = () => {
@@ -16,23 +15,20 @@ export class StudentCardList extends React.Component {
     
     card = () => {
         const { studentList } = this.props;
-        //if(studentList !== undefined)
         return (studentList.map(function (el) {
             return (
-                <StudentCard key = {el.id} student={el} />
+                <Grid item xs={3} lg={3}>
+                    <StudentCard key = {el.id} student={el} />
+                </Grid>
             );
         }))
     }
 
     render() {
         return (
-            <div>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={3}>
-                        {this.card()}
-                    </Grid>
-                </Grid>
-            </div>
+            <Grid container spacing={2}>
+                {this.card()}
+            </Grid>
         );
     }
 }
