@@ -16,10 +16,16 @@ namespace EJournal.Controllers.StudyRoomHeadControllers
     public class StudyRoomHeadController : ControllerBase
     {
         private readonly IStudents _students;
+        private readonly ISpecialities _specialities;
+        private readonly IGroups _groups;
 
-        public StudyRoomHeadController(IStudents students)
+        public StudyRoomHeadController(IStudents students, 
+            ISpecialities specialities,
+            IGroups groups)
         {
             _students = students;
+            _specialities = specialities;
+            _groups = groups;
         }
 
         [HttpGet]
@@ -28,9 +34,29 @@ namespace EJournal.Controllers.StudyRoomHeadControllers
         {
             string teacherId = User.FindFirstValue("id");
 
-            var students = _students.GetAllStudentsBySpecialities(teacherId);
+            var students = "";// _students.GetAllStudentsBySpecialities(teacherId);
 
             return Ok(students);
+        }
+
+        [HttpGet]
+        [Route("get/specialitiesByStudyRoomHead")]
+        public IActionResult GetSpecialitiesByManager()
+        {
+            string managerId = User.FindFirstValue("id");
+
+            var specialities = _specialities.GetSpecialitiesByManager(managerId);
+
+            return Ok(specialities);
+        }
+
+        [HttpGet]
+        [Route("get/groupsBySpeciality/{specialityId}")]
+        public IActionResult GetGroupsBySpeciality(int specialityId)
+        {
+            var groups = _groups.GetGroupsBySpeciality(specialityId);
+
+            return Ok(groups);
         }
     }
 }

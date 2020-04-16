@@ -6,6 +6,7 @@ using EJournal.Data.Models;
 using EJournal.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,12 @@ namespace EJournal.Data.Repositories
     {
         private readonly UserManager<DbUser> _userManager;
         private readonly EfDbContext _context;
-        public StudentRepository(EfDbContext context, UserManager<DbUser> userManager)
+        private readonly IConfiguration _configuration;
+        public StudentRepository(EfDbContext context, UserManager<DbUser> userManager, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
+            _configuration = configuration;
         }
         public async Task<bool> AddStudentAsync(AddStudentModel profile)
         {
@@ -66,7 +69,7 @@ namespace EJournal.Data.Repositories
             return count;
         }
 
-        public IEnumerable<GetStudentModel> GetAllStudentsBySpecialities(string teacherId)
+        public IEnumerable<GetStudentInfoWithGroup> GetAllStudentsBySpecialities(string teacherId)
         {
             List<int> specialitiesId = _context.Specialities
                 .Where(x => x.TeacherId == teacherId)
@@ -84,22 +87,26 @@ namespace EJournal.Data.Repositories
                 groupsId.AddRange(groupId);
             }
 
-            List<GetStudentModel> allStudents = new List<GetStudentModel>();
+            List<GetStudentInfoWithGroup> allStudents = new List<GetStudentInfoWithGroup>();
 
             for(int i = 0; i < groupsId.Count; i++)
             {
-                List<GetStudentModel> studentsBySingleGroup = _context.GroupsToStudents
+                List<GetStudentInfoWithGroup> studentsBySingleGroup = _context.GroupsToStudents
                     //.Include(x => x.Student.BaseProfile.DbUser)
                     .Where(x => x.GroupId == groupsId[i])
-                    .Select(s => new GetStudentModel
+                    .Select(s => new GetStudentInfoWithGroup
                     {
                         Id = s.Student.BaseProfile.Id,
+                        Image = s.Student.BaseProfile.Image??_configuration.GetValue<string>("DefaultImage"),
                         Name = s.Student.BaseProfile.Name,
                         Surname = s.Student.BaseProfile.Surname,
-                        LastName = s.Student.BaseProfile.Adress,
+                        LastName = s.Student.BaseProfile.LastName,
                         DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString(),
                         Email = s.Student.BaseProfile.DbUser.Email,
-                        PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber
+                        PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
+                        Adress = s.Student.BaseProfile.Adress,
+                        GroupName = s.Group.Name,
+                        Speciality = s.Group.Speciality.Name
                     }).ToList();
 
                 allStudents.AddRange(studentsBySingleGroup);

@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   Card,
-  CardHeader,
   CardContent,
   CardActionArea,
-  Grid
 } from "@material-ui/core";
 import { MDBModal, MDBModalBody, MDBModalHeader } from "mdbreact";
 //import "./timetableModal.css";
