@@ -24,12 +24,21 @@ namespace EJournal.Data.Repositories
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    CountOfStudents=s.GroupToSubjects.Count(),
-                    NameOfCurator= s.Teacher.BaseProfile.LastName+" "+s.Teacher.BaseProfile.Name+" "+ s.Teacher.BaseProfile.Surname,
-                    AverageMark=_context.Marks.Where(m=>s.GroupToStudents.Any(t=>m.StudentId==t.StudentId)).Select(t=>Convert.ToInt32(t.Value)).Sum()/
-                    _context.Marks.Where(m => s.GroupToStudents.Any(t => m.StudentId == t.StudentId)).Count()
+                    CountOfStudents = s.GroupToSubjects.Count(),
+                    NameOfCurator = s.Teacher.BaseProfile.LastName + " " + s.Teacher.BaseProfile.Name + " " + s.Teacher.BaseProfile.Surname
                 })
                 .ToList();
+            foreach (var item in groups)
+            {
+                var marks = _context.GroupsToStudents.Where(t => t.GroupId == item.Id).SelectMany(t => t.Student.Marks);
+                if (marks.Count() > 0)
+                {
+                    var formatted = marks.Select(m => Convert.ToInt32(m.Value));
+                    double sum = formatted.Sum();
+                    item.AverageMark = Math.Round(sum / marks.Count(),1);
+                }
+                else item.AverageMark = 0;
+            }
             return groups;
         }
 

@@ -1,29 +1,35 @@
 import React, { Component } from 'react';
 import * as getListActions from './reducer';
+import * as getSpecialitiesListActions from './reducer';
 import { connect } from 'react-redux';
 import get from "lodash.get";
 import { Dropdown } from 'primereact/dropdown';
 
 class GetGroups extends Component {
-    
-        state = {
-            
-        };
+
+    state = {
+        specialityId: 0
+    };
 
 
-    componentDidMount = () => {
-        const { groupId, specialityId, subjectId } = this.state;
-        this.props.getMarks({ groupId, specialityId, subjectId });
+    componentWillMount = () => {
+        this.props.getSpecialities();
+        console.log(this.props.specialities);
     }
-    
+    changeSpec = (event) => {
+        const specialityId=event.target.value;
+        console.log(specialityId);
+        this.setState({specialityId:specialityId});
+        this.props.getGroups({specialityId:specialityId});
+    }
     render() {
-        const { data } = this.props;
+        const { data, specialities } = this.props;
         console.log("RENDER", data);
-        
+
         return (
             <React.Fragment>
-                <Dropdown value={this.state.specialityId} options={specs} onChange={this.changeSpec} placeholder="Select a speciality" />
-                
+                <Dropdown value={this.state.specialityId} options={specialities} onChange={this.changeSpec} placeholder="Select a speciality" />
+
             </React.Fragment>
         );
     }
@@ -31,7 +37,8 @@ class GetGroups extends Component {
 
 const mapStateToProps = state => {
     return {
-        data: get(state, 'groups.list.data'),
+        data: get(state, 'getGroups.list.data'),
+        specialities: get(state, 'getGroups.list.specialities')
     };
 }
 
@@ -39,8 +46,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getGroups: filter => {
             dispatch(getListActions.getGroups(filter));
+        },
+        getSpecialities: () => {
+            dispatch(getSpecialitiesListActions.getSpecialities());
         }
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MarksTable);
+export default connect(mapStateToProps, mapDispatchToProps)(GetGroups);

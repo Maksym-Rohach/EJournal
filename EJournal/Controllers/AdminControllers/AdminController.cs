@@ -27,13 +27,16 @@ namespace EJournal.Controllers.AdminControllers
         private readonly IStudents _students;
         private readonly ITeachers _teachers;
         private readonly IGroups _groups;
-        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers, IGroups groups)
+        private readonly ISpecialities _specialities;
+
+        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers, IGroups groups,ISpecialities specialities)
         {
             _context = context;
             _userManager = userManager;
             _students = students;
             _teachers = teachers;
             _groups = groups;
+            _specialities = specialities;
         }
 
         [HttpPost]
@@ -314,7 +317,19 @@ namespace EJournal.Controllers.AdminControllers
                 return Ok(gr);
             else return BadRequest("Error");
         }
-
+        [HttpGet]
+        [Route("get/specialities")]
+        public IActionResult GetSpecialities()
+        {
+            var spec= _specialities.GetAllSpecialities().Select(t => new DropdownModel
+            {
+                Label=t.Name,
+                Value=t.Id.ToString()
+            });
+            if (spec != null)
+                return Ok(spec);
+            else return BadRequest("Error");
+        }
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)
         //{
