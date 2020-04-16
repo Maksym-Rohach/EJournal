@@ -29,7 +29,17 @@ class Homework extends React.Component {
   }
   componentDidMount() {
     const { subject } = this.state;
-    
+    // const paramSub = this.props.match.params.subject;
+    // let subj = paramSub.split('=').splice(1,1).toString();
+    // console.log("Params",subj);
+    // if(subj==="null"){
+    //   this.props.getData({ subject });
+    // }
+    // else{
+    //   console.log("else",subj);
+    //   this.setState({subject : subj});
+    //   this.props.getData({ subj });
+    // }
     this.props.getData({ subject });
   }
   handleDateChange = (date) => {
@@ -42,6 +52,7 @@ class Homework extends React.Component {
   render() {
     const { data } = this.props;
     const { subject,date } = this.state;
+    console.log("RENDER", subject);
     let counter=0;
     if (data.subjects != undefined) {
       return (
