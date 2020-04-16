@@ -128,6 +128,7 @@ class Profile extends React.Component {
     <span className='sr-only'>Завантаження...</span>
     </div>);
   }
+  }
 }
 const mapStateToProps = (state) => {
   return {
