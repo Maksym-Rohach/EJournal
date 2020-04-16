@@ -17,6 +17,6 @@ namespace EJournal.Data.Interfaces
         int CountOfTruancy(string studentId);
         IEnumerable<GetStudentModel> GetFirstTenStudents(int groupId=0);
         //IEnumerable<GetStudentModel> GetAllStudentsBySpecialities(string teacherId);
-        IEnumerable<GetStudentInfoWithGroup> GetAllStudentsBySpecialities(string teacherId);
+        //IEnumerable<GetStudentInfoWithGroup> GetAllStudentsBySpecialities(string teacherId);
     }
 }

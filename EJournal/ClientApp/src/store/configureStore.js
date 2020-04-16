@@ -23,6 +23,7 @@ import {studentCardListReducer} from '../components/StudentCardList/reducer'
 import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
 import {getGroupsReducer} from '../views/adminViews/GetGroups/reducer';
 
+import {groupNewsReducer} from '../components/groupNews/reducer';
 import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer'
 //import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
 // Create browser history to use in the Redux store
@@ -47,6 +48,7 @@ export default function configureStore(history, initialState) {
     homework:homeworkReducer,
     studentCardList: studentCardListReducer,
     specialitiesSelect: specialitiesSelectReducer,
+    groupNews:groupNewsReducer,
     //groupsSelect: groupsSelectReducer,
     news:newsReducer,
     getSubject:GetSubjectReducer,
