@@ -26,12 +26,14 @@ namespace EJournal.Controllers.AdminControllers
         private readonly EfDbContext _context;
         private readonly IStudents _students;
         private readonly ITeachers _teachers;
-        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers)
+        private readonly IGroups _groups;
+        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers, IGroups groups)
         {
             _context = context;
             _userManager = userManager;
             _students = students;
             _teachers = teachers;
+            _groups = groups;
         }
 
         [HttpPost]
@@ -303,12 +305,15 @@ namespace EJournal.Controllers.AdminControllers
             }
             return BadRequest("Введені не всі дані");
         }
-        //[HttpPost]
-        //[Route("get/groups")]
-        //public IActionResult GetGroups([FromBody] GetGroupFiltersModel model)
-        //{
-
-        //}
+        [HttpPost]
+        [Route("get/groups")]
+        public IActionResult GetGroups([FromBody] GetGroupFiltersModel model)
+        {
+            var gr = _groups.GetGroupInfoBySpeciality(model.SpecialityId);
+            if (gr != null)
+                return Ok(gr);
+            else return BadRequest("Error");
+        }
 
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EJournal.ViewModels.AdminViewModels
+namespace EJournal.Data.Models
 {
-    public class GetGroupModel
+    public class GetGroupInfoModel
     {
         public int Id { get; set; }
         public string Name { get; set; }

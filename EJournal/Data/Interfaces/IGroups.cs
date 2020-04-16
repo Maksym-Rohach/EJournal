@@ -9,5 +9,7 @@ namespace EJournal.Data.Interfaces
     public interface IGroups
     {
         List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId);
+        List<GetGroupInfoModel> GetGroupInfoBySpeciality(int specialityId);
+
     }
 }

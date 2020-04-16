@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as getListActions from './reducer';
 import { connect } from 'react-redux';
 import get from "lodash.get";
-
+import { Dropdown } from 'primereact/dropdown';
 
 class GetGroups extends Component {
     
