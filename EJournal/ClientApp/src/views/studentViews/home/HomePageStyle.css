@@ -13,8 +13,11 @@
     color:#0879a0;
 }
 .card-bg-color{
-    background-color: #FFCE56!important;
+    background-color: #1f8afc!important;
     color:white;
+}
+.border-wh{
+    border: white 3px solid;
 }
 .link{
     color: white;

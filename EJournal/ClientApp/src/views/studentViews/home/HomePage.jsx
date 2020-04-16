@@ -359,9 +359,12 @@ class HomePage extends React.Component {
           </Card>
           <Card  className="mt-3">            
             <CardContent className="card-bg-color">
+              <div className="m-3 border-wh p-3">
+
             <a className="link" href="/#/student/homework">                    
                     <h2 className="mt-5 ml-2 mb-5">Виконуйте домашні завдання <ArrowForwardIosIcon className="animate"/></h2>
             </a>
+              </div>
             
             </CardContent>            
           </Card>

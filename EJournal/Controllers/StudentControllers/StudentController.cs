@@ -173,7 +173,8 @@ namespace EJournal.Controllers.StudentControllers
         [HttpGet("news")]
         public IActionResult GetNews()
         {
-            var news = _context.News.OrderByDescending(x => x.DateOfCreate).Take(10);
+            
+            var news = _context.News.OrderByDescending(x => x.DateOfCreate).Take(6);
             return Ok(new NewsViewModel()
             {
                 News= news.Select(t=>new NewsModel()
@@ -183,6 +184,25 @@ namespace EJournal.Controllers.StudentControllers
                     Id=t.Id,
                     Teacher=t.TeacherProfile.BaseProfile.Name+" "+ t.TeacherProfile.BaseProfile.Surname+" "+t.TeacherProfile.BaseProfile.LastName,
                     Topic=t.Topic
+                }).ToList()
+            });
+        }
+        [HttpGet("group-news")]
+        public IActionResult GetGroupNews()
+        {
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+            var groupId = _context.Groups.FirstOrDefault(x => x.Id == _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == userId && t.Group.YearTo.Year >= DateTime.Now.Year).GroupId).Id;
+            var news = _context.GroupNews.Where(x=>x.GroupId==groupId).OrderByDescending(x => x.DateOfCreate).Take(10);
+            return Ok(new NewsViewModel()
+            {
+                News = news.Select(t => new NewsModel()
+                {
+                    Content = t.Content,
+                    DateOfCreate = t.DateOfCreate.ToString("dd.MM.yyyy"),
+                    Id = t.Id,
+                    Teacher = t.TeacherProfile.BaseProfile.Name + " " + t.TeacherProfile.BaseProfile.Surname + " " + t.TeacherProfile.BaseProfile.LastName,
+                    Topic = t.Topic
                 }).ToList()
             });
         }

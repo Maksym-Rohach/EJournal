@@ -12,7 +12,7 @@ const propTypes = {
   el: PropTypes.any,
 };
 
-const NewsModal = (props) => {
+const GroupNewsModal = (props) => {
   const { el } = props;
   const [modal, setModal] = React.useState(false);
   
@@ -47,8 +47,8 @@ const NewsModal = (props) => {
   };
   return (
      
-    <div>
-      <div>
+    
+      <React.Fragment>
         <Card className="mt-3" onClick={toggle}>
           <CardActionArea>
             <CardContent>
@@ -62,21 +62,9 @@ const NewsModal = (props) => {
                     variant="subtitle1"
                     gutterBottom
                   >
-                    Дата публікації: {el.dateOfCreate}
+                   {el.dateOfCreate}
                   </Typography>
-                  <div
-                    className="d-flex justify-content-end"
-                    style={{ width: "100%" }}
-                  >
-                    <Typography
-                      className=" ml-3 text-muted"
-                      variant="subtitle1"
-                      
-                      gutterBottom
-                    >
-                      {el.teacher}
-                    </Typography>
-                  </div>
+                 
                 </div>
               </div>
             </CardContent>
@@ -95,12 +83,12 @@ const NewsModal = (props) => {
           >{el.topic}</MDBModalHeader>
           <MDBModalBody color="primary">{createMarkup()}</MDBModalBody>
         </MDBModal>
-      </div>
-    </div>
+      </React.Fragment>
+    
         
   );
 };
 
-NewsModal.propTypes = propTypes;
+GroupNewsModal.propTypes = propTypes;
 
-export default NewsModal;
+export default GroupNewsModal;
