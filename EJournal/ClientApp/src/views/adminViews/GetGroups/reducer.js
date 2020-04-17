@@ -1,25 +1,27 @@
-import AddTeacherService from './AddTeacherService';
+import GetGroupsService from './GetGroupsService';
 import update from '../../../helpers/update';
-export const TEACHER_ADD_STARTED = "TEACHER_ADD_STARTED";
-export const TEACHER_ADD_SUCCESS = "TEACHER_ADD_SUCCESS";
-export const TEACHER_ADD_FAILED = "TEACHER_ADD_FAILED";
+export const GET_GROUPS_STARTED = "GET_GROUPS_STARTED";
+export const GET_GROUPS_SUCCESS = "GET_GROUPS_SUCCESS";
+export const GET_GROUPS_FAILED = "GET_GROUPS_FAILED";
 
-export const ROLES_GET_STARTED = "ROLES_GET_STARTED";
-export const ROLES_GET_SUCCESS = "ROLES_GET_SUCCESS";
-export const ROLES_GET_FAILED = "ROLES_GET_FAILED";
+export const GET_SPECIALITIES_STARTED = "GET_SPECIALITIES_STARTED";
+export const GET_SPECIALITIES_SUCCESS = "GET_SPECIALITIES_SUCCESS";
+export const GET_SPECIALITIES_FAILED = "GET_SPECIALITIES_FAILED";
+
 const initialState = {
     list: {
-        roles: [],
+        data: [],
+        specialities: [],
         loading: false,
         success: false,
         failed: false,
     },
 }
 
-export const addTeacher = (model) => {
+export const getGroups = (model) => {
     return (dispatch) => {
         dispatch(getListActions.started());
-        AddTeacherService.addTeacher(model)
+        GetGroupsService.getGroups(model)
             .then((response) => {
                 console.log("response", response);
                 dispatch(getListActions.success(response));
@@ -30,18 +32,17 @@ export const addTeacher = (model) => {
             });
     }
 }
-
-export const getRoles = () => {
+export const getSpecialities = () => {
     return (dispatch) => {
-        dispatch(getListActionsRoles.started());
-        AddTeacherService.getRoles()
+        dispatch(getSpecialitiesListActions.started());
+        GetGroupsService.getSpecialities()
             .then((response) => {
                 console.log("response", response);
-                dispatch(getListActionsRoles.success(response));
+                dispatch(getSpecialitiesListActions.success(response));
             }, err => { throw err; })
             .catch(err => {
                 console.log("err", err);
-                dispatch(getListActionsRoles.failed(err));
+                dispatch(getSpecialitiesListActions.failed(err));
             });
     }
 }
@@ -49,76 +50,78 @@ export const getRoles = () => {
 export const getListActions = {
     started: () => {
         return {
-            type: TEACHER_ADD_STARTED
+            type: GET_GROUPS_STARTED
         }
     },
     success: (data) => {
         return {
-            type: TEACHER_ADD_SUCCESS
-        }
-    },
-    failed: (error) => {
-        return {
-            type: TEACHER_ADD_FAILED
-        }
-    }
-}
-
-export const getListActionsRoles = {
-    started: () => {
-        return {
-            type: ROLES_GET_STARTED
-        }
-    },
-    success: (data) => {
-        return {
-            type: ROLES_GET_SUCCESS,
+            type: GET_GROUPS_SUCCESS,
             payload: data.data
         }
     },
     failed: (error) => {
         return {
-            type: ROLES_GET_FAILED
+            type: GET_GROUPS_FAILED
+        }
+    }
+}
+export const getSpecialitiesListActions = {
+    started: () => {
+        return {
+            type: GET_SPECIALITIES_STARTED
+        }
+    },
+    success: (data) => {
+        return {
+            type: GET_SPECIALITIES_SUCCESS,
+            specPayload: data.data
+        }
+    },
+    failed: (error) => {
+        return {
+            type: GET_SPECIALITIES_FAILED
         }
     }
 }
 
-export const addTeacherReducer = (state = initialState, action) => {
+export const getGroupsReducer = (state = initialState, action) => {
     let newState = state;
 
     switch (action.type) {
-        case ROLES_GET_STARTED: {
+        case GET_SPECIALITIES_STARTED: {
             newState = update.set(state, 'list.loading', true);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             break;
         }
-        case ROLES_GET_SUCCESS: {
+        case GET_SPECIALITIES_SUCCESS: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
-            //newState = update.set(newState, 'list.success', true);
-            newState = update.set(newState, 'list.roles', action.payload);
+            newState = update.set(newState, 'list.success', true);
+            newState = update.set(newState, 'list.specialities', action.specPayload);
             break;
         }
-        case ROLES_GET_FAILED: {
+        case GET_SPECIALITIES_FAILED: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);
             break;
         }
-        case TEACHER_ADD_STARTED: {
+
+        case GET_GROUPS_STARTED: {
             newState = update.set(state, 'list.loading', true);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             break;
         }
-        case TEACHER_ADD_SUCCESS: {
+        case GET_GROUPS_SUCCESS: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.success', true);
+            newState = update.set(newState, 'list.data', action.payload);
             break;
         }
-        case TEACHER_ADD_FAILED: {
+        case GET_GROUPS_FAILED: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);

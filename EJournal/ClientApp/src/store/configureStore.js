@@ -21,6 +21,8 @@ import {homeworkReducer} from '../views/studentViews/homework/reducer';
 import {newsReducer} from '../views/studentViews/news/reducer';
 import {studentCardListReducer} from '../components/StudentCardList/reducer'
 import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
+import {getGroupsReducer} from '../views/adminViews/GetGroups/reducer';
+
 import {groupNewsReducer} from '../components/groupNews/reducer';
 import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer'
 //import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
@@ -50,6 +52,8 @@ export default function configureStore(history, initialState) {
     //groupsSelect: groupsSelectReducer,
     news:newsReducer,
     getSubject:GetSubjectReducer,
+    getGroups:getGroupsReducer,
+
   };
 
   const middleware = [
