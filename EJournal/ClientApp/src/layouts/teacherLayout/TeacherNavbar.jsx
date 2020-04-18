@@ -26,23 +26,23 @@ class TeacherNavbar extends Component {
   // }
   render() {
     const { login } = this.props;
-    console.log(login);
-    let isAccess = false;
-    if(login.isAuthenticated===undefined){
-        return (
-            <Redirect to="/login" />  
-          );
-    }
-    if(login.isAuthenticated)
-    {
-      const { roles } = login.user;
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i] === 'Curator')
-          isAccess = true;
-        else if(roles[i] === 'Teacher')
-          isAccess = true;
-      }
-    }
+    // console.log(login);
+    // let isAccess = false;
+    // if(login.isAuthenticated===undefined){
+    //     return (
+    //         <Redirect to="/login" />  
+    //       );
+    // }
+    // if(login.isAuthenticated)
+    // {
+    //   const { roles } = login.user;
+    //   for (let i = 0; i < roles.length; i++) {
+    //     if (roles[i] === 'Curator')
+    //       isAccess = true;
+    //     else if(roles[i] === 'Teacher')
+    //       isAccess = true;
+    //   }
+    // }
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
