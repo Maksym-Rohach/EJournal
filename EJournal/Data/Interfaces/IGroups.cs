@@ -1,4 +1,5 @@
-﻿using EJournal.Data.Models;
+﻿using EJournal.Data.Entities;
+using EJournal.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace EJournal.Data.Interfaces
     {
         List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId);
         List<GetGroupInfoModel> GetGroupInfoBySpeciality(int specialityId);
-
+        IEnumerable<Group> GetGroups();
     }
 }

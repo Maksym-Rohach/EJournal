@@ -115,7 +115,34 @@ export default {
           text: 'NEW',
         },
       },
-    
+      {
+        title: true,
+        name: 'Розподіл навантаження',
+        wrapper: {            // optional wrapper object
+          element: '',        // required valid HTML5 element tag
+          attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+        },
+        class: ''             // optional class names space delimited list for title item ex: "text-center"
+      },
+      {
+        name: 'Редагувати розподіл навантаження',
+        url: '/admin/load-distribution',
+        icon: 'icon-notebook',
+      },
+      {
+        title: true,
+        name: 'Новини',
+        wrapper: {            // optional wrapper object
+          element: '',        // required valid HTML5 element tag
+          attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+        },
+        class: ''             // optional class names space delimited list for title item ex: "text-center"
+      },
+      {
+        name: 'Додати новини',
+        url: '/admin/add-news',
+        icon: 'icon-envelope',
+      },
     ],
   };
   
