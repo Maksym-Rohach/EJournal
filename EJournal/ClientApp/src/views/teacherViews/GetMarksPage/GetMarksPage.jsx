@@ -11,6 +11,36 @@ import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
+function mapHeadTable(data) {
+  console.log("head " + data.columns);
+  if (data.columns != undefined) {
+      return data.columns.map(function (item) {
+          return (<th key={item}>{item}</th>);
+      });
+  }
+}
+function mapBodyTable(data) {
+  let counter = 1;
+  console.log("body " + data.rows);
+  if (data.rows != undefined) {
+      return data.rows.map(item => {
+          return (
+              <tr>
+                  <th scope="row">{counter++}</th>
+                  <td>{item.name}</td>
+                  {
+                      item.marks.map(mark => {
+                          return (
+                              <td key={mark}>{mark}</td>
+                          )
+                      })
+                  }
+              </tr>
+          );
+      });
+  }
+}
+
 class GetMarks extends Component {
   state = {
     subject: '',
@@ -41,7 +71,13 @@ class GetMarks extends Component {
 
   componentWillReceiveProps = () => {
     const{subject} = this.state;
+    //console.log("*************", this.state);
     this.props.getMarks({subject});
+  }
+
+  changeSubject=(e)=>{
+    console.log("SETSTATE", e.target.value);
+    this.setState({subject: e.target.value, marks:null});
   }
 
       // changeMonth=(e)=>{
@@ -50,7 +86,7 @@ class GetMarks extends Component {
 
   render() { 
     const {listMarks, listSubject} = this.props;
-    const {subject, marks} = this.state;
+    //const {subject, marks} = this.state;
     console.log("ListSubject", listSubject);
 
     if(listSubject !== undefined){
@@ -61,44 +97,29 @@ class GetMarks extends Component {
             className="mr-3"
             style={{ minWidth: 150 }}
             value={listSubject}
-            onChange={(e) => {
-            this.setState({ subject: e.target.value, marks:null });
-            }}
+            onChange={this.changeSubject}
+            // onChange={(e) => {
+            // this.setState({ subject: e.target.value, marks:null });
+            // }}
             // onChange={handleChange}
           >
-            <MenuItem value={""}>Всі</MenuItem>
+            <MenuItem key={""}>Оберіть предмет</MenuItem>
               {listSubject.map(function (el) {
-                return <MenuItem value={el.id}>{el.name}</MenuItem>;
+                return <MenuItem key={el.name}>{el.name}</MenuItem>;
               })}
           </Select>
           <MDBTable>
             <MDBTableHead color="info-color" textWhite>
               <tr>
-                <th>#</th>
-                <th>First</th>
-                <th>Last</th>
-                <th>Handle</th>
+                {
+                  mapHeadTable(listMarks)
+                }
               </tr>
             </MDBTableHead>
             <MDBTableBody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+             {
+                mapBodyTable(listMarks)
+             }
             </MDBTableBody>
           </MDBTable>
         </React.Fragment>
