@@ -80,7 +80,7 @@ class TeacherNavbar extends Component {
             <DropdownMenu right>
               {/* <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem> */}
               {/* <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem> */}
-              <DropdownItem><i className="fa fa-user"></i>Мій профіль</DropdownItem>
+              <DropdownItem href="/#/teacher/profile"><i className="fa fa-user"></i>Мій профіль</DropdownItem>
               {/* <DropdownItem divider /> */}
               <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
