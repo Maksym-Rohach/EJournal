@@ -8,6 +8,7 @@ const TeachersTable = React.lazy(() => import('../views/adminViews/TeachersTable
 const MarksTable = React.lazy(() => import('../views/adminViews/MarksTable'));
 const AddStudent = React.lazy(() => import('../views/adminViews/AddStudent'));
 const AddTeacher = React.lazy(() => import('../views/adminViews/AddTeacher'));
+const GetGroups = React.lazy(() => import('../views/adminViews/GetGroups'));
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -19,6 +20,7 @@ const routes = [
   { path: '/admin/marks', exact: true, name: 'Marks', component: MarksTable },
   { path: '/admin/addstudent', exact: true, name: 'AddStudent', component: AddStudent },
   { path: '/admin/addteacher', exact: true, name: 'AddTeacher', component: AddTeacher },
+  { path: '/admin/getgroups', exact: true, name: 'GetGroups', component: GetGroups },
 
 ];
 
