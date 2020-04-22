@@ -71,7 +71,7 @@ namespace EJournal.Controllers.AdminControllers
                 }).ToList()
             });
         }
-        [HttpGet("group-news")]
+        [HttpPost("group-news")]
         public IActionResult GetGroupNews([FromBody] GetNewsViewModel model)
         {
             var claims = User.Claims;

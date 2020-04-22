@@ -143,6 +143,11 @@ export default {
         url: '/admin/add-news',
         icon: 'icon-envelope',
       },
+      {
+        name: 'Перегляд новин',
+        url: '/admin/news',
+        icon: 'icon-eyeglass',
+      },
     ],
   };
   
