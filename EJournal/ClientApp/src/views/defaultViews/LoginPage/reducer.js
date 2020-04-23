@@ -99,7 +99,7 @@ function getUrlToRedirect() {
   if (Array.isArray(roles)) {
     for (let i = 0; i < roles.length; i++) {
       if (roles[i] == "Director") {
-        path = "/admin/persons";
+        path = "/admin/students";
         break;
       } else if (roles[i] === "Student") {
         path = "/student";
@@ -123,7 +123,7 @@ function getUrlToRedirect() {
     } else if (roles === "StudyRoomHead") {
       path = "/manager/profile";
     } else if (roles === "Director") {
-      path = "/admin/clients";
+      path = "/admin/students";
     }else if(roles === "Curator"){
       path="/teacher";
     }
