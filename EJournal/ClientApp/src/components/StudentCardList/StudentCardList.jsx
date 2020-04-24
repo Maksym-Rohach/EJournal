@@ -17,7 +17,7 @@ export class StudentCardList extends React.Component {
         const { studentList } = this.props;
         return (studentList.map(function (el) {
             return (
-                <Grid item xs={3} lg={3}>
+                <Grid item xs={12} sm={6} md={4} lg={2}>
                     <StudentCard key = {el.id} student={el} />
                 </Grid>
             );
