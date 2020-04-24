@@ -8,6 +8,7 @@ namespace EJournal.ViewModels
     public class AddUserModel
     {
         public List<string> Rolename { get; set; }
+        public int GroupId { get; set; }
         //public string Degree { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

@@ -52,6 +52,7 @@ namespace EJournal.Controllers.AdminControllers
                 bool res = await _students.AddStudentAsync(new AddStudentModel
                 {
                     Name = model.Name,
+                    GroupId=model.GroupId,
                     LastName = model.LastName,
                     Surname = model.Surname,
                     Adress = model.Adress,
@@ -98,6 +99,22 @@ namespace EJournal.Controllers.AdminControllers
             if (roles != null)
                 return Ok(roles);
             else 
+                return BadRequest();
+        }
+        [HttpGet]
+        [Route("get/shortgroups")]
+        public IActionResult GetDropdownGroups()
+        {
+            var groups = _groups.GetAllGroupsInfo();
+            if (groups != null)
+            { 
+                return Ok(groups.Select(t=>new DropdownModel 
+                {
+                    Label=t.Name,
+                    Value=t.Id.ToString()
+                })); 
+            }
+            else
                 return BadRequest();
         }
         [HttpPost]
@@ -329,6 +346,57 @@ namespace EJournal.Controllers.AdminControllers
             if (spec != null)
                 return Ok(spec);
             else return BadRequest("Error");
+        }
+        [HttpPost]
+        [Route("get/special/teachers")]
+        public IActionResult GetSpecialityTeachers([FromBody]SpecialtyTeachersFilterModel model)
+        {
+            var curators=_teachers.GetCuratorsBySpeciality(model.SpecialityId);
+            if (curators != null)
+            {
+                var res = curators.Select(t => new DropdownModel
+                {
+                    Label = t.Name,
+                    Value = t.Id
+                });
+                return Ok(res);
+            }
+            else return BadRequest();
+        }
+
+        [HttpDelete]
+        [Route("delete/group/{groupId}")]
+        public IActionResult DeleteGroup(int groupId)
+        {
+            bool res = _groups.DeleteGroup(groupId);
+            if (res)
+                return Ok(res);
+            else return BadRequest(res);
+        }
+        [HttpPost]
+        [Route("edit/group")]
+        public IActionResult EditGroup([FromBody]EditGroupFilterModel model)
+        {
+            bool res=_groups.EditGroup(model.TeacherId, model.GroupId, model.GroupName);
+            if (res)
+                return Ok("ok");
+            else return BadRequest("ne ok");
+        }
+        [HttpPost]
+        [Route("add/group")]
+        public IActionResult AddGroup([FromBody] AddGroupFiltersModel model)
+        {
+            bool res=_groups.AddGroup(new AddGroupModel
+            {
+                Name=model.Name,
+                SpecialityId=model.SpecialityId,
+                TeacherId=model.TeacherId,
+                DateFrom=DateTime.Parse(model.DateFrom),
+                DateTo=DateTime.Parse(model.DateTo)
+            });
+            if (res)
+                return Ok();
+            else return BadRequest();
         }
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)

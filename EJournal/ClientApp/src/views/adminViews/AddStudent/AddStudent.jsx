@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as getListActions from './reducer';
+import * as getGroupsListActions from './reducer';
 import {
   TextField,
   FormHelperText
@@ -18,6 +19,10 @@ import get from "lodash.get";
 import { Growl } from 'primereact/growl';
 import { MDBBtn } from "mdbreact";
 import Paper from '@material-ui/core/Paper';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 
 class addStudent extends Component {
   state = {
@@ -33,8 +38,19 @@ class addStudent extends Component {
     phoneNumber: '',
     passportString: '',
     identificationCode: '',
+    groupId: 0
   };
-
+  componentDidMount = () => {
+    this.props.getGroups();
+    const paramSub = this.props.match.params.groupId;
+    if (paramSub !== undefined) {
+      let gr = paramSub.split('=').splice(1, 1).toString();
+      console.log("Params", gr);
+      if (gr !== "null") {
+        this.setState({ groupId: gr });
+      }
+    }
+  }
   componentWillReceiveProps = (nextProps) => {
     if (nextProps !== this.props) {
       console.log("np: ", nextProps);
@@ -58,6 +74,10 @@ class addStudent extends Component {
   };
   handleChange = (e) => {
     this.setStateByErrors(e.target.name, e.target.value);
+  }
+  changeGroup = (event) => {
+    const groupId = event.target.value;
+    this.setState({ groupId: groupId });
   }
   LoadResponceErrors() {
     const { success, failed } = this.state;
@@ -99,7 +119,7 @@ class addStudent extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     let errors = {};
-    const { name, surname, lastName, adress, email, phoneNumber, passportString, identificationCode, dateOfBirth } = this.state;
+    const { name, surname, lastName, adress, email, phoneNumber, passportString, identificationCode, dateOfBirth, groupId } = this.state;
     function pad(s) { return (s < 10) ? '0' + s : s; };
     let today = new Date();
     const nowDate = [pad(today.getDate()), pad(today.getMonth() + 1), today.getFullYear()].join('.');
@@ -135,6 +155,7 @@ class addStudent extends Component {
         identificationCode,
         dateOfBirth: birthDate,
         rolename,
+        groupId,
         //degree: ''
       });
 
@@ -146,7 +167,8 @@ class addStudent extends Component {
 
 
   render() {
-    console.log("s ", this.state.success, " f ", this.state.failed);
+    //console.log("s ", this.state.success, " f ", this.state.failed);
+    const { groups } = this.props;
     return (
       <Paper elevation={7} className="p-3 mt-4">
         <div>
@@ -266,6 +288,27 @@ class addStudent extends Component {
               {this.LoadInputErrors("passportString")}
             </Grid>
           </Grid>
+          <Grid container spacing={3} direction="column" alignItems="flex-start">
+            <Grid item xs>
+              {/* <Dropdown className="mt-2" value={this.state.groupId} options={groups} onChange={this.changeGroup} placeholder="Select a group" /> */}
+              <FormControl>
+                <InputLabel id="dlabel">Group</InputLabel>
+                <Select
+                  labelId="dlabel"
+                  value={this.state.groupId}
+                  onChange={this.changeGroup}
+                >
+                  {
+                    groups.map(item => {
+                      return (
+                      <MenuItem key={item.label} value={item.value}>{item.label}</MenuItem>
+                      )
+                    })
+                  }
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
           <Grid container spacing={3} direction="column" alignItems="flex-end">
             <Grid item xs>
               <Growl className="mt-5" ref={(el) => this.growl = el} />
@@ -286,7 +329,7 @@ class addStudent extends Component {
 
 const mapStateToProps = state => {
   return {
-    //result: get(state, 'addStudent.list.result')  
+    groups: get(state, 'addStudent.list.groups'),
     loading: get(state, 'addStudent.list.loading'),
     failed: get(state, 'addStudent.list.failed'),
     success: get(state, 'addStudent.list.success')
@@ -297,6 +340,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     addStudent: model => {
       dispatch(getListActions.addStudent(model));
+    },
+    getGroups: () => {
+      dispatch(getGroupsListActions.getGroups());
     }
   }
 }

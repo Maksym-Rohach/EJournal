@@ -14,5 +14,6 @@ namespace EJournal.Data.Interfaces
         GetTeacherModel GetTeacherById(string id);
         Task<bool> AddTeacherAsync(AddTeacherModel profile);
         List<DropdownModel> GetRolesInDropdownModels();
+        List<GetTeacherShortModel> GetCuratorsBySpeciality(int specialityId);
     }
 }

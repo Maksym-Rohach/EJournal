@@ -96,6 +96,27 @@ namespace EJournal.Data.Repositories
             }
         }
 
+        public List<GetTeacherShortModel> GetCuratorsBySpeciality(int specialityId)
+        {
+            var spec = _context.Specialities.FirstOrDefault(t => t.Id == specialityId);
+            if (spec != null)
+            {
+                //var teachers = _context.TeacherProfiles.Where(t => t.Specialities.Contains(spec));
+                var teachers = _context.TeacherProfiles;
+                if (teachers!=null)
+                {
+                    var us = _userManager.GetUsersInRoleAsync("Curator").Result;
+                    var curators = teachers.Where(t => us.Any(u => u.Id == t.Id));
+                    return curators.Select(t=>new GetTeacherShortModel 
+                    {
+                        Id=t.Id,
+                        Name=t.BaseProfile.Name+" "+t.BaseProfile.LastName+" "+t.BaseProfile.Surname
+                    }).ToList();
+                }
+            }
+            return null;
+        }
+
         public List<DropdownModel> GetRolesInDropdownModels()
         {
             return _context.Roles.Where(t => t.Name != "Student").Select(t => new DropdownModel

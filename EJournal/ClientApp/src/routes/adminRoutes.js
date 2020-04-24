@@ -18,7 +18,8 @@ const routes = [
   { path: '/admin/students', exact: true, name: 'Students', component: StudentsTable },
   { path: '/admin/teachers', exact: true, name: 'Teachers', component: TeachersTable },
   { path: '/admin/marks', exact: true, name: 'Marks', component: MarksTable },
-  { path: '/admin/addstudent', exact: true, name: 'AddStudent', component: AddStudent },
+  //{ path: '/admin/addstudent', exact: true, name: 'AddStudent', component: AddStudent },
+  { path: '/admin/addstudent/:groupId?', exact: true, name: 'AddStudent', component: AddStudent },
   { path: '/admin/addteacher', exact: true, name: 'AddTeacher', component: AddTeacher },
   { path: '/admin/getgroups', exact: true, name: 'GetGroups', component: GetGroups },
 
