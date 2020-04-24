@@ -6,6 +6,7 @@ import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import CropperPage from "../cropper/CropperPage";
 import { serverUrl } from "../../config";
 import Skeleton from "@material-ui/lab/Skeleton";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import {
   Card,
   CardActions,
@@ -22,10 +23,19 @@ class ChangeImage extends React.Component {
     image: "",
     croppedImage: "",
     isLoading: false,
+    success: false,
+    failed: false,
   };
 
   componentWillMount = () => {
     this.props.getImage();
+  };
+
+  componentWillReceiveProps = (nextProps) => {
+    if (nextProps !== this.props) {
+      console.log("componentWillReceiveProps", nextProps.success);
+      this.setState({ success: nextProps.success });
+    }
   };
 
   triggerChildInput = () => {
@@ -49,16 +59,16 @@ class ChangeImage extends React.Component {
   render() {
     //const {errors,data}= this.props;
     const { data } = this.props;
-    console.log(data);
+    const { success, failed } = this.state;
     return (
       <Card className="mr-3 mb-3">
-        <CardContent className="d-flex justify-content-center ">
-          {data == "" ? (
+        <CardContent className="d-flex justify-content-center">
+          {data === "" ? (
             <Skeleton
-            animation="wave"
-            variant="circle"
-            width={250}
-            height={250}
+              animation="wave"
+              variant="circle"
+              width={250}
+              height={250}
             />
           ) : (
             <div>
@@ -72,14 +82,19 @@ class ChangeImage extends React.Component {
         </CardContent>
         <CardActions>
           <Tooltip title="Змінити зображення">
-            <IconButton
-              color="primary"
-              aria-label="upload picture"
-              component="span"
-              onClick={this.triggerChildInput}
-            >
-              <PhotoCamera height={35} fontSize="large" />
-            </IconButton>
+            <div>
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+                onClick={this.triggerChildInput}
+              >
+                <PhotoCamera height={35} fontSize="large" />
+              </IconButton>
+              <FormHelperText className="mt-2">
+                Зображення міняється не зразу *
+              </FormHelperText>
+            </div>
           </Tooltip>
         </CardActions>
 
@@ -97,6 +112,8 @@ const mapStateToProps = (state) => {
   return {
     errors: get(state, "changeImage.list.errors"),
     data: get(state, "changeImage.list.data"),
+    success: get(state, "changeImage.list.success"),
+    failed: get(state, "changeImage.list.failed"),
     login: get(state, "login"),
   };
 };

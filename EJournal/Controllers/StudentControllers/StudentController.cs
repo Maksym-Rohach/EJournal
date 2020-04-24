@@ -95,31 +95,46 @@ namespace EJournal.Controllers.StudentControllers
             var countLessons = _context.Marks.Where(x => x.StudentId == userId && x.JournalColumn.Lesson.GroupId == group.Id && x.JournalColumn.Lesson.LessonDate.Year == DateTime.Now.Year);
             var count = countLessons.Where(x => x.IsPresent == false).Count();
 
-            var attendance = (count * 100) / countLessons.Count();
-            var lessons = _context.Lessons.Where(x => x.Group.Id == group.Id).Where(x => x.LessonDate.Day == DateTime.Now.Day && x.LessonDate.Year == DateTime.Now.Year);
-            List<TimetableModel> timetable = new List<TimetableModel>();
-            timetable = lessons.Select(t => new TimetableModel()
+            var attendance = 0;
+            if (count != 0)
             {
-                AuditoriumNumber = "ауд " + t.Auditorium.Number.ToString(),
-                LessonDate = t.LessonDate.Date.ToString(),
-                TeacherName = t.Teacher.BaseProfile.Name + " " + t.Teacher.BaseProfile.LastName,
-                LessonNumber = t.LessonNumber,
-                Day = t.LessonDate.Day.ToString(),
-                SubjectName = t.Subject.Name,
-                LessonTimeGap = t.LessonTimeGap,
-                Topic = t.JournalColumn.Topic
-            }).ToList();
+                attendance = (count * 100) / countLessons.Count();
+
+            }
+            var lessons = _context.Lessons.Where(x => x.Group.Id == group.Id).Where(x => x.LessonDate.Day == DateTime.Now.Day && x.LessonDate.Year == DateTime.Now.Year);
+            //List<TimetableModel> timetable = new List<TimetableModel>();
+            //timetable = lessons.Select(t => new TimetableModel()
+            //{
+            //    AuditoriumNumber = "ауд " + t.Auditorium.Number.ToString(),
+            //    LessonDate = t.LessonDate.Date.ToString(),
+            //    TeacherName = t.Teacher.BaseProfile.Name + " " + t.Teacher.BaseProfile.LastName,
+            //    LessonNumber = t.LessonNumber,
+            //    Day = t.LessonDate.Day.ToString(),
+            //    SubjectName = t.Subject.Name,
+            //    LessonTimeGap = t.LessonTimeGap,
+            //    Topic = t.JournalColumn.Topic
+            //}).ToList();
+            if(marks.Count()!=0)
             return Ok(new HomePageViewModel()
             {
                 Marks = res,
                 Month = DateTime.Now.Month.ToString(),
                 CountOfDays = attendance.ToString(),
                 Day = DateTime.Now.Day.ToString(),
-                Timetable = timetable,
+                //Timetable = timetable,
                 AverageMarks = arr,
                 AverageMark = avg.Average(x => double.Parse(x.Value)).ToString()
             });
-
+            else
+                return Ok(new HomePageViewModel()
+                {                   
+                    Month = DateTime.Now.Month.ToString(),
+                    CountOfDays = attendance.ToString(),
+                    Day = DateTime.Now.Day.ToString(),
+                    //Timetable = timetable,
+                    AverageMarks = arr,
+                    AverageMark = "0"
+                });
         }
 
 
@@ -173,16 +188,36 @@ namespace EJournal.Controllers.StudentControllers
         [HttpGet("news")]
         public IActionResult GetNews()
         {
-            var news = _context.News.OrderByDescending(x => x.DateOfCreate).Take(10);
+
+            var news = _context.News.OrderByDescending(x => x.DateOfCreate).Take(6);
             return Ok(new NewsViewModel()
             {
-                News= news.Select(t=>new NewsModel()
+                News = news.Select(t => new EJournal.ViewModels.StudentViewModels.NewsModel()
                 {
-                    Content=t.Content,
-                    DateOfCreate=t.DateOfCreate.ToString("dd.MM.yyyy"),
-                    Id=t.Id,
-                    Teacher=t.TeacherProfile.BaseProfile.Name+" "+ t.TeacherProfile.BaseProfile.Surname+" "+t.TeacherProfile.BaseProfile.LastName,
-                    Topic=t.Topic
+                    Content = t.Content,
+                    DateOfCreate = t.DateOfCreate.ToString("dd.MM.yyyy"),
+                    Id = t.Id,
+                    Teacher = t.TeacherProfile.BaseProfile.Name + " " + t.TeacherProfile.BaseProfile.Surname + " " + t.TeacherProfile.BaseProfile.LastName,
+                    Topic = t.Topic
+                }).ToList()
+            });
+        }
+        [HttpGet("group-news")]
+        public IActionResult GetGroupNews()
+        {
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+            var groupId = _context.Groups.FirstOrDefault(x => x.Id == _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == userId && t.Group.YearTo.Year >= DateTime.Now.Year).GroupId).Id;
+            var news = _context.GroupNews.Where(x => x.GroupId == groupId).OrderByDescending(x => x.DateOfCreate).Take(10);
+            return Ok(new NewsViewModel()
+            {
+                News = news.Select(t => new EJournal.ViewModels.StudentViewModels.NewsModel()
+                {
+                    Content = t.Content,
+                    DateOfCreate = t.DateOfCreate.ToString("dd.MM.yyyy"),
+                    Id = t.Id,
+                    Teacher = t.TeacherProfile.BaseProfile.Name + " " + t.TeacherProfile.BaseProfile.Surname + " " + t.TeacherProfile.BaseProfile.LastName,
+                    Topic = t.Topic
                 }).ToList()
             });
         }

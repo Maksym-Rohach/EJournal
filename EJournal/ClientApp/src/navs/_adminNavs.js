@@ -12,12 +12,12 @@ export default {
       {
         name: 'Переглянути список',
         url: '/admin/students',
-        icon: 'icon-drop',
+        icon: 'icon-list',
       },
       {
         name: 'Реєстрація учня',
         url: '/admin/addstudent',
-        icon: 'icon-drop',
+        icon: 'icon-plus',
       },
       {
         title: true,
@@ -31,7 +31,7 @@ export default {
       {
         name: 'Переглянути список',
         url: '/admin/teachers',
-        icon: 'icon-drop',
+        icon: 'icon-list',
         // children: [
         //   {
         //     name: 'Викладачі',
@@ -53,7 +53,7 @@ export default {
       {
         name: 'Реєстрація вчителя',
         url: '/admin/addteacher',
-        icon: 'icon-drop',
+        icon: 'icon-plus',
         // children: [
         //   {
         //     name: 'Викладач',
@@ -95,7 +95,7 @@ export default {
       {
         name: 'Переглянути оцінки',
         url: '/admin/marks',
-        icon: 'icon-drop',
+        icon: 'icon-list',
       },
       {
         title: true,
@@ -109,13 +109,41 @@ export default {
       {
         name: 'Редагувати розклад',
         url: '',
-        icon: 'icon-drop',
-        badge: {
-          variant: 'info',
-          text: 'NEW',
-        },
+        icon: 'icon-calendar',
       },
-    
+      {
+        title: true,
+        name: 'Розподіл навантаження',
+        wrapper: {            // optional wrapper object
+          element: '',        // required valid HTML5 element tag
+          attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+        },
+        class: ''             // optional class names space delimited list for title item ex: "text-center"
+      },
+      {
+        name: 'Редагувати розподіл навантаження',
+        url: '/admin/load-distribution',
+        icon: 'icon-notebook',
+      },
+      {
+        title: true,
+        name: 'Новини',
+        wrapper: {            // optional wrapper object
+          element: '',        // required valid HTML5 element tag
+          attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+        },
+        class: ''             // optional class names space delimited list for title item ex: "text-center"
+      },
+      {
+        name: 'Додати новини',
+        url: '/admin/add-news',
+        icon: 'icon-envelope',
+      },
+      {
+        name: 'Перегляд новин',
+        url: '/admin/news',
+        icon: 'icon-eyeglass',
+      },
     ],
   };
   

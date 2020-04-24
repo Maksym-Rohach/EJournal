@@ -55,7 +55,7 @@ export const getListActions = {
     failed: (error) => {
         return {           
             type: IMAGE_FAILED,
-            errors: error.data
+            errors: error
         }
     }
   }

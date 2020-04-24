@@ -6,14 +6,12 @@ import {
   MDBDropdownMenu,
   MDBDropdownItem,
 } from "mdbreact";
-import Badge from '@material-ui/core/Badge';
 import {  
   Nav,
 } from "reactstrap";
 import PropTypes from "prop-types";
 
 import "./sideBarStyle.css";
-import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined';
 import {
   AppAsideToggler,
   AppNavbarBrand,
@@ -21,8 +19,6 @@ import {
 } from "@coreui/react";
 import logo from "../../assets/logo3big.png";
 import logoFull from "../../assets/logo3full.png";
-
-
 const propTypes = {
   children: PropTypes.node,
 };
@@ -33,7 +29,6 @@ class StudentNavbar extends Component {
   render() {
     // eslint-disable-next-line
     const { children, image, ...attributes } = this.props;
-    console.log("IMAGE", image);
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -49,24 +44,6 @@ class StudentNavbar extends Component {
           </NavItem>     */}
           <MDBDropdown className="mr-3">
             <MDBDropdownToggle className="dopdown-toggle" nav>
-              <Badge badgeContent={4} color="error">
-                <NotificationsNoneOutlinedIcon />
-              </Badge>
-             
-            </MDBDropdownToggle>
-            <MDBDropdownMenu id="dropMenu1" className="dropdown-default" right>
-              <MDBDropdownItem>
-                <h6>Hello</h6>
-                <p className="text-muted">24.05.2020</p>
-              </MDBDropdownItem>
-              <MDBDropdownItem>
-                <h6>Hello</h6>
-                <p className="text-muted">24.05.2020</p>
-              </MDBDropdownItem>
-            </MDBDropdownMenu>
-          </MDBDropdown>
-          <MDBDropdown className="mr-3">
-            <MDBDropdownToggle className="dopdown-toggle" nav>
               <img
                 src={image}
                 className="rounded-circle z-depth-0"
@@ -76,10 +53,10 @@ class StudentNavbar extends Component {
             </MDBDropdownToggle>
             <MDBDropdownMenu id="dropMenu1" className="dropdown-default" right>
               <MDBDropdownItem href="/#/student/profile">
-                <i className="ml-2 icon-user"></i> Мій профіль
+                <i className="ml-1 icon-user"></i> Мій профіль
               </MDBDropdownItem>
-              <MDBDropdownItem href="#!">
-                <i className="ml-2 icon-logout"></i> Вихід
+              <MDBDropdownItem href="/#/" onClick={e => this.props.onLogout(e)}>
+                <i className="ml-1 icon-logout"></i> Вихід
               </MDBDropdownItem>
             </MDBDropdownMenu>
           </MDBDropdown>

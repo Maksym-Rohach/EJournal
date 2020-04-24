@@ -1,6 +1,6 @@
-import React from 'react';
-import * as getListActions from './reducer';
-import { connect } from 'react-redux';
+import React from "react";
+import * as getListActions from "./reducer";
+import { connect } from "react-redux";
 import get from "lodash.get";
 import {
   Card,
@@ -12,14 +12,11 @@ import {
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 class Profile extends React.Component {
-  
-  
-  componentWillMount(){
+  componentWillMount() {
     this.props.getProfile();
   }
-
-  render(){
-    const {data}= this.props;
+  render() {
+    const { data, isLoading } = this.props;
     console.log(data);
     if(data!=undefined)
     return (
@@ -131,21 +128,21 @@ class Profile extends React.Component {
     <span className='sr-only'>Завантаження...</span>
     </div>);
   }
+  }
 }
-};
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    data: get(state, 'profile.list.data')
+    data: get(state, "profile.list.data"),
+    isLoading: get(state, "profile.list.loading"),
   };
-}
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getProfile: filter => {
-        dispatch(getListActions.getProfile(filter));
-    }
-  }
-}
- 
-export default connect(mapStateToProps,mapDispatchToProps)(Profile);
+    getProfile: (filter) => {
+      dispatch(getListActions.getProfile(filter));
+    },
+  };
+};
 
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -36,7 +36,7 @@ class TeachersTable extends Component {
 
     return (
       <React.Fragment>
-        <Dropdown value={this.state.rolename} options={roles} onChange={this.changeRole} placeholder="Select a role" />
+        <Dropdown value={this.state.rolename} options={roles} onChange={this.changeRole} placeholder="Виберіть роль" />
         
         <MDBDataTable
           striped
