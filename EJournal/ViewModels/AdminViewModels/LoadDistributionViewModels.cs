@@ -24,6 +24,13 @@ namespace EJournal.ViewModels.AdminViewModels
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public string SelectedTeacherId { get; set; }
         public List<TeacherModel> Teachers { get; set; }
+    }
+    public class ChangeTeacherViewModel
+    {
+        public string TeacherId { get; set; }
+        public string SubjectId { get; set; }
+        public string GroupId { get; set; }
     }
 }

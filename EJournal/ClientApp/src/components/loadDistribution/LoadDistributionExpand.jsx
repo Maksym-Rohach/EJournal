@@ -40,7 +40,7 @@ export function ControlledExpansionPanels(props) {
   const [group, setGroup] = React.useState(0);
   const { data } = props;
   const { groups } = props;
-  const [age, setAge] = React.useState("");
+  const [success, setSuccess] = React.useState(false);
   const [growl, setGrowl] = React.useState();
   const handleChange = (panel, groupId) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -49,15 +49,24 @@ export function ControlledExpansionPanels(props) {
       props.getData({ groupId });
     }
   };
-  const handleChangeSelect = () => (event) => {
-    console.log("ev", event.target.value);
+  const handleChangeSelect = (groupId,subjectId) => (event) => {
+    //console.log("ev", event.target.value);
+    props.changeTeacher({groupId,subjectId,teacherId:event.target.value})
     growl.show({
       severity: "success",
       summary: "Успіх",
       detail: "Данні збережено",
     });
   };
-
+  const select = (row) => {
+    if (row.selectedTeacherId === null) {
+      return (
+        <option disabled selected value>
+          Оберіть вчителя
+        </option>
+      );
+    }
+  };
   const loadData = () => {
     if (data.subjects != undefined && data.group === group.toString()) {
       return (
@@ -79,16 +88,22 @@ export function ControlledExpansionPanels(props) {
                       })}
 
                   </Select> */}
-                <Input onChange={handleChangeSelect()} type="select">
-                  <option disabled selected value>
-                    Оберіть вчителя
-                  </option>
+                <Input onChange={handleChangeSelect(data.group,row.id)} type="select">
+                  {select(row)}
                   {row.teachers.map(function (el) {
-                    return (
-                      <option key={el.id} value={el.id}>
-                        {el.name}
-                      </option>
-                    );
+                    if (el.id === row.selectedTeacherId) {
+                      return (
+                        <option selected key={el.id} value={el.id}>
+                          {el.name}
+                        </option>
+                      );
+                    } else {
+                      return (
+                        <option key={el.id} value={el.id}>
+                          {el.name}
+                        </option>
+                      );
+                    }
                   })}
                 </Input>
               </TableCell>
@@ -98,7 +113,10 @@ export function ControlledExpansionPanels(props) {
       );
     } else {
       return (
-        <div className="d-flex mt-3 justify-content-center" style={{width:"200%"}}>
+        <div
+          className="d-flex mt-3 justify-content-center"
+          style={{ width: "200%" }}
+        >
           <div
             className="d-flex justify-content-center spinner-border text-primary"
             role="status"
@@ -152,7 +170,8 @@ export function ControlledExpansionPanels(props) {
 }
 
 const mapStateToProps = (state) => {
-  return {
+  return {    
+    successChange: get(state, "loadDistributionData.list.successChange"),
     data: get(state, "loadDistributionData.list.data"),
   };
 };
@@ -162,6 +181,9 @@ const mapDispatchToProps = (dispatch) => {
     getData: (filter) => {
       dispatch(getListActions.getData(filter));
     },
+    changeTeacher: (filter) => {
+        dispatch(getListActions.changeTeacher(filter));
+      },
   };
 };
 
