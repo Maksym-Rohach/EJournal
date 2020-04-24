@@ -58,5 +58,14 @@ namespace EJournal.Controllers.StudyRoomHeadControllers
 
             return Ok(groups);
         }
+
+        [HttpGet]
+        [Route("get/studentsByGroup/{groupId}")]
+        public IActionResult GetStudentsByGroup(int groupId)
+        {
+            var groups = _students.GetStudentsByGroup(groupId);
+
+            return Ok(groups);
+        }
     }
 }
