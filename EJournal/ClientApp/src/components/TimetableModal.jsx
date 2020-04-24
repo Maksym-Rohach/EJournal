@@ -35,13 +35,13 @@ function createMarkup(data, date) {
                 </Typography>
               </div>
 
-              <Typography variant="h6" gutterBottom>
+              <Typography className="text-muted" variant="subtitle1" gutterBottom>
                 {el.teacherName}
               </Typography>
-              <Typography variant="h6" gutterBottom>
+              <Typography className="text-muted" variant="subtitle1" gutterBottom>
                 {el.lessonTimeGap}
               </Typography>
-              <Typography variant="h6" gutterBottom>
+              <Typography className="text-muted" variant="subtitle1" gutterBottom>
                 {el.auditoriumNumber}
               </Typography>
 

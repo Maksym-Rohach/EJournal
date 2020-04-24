@@ -45,6 +45,7 @@ const NewsModal = (props) => {
   const toggle = () => {
     setModal(!modal);
   };
+
   return (
      
     <div>
