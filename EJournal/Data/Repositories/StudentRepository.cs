@@ -92,7 +92,6 @@ namespace EJournal.Data.Repositories
             for(int i = 0; i < groupsId.Count; i++)
             {
                 List<GetStudentInfoWithGroup> studentsBySingleGroup = _context.GroupsToStudents
-                    //.Include(x => x.Student.BaseProfile.DbUser)
                     .Where(x => x.GroupId == groupsId[i])
                     .Select(s => new GetStudentInfoWithGroup
                     {

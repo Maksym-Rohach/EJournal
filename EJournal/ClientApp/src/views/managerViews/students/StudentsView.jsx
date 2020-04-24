@@ -23,9 +23,9 @@ class StudentsView extends React.Component {
             <React.Fragment>
                 <div className={classes.root}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} md={6} lg={3}>
+                        {/* <Grid item xs={12} md={6} lg={3}>
                             <SpecialitiesSelect/>
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12} md={6} lg={3}>
                             <GroupsSelect/>
                         </Grid>

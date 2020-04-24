@@ -34,7 +34,7 @@ namespace EJournal.Controllers.StudyRoomHeadControllers
         {
             string teacherId = User.FindFirstValue("id");
 
-            var students = "";// _students.GetAllStudentsBySpecialities(teacherId);
+            var students = _students.GetAllStudentsBySpecialities(teacherId);
 
             return Ok(students);
         }
