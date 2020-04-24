@@ -15,42 +15,43 @@ const styles = theme => ({
     },
     formControl: {
         margin: theme.spacing(1),
-        minWidth: 120,
+        minWidth: 220,
     },
 })
 
 class GroupsSelect extends React.Component {
 
     componentDidMount = () => {
-        this.props.getGroupsSelect();
+        //this.props.getGroupsSelect();
     }
 
-    menuItem = () => {
-        const { specialitiesList } = this.props;
-        return (specialitiesList.map(function (el) {
-            return (
-                <MenuItem key = {el.id}>
-                    {el.name}
-                </MenuItem>
-            );
-        }))
-    }
+    // menuItem = () => {
+    //     const { specialitiesList } = this.props;
+    //     return (specialitiesList.map(function (el) {
+    //         return (
+    //             <MenuItem key = {el.id}>
+    //                 {el.name}
+    //             </MenuItem>
+    //         );
+    //     }))
+    // }
 
     render(){
         const { classes } = this.props;
-
-        <FormControl className={classes.formControl}>
-            <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
-                <Select
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
-                    value={age}
-                    onChange={handleChange}
-                >
-                    {this.menuItem()}
-                </Select>
-            <FormHelperText className={classes.accent}>Оберіть групу</FormHelperText>
-        </FormControl>
+        return(
+            <React.Fragment>
+                <FormControl className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-helper-label">Група</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-helper-label"
+                            id="demo-simple-select-helper"                    
+                        >
+                            {/* {this.menuItem()} */}
+                        </Select>
+                    <FormHelperText className={classes.accent}>Оберіть групу</FormHelperText>
+                </FormControl>
+            </React.Fragment>
+        );
     }
 }
 

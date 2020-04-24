@@ -12,5 +12,8 @@ namespace EJournal.Data.Entities
 
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }
+
+        public string TeacherId { get; set; }
+        public TeacherProfile TeacherProfile { get; set; }
     }
 }
