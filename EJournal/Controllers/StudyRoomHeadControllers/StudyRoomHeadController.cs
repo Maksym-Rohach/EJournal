@@ -34,7 +34,7 @@ namespace EJournal.Controllers.StudyRoomHeadControllers
         {
             string teacherId = User.FindFirstValue("id");
 
-            var students = "";// _students.GetAllStudentsBySpecialities(teacherId);
+            var students = _students.GetAllStudentsBySpecialities(teacherId);
 
             return Ok(students);
         }
@@ -55,6 +55,15 @@ namespace EJournal.Controllers.StudyRoomHeadControllers
         public IActionResult GetGroupsBySpeciality(int specialityId)
         {
             var groups = _groups.GetGroupsBySpeciality(specialityId);
+
+            return Ok(groups);
+        }
+
+        [HttpGet]
+        [Route("get/studentsByGroup/{groupId}")]
+        public IActionResult GetStudentsByGroup(int groupId)
+        {
+            var groups = _students.GetStudentsByGroup(groupId);
 
             return Ok(groups);
         }

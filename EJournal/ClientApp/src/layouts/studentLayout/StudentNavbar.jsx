@@ -29,7 +29,6 @@ class StudentNavbar extends Component {
   render() {
     // eslint-disable-next-line
     const { children, image, ...attributes } = this.props;
-    console.log("IMAGE", image);
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />

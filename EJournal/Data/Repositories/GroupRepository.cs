@@ -114,6 +114,11 @@ namespace EJournal.Data.Repositories
             return groups;
         }
 
+        public IEnumerable<Group> GetGroups()
+        {
+            return _context.Groups;
+        }
+
         public List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId)
         {
             List<GetGroupShortModel> groups = _context.Groups

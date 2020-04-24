@@ -62,7 +62,7 @@ class StudentSideBar extends Component {
                         )} />
                     ) : (null);
                   })}
-                  <Redirect from="/" to="/dashboard" />
+                  <Redirect from="/" to="/student/404" />
                 </Switch>
               </Suspense>
             </Container>

@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace EJournal.Data.Repositories
 {
-    public class StudentRepository : IStudents
+    public class StudentRepository : IStudents        
     {
         private readonly UserManager<DbUser> _userManager;
         private readonly EfDbContext _context;
@@ -101,7 +101,6 @@ namespace EJournal.Data.Repositories
             for (int i = 0; i < groupsId.Count; i++)
             {
                 List<GetStudentInfoWithGroup> studentsBySingleGroup = _context.GroupsToStudents
-                    //.Include(x => x.Student.BaseProfile.DbUser)
                     .Where(x => x.GroupId == groupsId[i])
                     .Select(s => new GetStudentInfoWithGroup
                     {
@@ -218,6 +217,28 @@ namespace EJournal.Data.Repositories
                     DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy")
                 });
             }
+        }
+
+        public IEnumerable<GetStudentInfoWithGroup> GetStudentsByGroup(int groupId)
+        {
+            List<GetStudentInfoWithGroup> students = _context.GroupsToStudents
+                .Where(x => x.GroupId == groupId)
+                .Select(s => new GetStudentInfoWithGroup
+                {
+                    Id = s.Student.BaseProfile.Id,
+                    Image = s.Student.BaseProfile.Image ?? _configuration.GetValue<string>("DefaultImage"),
+                    Name = s.Student.BaseProfile.Name,
+                    Surname = s.Student.BaseProfile.Surname,
+                    LastName = s.Student.BaseProfile.LastName,
+                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString(),
+                    Email = s.Student.BaseProfile.DbUser.Email,
+                    PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
+                    Adress = s.Student.BaseProfile.Adress,
+                    GroupName = s.Group.Name,
+                    Speciality = s.Group.Speciality.Name
+                }).ToList();
+
+            return students;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using EJournal.Data.Models;
+﻿using EJournal.Data.Entities;
+using EJournal.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace EJournal.Data.Interfaces
         bool DeleteGroup(int id);
         bool EditGroup(string teacherId, int groupId, string groupName);
         bool AddGroup(AddGroupModel model);
+        IEnumerable<Group> GetGroups();
     }
 }

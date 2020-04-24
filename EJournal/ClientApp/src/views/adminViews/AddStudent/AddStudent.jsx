@@ -178,7 +178,7 @@ class addStudent extends Component {
                 fullWidth
                 label="Outlined"
                 variant="outlined"
-                label="Name"
+                label="Ім'я"
                 name="name"
                 onChange={this.handleChange}
               />
@@ -189,7 +189,7 @@ class addStudent extends Component {
                 fullWidth
                 label="Outlined"
                 variant="outlined"
-                label="Lastname"
+                label="Прізвище"
                 name="lastName"
                 onChange={this.handleChange}
               />
@@ -200,7 +200,7 @@ class addStudent extends Component {
                 fullWidth
                 label="Outlined"
                 variant="outlined"
-                label="Surname"
+                label="По батькові"
                 name="surname"
                 onChange={this.handleChange}
               />
@@ -213,7 +213,7 @@ class addStudent extends Component {
                 fullWidth
                 label="Outlined"
                 variant="outlined"
-                label="Email"
+                label="Електронна пошта"
                 name="email"
                 onChange={this.handleChange}
               />
@@ -230,7 +230,7 @@ class addStudent extends Component {
                     fullWidth
                     label="Outlined"
                     variant="outlined"
-                    label="Phone"
+                    label="Телефон"
                     name="phoneNumber"
                   />
                 }
@@ -242,7 +242,7 @@ class addStudent extends Component {
                 fullWidth
                 label="Outlined"
                 variant="outlined"
-                label="Address"
+                label="Адрес"
                 name="adress"
                 onChange={this.handleChange}
               />
@@ -255,7 +255,7 @@ class addStudent extends Component {
                 fullWidth
                 label="Outlined"
                 variant="outlined"
-                label="Identity code"
+                label="Індефікаційний код"
                 name="identificationCode"
                 onChange={this.handleChange}
               />
@@ -265,7 +265,7 @@ class addStudent extends Component {
               <MuiPickersUtilsProvider utils={DateFnsUtils} locale={deLocale}>
                 <KeyboardDatePicker
                   margin="normal"
-                  label="Date of birthday"
+                  label="Дата народження"
                   format="dd/MM/yyyy"
                   value={this.state.dateOfBirth}
                   onChange={this.handleDateChange}
@@ -281,7 +281,7 @@ class addStudent extends Component {
                 fullWidth
                 label="Outlined"
                 variant="outlined"
-                label="Passport"
+                label="Паспорт"
                 name="passportString"
                 onChange={this.handleChange}
               />
