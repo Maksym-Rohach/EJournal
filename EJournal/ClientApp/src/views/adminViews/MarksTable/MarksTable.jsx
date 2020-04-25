@@ -18,7 +18,7 @@ function mapBodyTable(data) {
     if (data.rows != undefined) {
         return data.rows.map(item => {
             return (
-                <tr>
+                <tr key={counter}>
                     <th scope="row">{counter++}</th>
                     <td>{item.name}</td>
                     {

@@ -29,7 +29,7 @@ namespace EJournal.Controllers.AdminControllers
         private readonly IGroups _groups;
         private readonly ISpecialities _specialities;
 
-        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers, IGroups groups,ISpecialities specialities)
+        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities)
         {
             _context = context;
             _userManager = userManager;
@@ -52,7 +52,7 @@ namespace EJournal.Controllers.AdminControllers
                 bool res = await _students.AddStudentAsync(new AddStudentModel
                 {
                     Name = model.Name,
-                    GroupId=model.GroupId,
+                    GroupId = model.GroupId,
                     LastName = model.LastName,
                     Surname = model.Surname,
                     Adress = model.Adress,
@@ -98,7 +98,7 @@ namespace EJournal.Controllers.AdminControllers
             var roles = _teachers.GetRolesInDropdownModels();
             if (roles != null)
                 return Ok(roles);
-            else 
+            else
                 return BadRequest();
         }
         [HttpGet]
@@ -107,47 +107,46 @@ namespace EJournal.Controllers.AdminControllers
         {
             var groups = _groups.GetAllGroupsInfo();
             if (groups != null)
-            { 
-                return Ok(groups.Select(t=>new DropdownModel 
+            {
+                return Ok(groups.Select(t => new DropdownModel
                 {
-                    Label=t.Name,
-                    Value=t.Id.ToString()
-                })); 
+                    Label = t.Name,
+                    Value = t.Id.ToString()
+                }));
             }
             else
                 return BadRequest();
         }
-        [HttpPost]
-        [Route("get/students")]
-        public IActionResult GetStudents([FromBody]StudentsFiltersModel model)
+        [HttpGet]
+        [Route("get/students/{specialityId}/{groupId}")]
+        public IActionResult GetStudents(int specialityId, int groupId)
         {
             try
             {
                 AdminStudentsTableModel table = new AdminStudentsTableModel();
                 var query = _students.GetFirstTenStudents().AsQueryable();
                 List<AdminTableStudentRowModel> tableList = new List<AdminTableStudentRowModel>();
-                if (model != null)
+
+                //var groups = _context.Groups.Where(t => t.Speciality.Name == model.Speciality);
+                //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
+                if (specialityId != 0)
                 {
-                    //var groups = _context.Groups.Where(t => t.Speciality.Name == model.Speciality);
-                    //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
-                    if (model.SpecialityId != 0)
+                    table.Groups = _context.Groups.Where(t => t.SpecialityId == specialityId).Select(t => new DropdownModel
                     {
-                        table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
-                        {
-                            Label = t.Name,
-                            Value = t.Id.ToString()
-                        }).ToList();
-                    }
-                    if (model.GroupId != 0)
-                    {
-                        table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
-                        {
-                            Label = t.Name,
-                            Value = t.Id.ToString()
-                        }).ToList();
-                        query = _students.GetFirstTenStudents(model.GroupId).AsQueryable();
-                    }
+                        Label = t.Name,
+                        Value = t.Id.ToString()
+                    }).ToList();
                 }
+                if (groupId != 0)
+                {
+                    table.Groups = _context.Groups.Where(t => t.SpecialityId == specialityId).Select(t => new DropdownModel
+                    {
+                        Label = t.Name,
+                        Value = t.Id.ToString()
+                    }).ToList();
+                    query = _students.GetFirstTenStudents(groupId).AsQueryable();
+                }
+
                 tableList = query.Select(t => new AdminTableStudentRowModel
                 {
                     Name = t.Name + " " + t.LastName + " " + t.Surname,
@@ -338,20 +337,20 @@ namespace EJournal.Controllers.AdminControllers
         [Route("get/specialities")]
         public IActionResult GetSpecialities()
         {
-            var spec= _specialities.GetAllSpecialities().Select(t => new DropdownModel
+            var spec = _specialities.GetAllSpecialities().Select(t => new DropdownModel
             {
-                Label=t.Name,
-                Value=t.Id.ToString()
+                Label = t.Name,
+                Value = t.Id.ToString()
             });
             if (spec != null)
                 return Ok(spec);
             else return BadRequest("Error");
         }
-        [HttpPost]
-        [Route("get/special/teachers")]
-        public IActionResult GetSpecialityTeachers([FromBody]SpecialtyTeachersFilterModel model)
+        [HttpGet]
+        [Route("get/curators")]
+        public IActionResult GetCurators()
         {
-            var curators=_teachers.GetCuratorsBySpeciality(model.SpecialityId);
+            var curators = _teachers.GetCurators();
             if (curators != null)
             {
                 var res = curators.Select(t => new DropdownModel
@@ -377,22 +376,22 @@ namespace EJournal.Controllers.AdminControllers
         [Route("edit/group")]
         public IActionResult EditGroup([FromBody]EditGroupFilterModel model)
         {
-            bool res=_groups.EditGroup(model.TeacherId, model.GroupId, model.GroupName);
+            bool res = _groups.EditGroup(model.TeacherId, model.GroupId, model.GroupName);
             if (res)
-                return Ok("ok");
+                return Ok(_groups.GetGroupInfoBySpeciality(model.SpecialityId));
             else return BadRequest("ne ok");
         }
         [HttpPost]
         [Route("add/group")]
         public IActionResult AddGroup([FromBody] AddGroupFiltersModel model)
         {
-            bool res=_groups.AddGroup(new AddGroupModel
+            bool res = _groups.AddGroup(new AddGroupModel
             {
-                Name=model.Name,
-                SpecialityId=model.SpecialityId,
-                TeacherId=model.TeacherId,
-                DateFrom=DateTime.Parse(model.DateFrom),
-                DateTo=DateTime.Parse(model.DateTo)
+                Name = model.Name,
+                SpecialityId = model.SpecialityId,
+                TeacherId = model.TeacherId,
+                DateFrom = DateTime.Parse(model.DateFrom),
+                DateTo = DateTime.Parse(model.DateTo)
             });
             if (res)
                 return Ok();

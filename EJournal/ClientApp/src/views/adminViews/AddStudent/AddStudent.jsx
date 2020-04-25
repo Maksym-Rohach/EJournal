@@ -301,7 +301,7 @@ class addStudent extends Component {
                   {
                     groups.map(item => {
                       return (
-                      <MenuItem key={item.label} value={item.value}>{item.label}</MenuItem>
+                      <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
                       )
                     })
                   }

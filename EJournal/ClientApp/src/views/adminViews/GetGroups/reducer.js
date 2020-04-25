@@ -8,9 +8,9 @@ export const GET_SPECIALITIES_STARTED = "GET_SPECIALITIES_STARTED";
 export const GET_SPECIALITIES_SUCCESS = "GET_SPECIALITIES_SUCCESS";
 export const GET_SPECIALITIES_FAILED = "GET_SPECIALITIES_FAILED";
 
-export const GET_SPEC_TEACHERS_STARTED = "GET_SPEC_TEACHERS_STARTED";
-export const GET_SPEC_TEACHERS_SUCCESS = "GET_SPEC_TEACHERS_SUCCESS";
-export const GET_SPEC_TEACHERS_FAILED = "GET_SPEC_TEACHERS_FAILED";
+export const GET_CURATORS_STARTED = "GET_CURATORS_STARTED";
+export const GET_CURATORS_SUCCESS = "GET_CURATORS_SUCCESS";
+export const GET_CURATORS_FAILED = "GET_CURATORS_FAILED";
 
 export const DELETE_GROUP_STARTED = "DELETE_GROUP_STARTED";
 export const DELETE_GROUP_SUCCESS = "DELETE_GROUP_SUCCESS";
@@ -24,7 +24,7 @@ const initialState = {
     list: {
         data: [],
         specialities: [],
-        specTeachers:[],
+        curators:[],
         errors:{},
         messageResult:{},
         loading: false,
@@ -62,17 +62,17 @@ export const getSpecialities = () => {
     }
 }
 
-export const getSpecialityTeachers = (model) => {
+export const getCurators = () => {
     return (dispatch) => {
-        dispatch(getSpecialityTeachersListActions.started());
-        GetGroupsService.getSpecialityTeachers(model)
+        dispatch(getCuratorsListActions.started());
+        GetGroupsService.getCurators()
             .then((response) => {
                 console.log("response", response);
-                dispatch(getSpecialityTeachersListActions.success(response));
+                dispatch(getCuratorsListActions.success(response));
             }, err => { throw err; })
             .catch(err => {
                 console.log("err", err);
-                dispatch(getSpecialityTeachersListActions.failed(err));
+                dispatch(getCuratorsListActions.failed(err));
             });
     }
 }
@@ -144,21 +144,21 @@ export const getSpecialitiesListActions = {
         }
     }
 }
-export const getSpecialityTeachersListActions = {
+export const getCuratorsListActions = {
     started: () => {
         return {
-            type: GET_SPEC_TEACHERS_STARTED
+            type: GET_CURATORS_STARTED
         }
     },
     success: (data) => {
         return {
-            type: GET_SPEC_TEACHERS_SUCCESS,
-            specTeachPayload: data.data
+            type: GET_CURATORS_SUCCESS,
+            curatorsPayload: data.data
         }
     },
     failed: (error) => {
         return {
-            type: GET_SPEC_TEACHERS_FAILED,
+            type: GET_CURATORS_FAILED,
             payloadError:error
         }
     }
@@ -210,7 +210,6 @@ export const getGroupsReducer = (state = initialState, action) => {
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.errors', {});
-            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
         case GET_SPECIALITIES_SUCCESS: {
@@ -219,6 +218,7 @@ export const getGroupsReducer = (state = initialState, action) => {
             newState = update.set(newState, 'list.success', true);
             newState = update.set(newState, 'list.specialities', action.specPayload);
             newState = update.set(newState, 'list.errors', {});
+            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
         case GET_SPECIALITIES_FAILED: {
@@ -228,23 +228,23 @@ export const getGroupsReducer = (state = initialState, action) => {
             newState = update.set(newState, 'list.errors', action.payloadError);
             break;
         }
-        case GET_SPEC_TEACHERS_STARTED: {
+        case GET_CURATORS_STARTED: {
             newState = update.set(state, 'list.loading', true);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.errors', {});
-            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
-        case GET_SPEC_TEACHERS_SUCCESS: {
+        case GET_CURATORS_SUCCESS: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.success', true);
-            newState = update.set(newState, 'list.specTeachers', action.specTeachPayload);
+            newState = update.set(newState, 'list.curators', action.curatorsPayload);
             newState = update.set(newState, 'list.errors', {});
+            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
-        case GET_SPEC_TEACHERS_FAILED: {
+        case GET_CURATORS_FAILED: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);
@@ -280,15 +280,16 @@ export const getGroupsReducer = (state = initialState, action) => {
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.errors', {});
-            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
         case EDIT_GROUP_SUCCESS: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.success', true);
-            newState = update.set(newState, 'list.messageResult', action.editPayload);
-            newState = update.set(newState, 'list.errors', {});
+            newState = update.set(newState, 'list.data', action.editPayload);
+            newState = update.set(newState, 'list.data', action.editPayload);
+            newState = update.set(newState, 'list.data', action.editPayload);
+            newState = update.set(newState, 'list.messageResult', "success");
             break;
         }
         case EDIT_GROUP_FAILED: {
@@ -296,7 +297,6 @@ export const getGroupsReducer = (state = initialState, action) => {
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);
             newState = update.set(newState, 'list.errors', action.payloadError);
-            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
         case GET_GROUPS_STARTED: {
@@ -304,7 +304,6 @@ export const getGroupsReducer = (state = initialState, action) => {
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.errors', {});
-            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
         case GET_GROUPS_SUCCESS: {
@@ -313,6 +312,7 @@ export const getGroupsReducer = (state = initialState, action) => {
             newState = update.set(newState, 'list.success', true);
             newState = update.set(newState, 'list.data', action.payload);
             newState = update.set(newState, 'list.errors', {});
+            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
         case GET_GROUPS_FAILED: {

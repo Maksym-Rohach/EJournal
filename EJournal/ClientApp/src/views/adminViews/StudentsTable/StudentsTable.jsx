@@ -22,6 +22,22 @@ class StudentsTable extends Component {
   
 
   componentDidMount = () => {
+    const paramSp = this.props.match.params.specialityId;
+    if (paramSp !== undefined) {
+      //let temp = paramSp.split('=').splice(1, 1).toString();
+      let temp=paramSp;
+      if (temp !== "null") {
+        this.setState({ specialityId: temp });
+      }
+    }
+    const paramGr = this.props.match.params.groupId;
+    if (paramGr !== undefined) {
+      //let temp = paramGr.split('=').splice(1, 1).toString();
+      let temp=paramGr;
+      if (temp !== "null") {
+        this.setState({ groupId: temp });
+      }
+    }
     const { groupId, specialityId } = this.state;
     this.props.getStudents({ groupId, specialityId });
   }

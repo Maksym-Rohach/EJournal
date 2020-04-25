@@ -76,14 +76,15 @@ namespace EJournal.Data.Repositories
                 {
                     await _userManager.AddToRoleAsync(user, "StudyRoomHead");
                 }
-                
+
 
                 prof.Id = user.Id;
                 await _context.BaseProfiles.AddAsync(prof);
                 await _context.SaveChangesAsync();
 
-                await _context.TeacherProfiles.AddAsync(new TeacherProfile { 
-                    Id = prof.Id, 
+                await _context.TeacherProfiles.AddAsync(new TeacherProfile
+                {
+                    Id = prof.Id,
                     //Degree = profile.Degree 
                 });
                 await _context.SaveChangesAsync();
@@ -96,24 +97,20 @@ namespace EJournal.Data.Repositories
             }
         }
 
-        public List<GetTeacherShortModel> GetCuratorsBySpeciality(int specialityId)
+        public List<GetTeacherShortModel> GetCurators()
         {
-            var spec = _context.Specialities.FirstOrDefault(t => t.Id == specialityId);
-            if (spec != null)
+            var teachers = _context.TeacherProfiles.Where(t=>t.Groups.Count()==0);
+            if (teachers != null)
             {
-                //var teachers = _context.TeacherProfiles.Where(t => t.Specialities.Contains(spec));
-                var teachers = _context.TeacherProfiles;
-                if (teachers!=null)
+                var us = _userManager.GetUsersInRoleAsync("Curator").Result;
+                var curators = teachers.Where(t => us.Any(u => u.Id == t.Id));
+                return curators.Select(t => new GetTeacherShortModel
                 {
-                    var us = _userManager.GetUsersInRoleAsync("Curator").Result;
-                    var curators = teachers.Where(t => us.Any(u => u.Id == t.Id));
-                    return curators.Select(t=>new GetTeacherShortModel 
-                    {
-                        Id=t.Id,
-                        Name=t.BaseProfile.Name+" "+t.BaseProfile.LastName+" "+t.BaseProfile.Surname
-                    }).ToList();
-                }
+                    Id = t.Id,
+                    Name = t.BaseProfile.Name + " " + t.BaseProfile.LastName + " " + t.BaseProfile.Surname
+                }).ToList();
             }
+
             return null;
         }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import * as getListActions from './reducer';
 import * as getSpecialitiesListActions from './reducer';
-import * as getSpecialityTeachersListActions from './reducer';
+import * as getCuratorsListActions from './reducer';
 import * as getDeleteListActions from './reducer';
 import * as getEditListActions from './reducer';
 import { connect } from 'react-redux';
@@ -79,15 +79,16 @@ class GetGroups extends Component {
     }
     dialogSaveClick = (event) => {
         this.setState({ openDialog: false });
-        const { changeGroupName, dialogChangeCompleted, changeTeacherId } = this.state;
+        const { changeGroupName, dialogChangeCompleted, changeTeacherId,specialityId } = this.state;
         console.log(changeGroupName, changeTeacherId);
         if (changeGroupName !== "" || (dialogChangeCompleted === true && changeTeacherId !== "")) {
             this.props.editGroup({
-                    groupId: event.currentTarget.value,
-                    groupName: changeGroupName,
-                    teacherId: changeTeacherId 
-                });
-            this.setState({changeGroupName:'',dialogChangeCompleted:false,changeTeacherId:''})
+                groupId: event.currentTarget.value,
+                groupName: changeGroupName,
+                teacherId: changeTeacherId,
+                specialityId:specialityId
+            });
+            //this.setState({ changeGroupName: '', dialogChangeCompleted: false, changeTeacherId: '' })
         }
     }
     radioDialogClickOpen = () => {
@@ -111,30 +112,32 @@ class GetGroups extends Component {
     }
 
     mapCards(data, teachers) {
-        if (data !== undefined && teachers !== undefined) {
+        if (data !== undefined && teachers !== undefined&&this.state.specialityId!==0) {
             return (
                 data.map(item => {
                     return (
-                        <Grid key={item.name} item lg={3} md={6} xs={12}>
+                        <Grid key={item.id} item lg={3} md={6} xs={12}>
                             <Growl className="mt-5" ref={(el) => this.growl = el} />
                             {this.LoadServerErrors()}
                             <Card>
-                                <CardActionArea>
-                                    <CardContent>
-                                        <Typography className="default-name" component="h2" variant="h2" >
-                                            {item.name}
+                                <a className="aRedirect" href={"/#/admin/students/" + this.state.specialityId + "/" + item.id}>
+                                    <CardActionArea>
+                                        <CardContent>
+                                            <Typography className="default-name" component="h2" variant="h2" >
+                                                {item.name}
+                                            </Typography>
+                                            <Typography className="default-curator" component="h6" variant="h6">
+                                                {item.nameOfCurator}
+                                            </Typography>
+                                            <Typography className="default-count" component="p" variant="subtitle2" >
+                                                {item.countOfStudents} студентів
                                         </Typography>
-                                        <Typography className="default-curator" component="h6" variant="h6">
-                                            {item.nameOfCurator}
-                                        </Typography>
-                                        <Typography className="default-count" component="p" variant="subtitle2" >
-                                            {item.countOfStudents} студентів
-                                        </Typography>
-                                        <Tooltip TransitionComponent={Zoom} title="Average marks" arrow>
-                                            <Avatar className="badge">{item.averageMark}</Avatar>
-                                        </Tooltip>
-                                    </CardContent>
-                                </CardActionArea>
+                                            <Tooltip TransitionComponent={Zoom} title="Average marks" arrow>
+                                                <Avatar className="badge">{item.averageMark}</Avatar>
+                                            </Tooltip>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </a>
                                 <CardActions>
                                     <Tooltip TransitionComponent={Zoom} title="Add student" arrow>
                                         <IconButton component={Link} to={"/admin/addstudent/groupId=" + item.id} aria-label="add student">
@@ -218,11 +221,11 @@ class GetGroups extends Component {
         const specialityId = event.target.value;
         this.setState({ specialityId: specialityId });
         this.props.getGroups({ specialityId: specialityId });
-        this.props.getSpecialityTeachers({ specialityId: specialityId });
+        this.props.getCurators();
     }
     render() {
-        const { data, specialities, specTeachers } = this.props;
-        console.log("RENDER", data, specialities, specTeachers);
+        const { data, specialities, curators } = this.props;
+        console.log("RENDER", data, specialities, curators);
 
         return (
             <React.Fragment>
@@ -244,7 +247,7 @@ class GetGroups extends Component {
                     </Select>
                 </FormControl>
                 <Grid className="mt-3" container spacing={3}>
-                    {this.mapCards(data, specTeachers)}
+                    {this.mapCards(data, curators)}
                 </Grid>
             </React.Fragment>
         );
@@ -255,7 +258,7 @@ const mapStateToProps = state => {
     return {
         data: get(state, 'getGroups.list.data'),
         specialities: get(state, 'getGroups.list.specialities'),
-        specTeachers: get(state, 'getGroups.list.specTeachers'),
+        curators: get(state, 'getGroups.list.curators'),
         loading: get(state, 'getGroups.list.loading'),
         failed: get(state, 'getGroups.list.failed'),
         success: get(state, 'getGroups.list.success'),
@@ -272,8 +275,8 @@ const mapDispatchToProps = (dispatch) => {
         getSpecialities: () => {
             dispatch(getSpecialitiesListActions.getSpecialities());
         },
-        getSpecialityTeachers: filter => {
-            dispatch(getSpecialityTeachersListActions.getSpecialityTeachers(filter));
+        getCurators: () => {
+            dispatch(getCuratorsListActions.getCurators());
         },
         deleteGroup: filter => {
             dispatch(getDeleteListActions.deleteGroup(filter));
