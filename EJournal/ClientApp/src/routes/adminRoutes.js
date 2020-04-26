@@ -10,6 +10,7 @@ const AddStudent = React.lazy(() => import('../views/adminViews/AddStudent'));
 const AddTeacher = React.lazy(() => import('../views/adminViews/AddTeacher'));
 const MyProfile = React.lazy(() => import('../views/adminViews/Profile/MyProfile'));
 const GetGroups = React.lazy(() => import('../views/adminViews/GetGroups'));
+const AddGroup = React.lazy(() => import('../views/adminViews/AddGroup'));
 const LoadDistribution = React.lazy(() => import('../views/adminViews/LoadDistribution'));
 const AddNews = React.lazy(() => import('../views/adminViews/AddNews/AddNews'));
 const News = React.lazy(() => import('../views/adminViews/News'));
@@ -24,6 +25,7 @@ const routes = [
   { path: '/admin/addstudent/:groupId?', exact: true, name: 'AddStudent', component: AddStudent },
   { path: '/admin/addteacher', exact: true, name: 'AddTeacher', component: AddTeacher },
   { path: '/admin/getgroups', exact: true, name: 'GetGroups', component: GetGroups },
+  { path: '/admin/addgroup', exact: true, name: 'AddGroup', component: AddGroup },
   { path: '/admin/load-distribution', exact: true, name: 'LoadDistribution', component: LoadDistribution },
   { path: '/admin/add-news', exact: true, name: 'AddNews', component: AddNews },
   { path: '/admin/news', exact: true, name: 'News', component: News },

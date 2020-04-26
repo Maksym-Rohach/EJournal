@@ -112,6 +112,11 @@ export default {
         icon: 'icon-list',
       },
       {
+        name: 'Додати групу',
+        url: '/admin/addgroup',
+        icon: 'icon-list',
+      },
+      {
         title: true,
         name: 'Розклад уроків',
         wrapper: {            // optional wrapper object

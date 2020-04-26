@@ -390,12 +390,12 @@ namespace EJournal.Controllers.AdminControllers
                 Name = model.Name,
                 SpecialityId = model.SpecialityId,
                 TeacherId = model.TeacherId,
-                DateFrom = DateTime.Parse(model.DateFrom),
-                DateTo = DateTime.Parse(model.DateTo)
+                DateFrom = Convert.ToDateTime(model.DateFrom),
+                DateTo = Convert.ToDateTime(model.DateTo)
             });
             if (res)
-                return Ok();
-            else return BadRequest();
+                return Ok(res);
+            else return BadRequest(res);
         }
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)
