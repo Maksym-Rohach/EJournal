@@ -48,7 +48,7 @@ namespace EJournal.Controllers.TeacherControllers
                     .Select(x => new SubjectsViewModel
                     {
                         Name = x.Subject.Name,
-                        //Id = x.Subject.Id
+                        Id = x.Subject.Id
                     }).ToList();
 
 
@@ -98,13 +98,13 @@ namespace EJournal.Controllers.TeacherControllers
                 var claims = User.Claims;
                 var userId = claims.FirstOrDefault().Value;
 
-                var subjectId = _context.Subjects.FirstOrDefault(t => t.Name == model.SubjectName).Id;
+                //var subjectId = _context.Subjects.FirstOrDefault(t => t.Name == model.SubjectName).Id;
 
                 var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId/* && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year)*/);
                 
                 int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == group.Id).Id;
                 
-                var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.Lesson.SubjectId == subjectId);
+                var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.Lesson.SubjectId == model.SubjectId);
                 var lessonDates = jourCols.Select(t => t.Lesson.LessonDate).ToList();
                 lessonDates.OrderByDescending(d => d);
                 var students = _context.GroupsToStudents.Where(t => t.GroupId == group.Id).Select(t => t.Student);

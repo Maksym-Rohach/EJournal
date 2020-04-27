@@ -7,7 +7,7 @@ namespace EJournal.ViewModels
 {
     public class MarksFilterModel
     {
-        public string SubjectName { get; set; }
+        public int SubjectId { get; set; }
     }
 
     public class MarksTableModel
