@@ -43,7 +43,7 @@ function mapBodyTable(data) {
 
 class GetMarks extends Component {
   state = {
-    subject: '',
+    subject: null,
     marks:null
   }
     // constructor(props) {
@@ -78,13 +78,13 @@ class GetMarks extends Component {
 
   changeSubject=(e)=>{
     console.log("SETSTATE", e.target.value);
-    let subjectName = e.target.value;
-    this.setState({subject: subjectName});
+    let subjectId = e.target.value;
+    this.setState({subject: subjectId});
     console.log("This state", this.state);
     console.log("This props", this.props);
 
     
-    this.props.getMarks({subjectName});
+    this.props.getMarks({subjectId});
   }
 
       // changeMonth=(e)=>{
@@ -113,7 +113,7 @@ class GetMarks extends Component {
           >
             <MenuItem key={""}>Оберіть предмет</MenuItem>
               {listSubject.map(function (el) {
-                return <MenuItem key={el.name} value={el.name}>{el.name}</MenuItem>;
+                return <MenuItem value={el.id}>{el.name}</MenuItem>;
               })}
           </Select>
           <MDBTable>
