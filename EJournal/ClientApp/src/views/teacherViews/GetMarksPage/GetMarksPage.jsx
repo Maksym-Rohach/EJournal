@@ -15,7 +15,7 @@ function mapHeadTable(data) {
   console.log("head " + data.columns);
   if (data.columns != undefined) {
       return data.columns.map(function (item) {
-          return (<th key={item}>{item}</th>);
+          return (<th style={{textAlign: "center"}} key={item}>{item}</th>);
       });
   }
 }
@@ -27,11 +27,22 @@ function mapBodyTable(data) {
           return (
               <tr>
                   <th scope="row">{counter++}</th>
-                  <td>{item.name}</td>
+                  <td key={counter}>{item.name}</td>
                   {
                       item.marks.map(mark => {
+                        let colorBadge;
+                        if(+mark >= 10)
+                          colorBadge = "success";
+                        else if(+mark >= 6 && +mark < 10)
+                          colorBadge = "warning";
+                        else if(+mark>0 && +mark<6)
+                          colorBadge = "danger";
+                        else
+                        {
+                          colorBadge = "none";
+                          mark = " ";}
                           return (
-                              <td key={mark}><Badge color="warning">{mark}</Badge></td>
+                              <td key={mark}><h3 style={{textAlign: "center"}}><Badge className="mr-1" color={colorBadge}>{mark}</Badge></h3></td>
                           )
                       })
                   }
@@ -104,14 +115,14 @@ class GetMarks extends Component {
           <Select
             className="mr-3"
             style={{ minWidth: 150 }}
-            value={listSubject}
+            value={this.state.subject}
             onChange={this.changeSubject}
             // onChange={(e) => {
             // this.setState({ subject: e.target.value, marks:null });
             // }}
             // onChange={handleChange}
           >
-            <MenuItem key={""}>Оберіть предмет</MenuItem>
+            {/* <MenuItem key={""}>Оберіть предмет</MenuItem> */}
               {listSubject.map(function (el) {
                 return <MenuItem value={el.id}>{el.name}</MenuItem>;
               })}

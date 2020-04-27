@@ -113,6 +113,9 @@ namespace EJournal.Controllers.TeacherControllers
                 {
                     var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id);
                     var marksFormatted = new List<string>();
+                    //var listMarks = new List<string>();
+                    var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
+                    string name = baseP.Name + " " + baseP.LastName + " " + baseP.Surname;
                     foreach (var date in lessonDates)
                     {
                         var cell = studMarks.FirstOrDefault(m => m.JournalColumn.Lesson.LessonDate == date);
@@ -120,15 +123,18 @@ namespace EJournal.Controllers.TeacherControllers
                             marksFormatted.Add(cell.Value);
                         else
                             marksFormatted.Add(" ");
-                        var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
-                        string name = baseP.Name + " " + baseP.LastName + " " + baseP.Surname;
-                        MarksRowModel rowModel = new MarksRowModel
-                        {
-                            Name = name,
-                            Marks = marksFormatted
-                        };
-                        tableList.Add(rowModel);
+                        //var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
+                        //string name = baseP.Name + " " + baseP.LastName + " " + baseP.Surname;
+                        
                     }
+                    MarksRowModel rowModel = new MarksRowModel
+                    {
+                        Name = name,
+                        Marks = marksFormatted
+                    };
+
+                    tableList.Add(rowModel);
+
                     List<string> cols = new List<string>();
                     cols.Add("#");
                     cols.Add("ПІБ");
