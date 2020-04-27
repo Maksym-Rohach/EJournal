@@ -85,9 +85,9 @@ class MarksTable extends Component {
         const subj = data.subjects;
         return (
             <React.Fragment>
-                <Dropdown value={this.state.specialityId} options={specs} onChange={this.changeSpec} placeholder="Select a speciality" />
-                <Dropdown value={this.state.groupId} options={groups} onChange={this.changeGroup} placeholder="Select a group" />
-                <Dropdown value={this.state.subjectId} options={subj} onChange={this.changeSubj} placeholder="Select a subject" />
+                <Dropdown className="mr-2" value={this.state.specialityId} options={specs} onChange={this.changeSpec} placeholder="Оберіть спеціальність" />
+                <Dropdown className="mr-2" value={this.state.groupId} options={groups} onChange={this.changeGroup} placeholder="Оберіть групу" />
+                <Dropdown value={this.state.subjectId} options={subj} onChange={this.changeSubj} placeholder="Оберіть предмет" />
 
                 <Table bordered>
                     <thead>

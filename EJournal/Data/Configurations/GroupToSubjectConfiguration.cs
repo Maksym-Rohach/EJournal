@@ -23,6 +23,10 @@ namespace EJournal.Data.Configurations
                 .WithMany(e => e.GroupToSubjects)
                 .HasForeignKey(e => e.GroupId)
                 .IsRequired();
+
+            builder.HasOne(e => e.TeacherProfile)
+                .WithMany(e => e.GroupToSubjects)
+                .HasForeignKey(e => e.TeacherId);
         }
     }
 }

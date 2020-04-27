@@ -1,4 +1,5 @@
 ﻿using EJournal.Data.EfContext;
+using EJournal.Data.Entities;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
 using System;
@@ -40,6 +41,11 @@ namespace EJournal.Data.Repositories
                 else item.AverageMark = 0;
             }
             return groups;
+        }
+
+        public IEnumerable<Group> GetGroups()
+        {
+            return _context.Groups;
         }
 
         public List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId)

@@ -46,8 +46,8 @@ class StudentsTable extends Component {
 
     return (
       <React.Fragment>
-        <Dropdown value={this.state.specialityId} options={specs} onChange={this.changeSpec} placeholder="Select a speciality" />
-        <Dropdown value={this.state.groupId} options={groups} onChange={this.changeGroup} placeholder="Select a group" />
+        <Dropdown className="mr-2" value={this.state.specialityId} options={specs} onChange={this.changeSpec} placeholder="Оберіть спеціальність" />
+        <Dropdown value={this.state.groupId} options={groups} onChange={this.changeGroup} placeholder="Оберіть групу" />
         
         <MDBDataTable
           striped

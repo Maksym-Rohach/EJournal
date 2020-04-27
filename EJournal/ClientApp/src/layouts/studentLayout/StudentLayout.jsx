@@ -32,7 +32,7 @@ render() {
     let isAccess = false;
     if(login.isAuthenticated===undefined){
         return (
-            <Redirect to="/login" />  
+            <Redirect to="/" />  
           );
     }
     if(login.isAuthenticated)
