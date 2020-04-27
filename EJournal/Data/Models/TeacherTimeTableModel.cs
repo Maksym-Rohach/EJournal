@@ -13,7 +13,7 @@ namespace EJournal.Data.Models
         public int AuditoriumNumber { get; set; }
         public string SubjectName { get; set; }
         public string GroupName { get; set; }
-        public string DayOfWeek { get; set; }
+        public DayOfWeek DayOfWeek { get; set; }
         public string IsLessonBe { get; set; }
     }
 }

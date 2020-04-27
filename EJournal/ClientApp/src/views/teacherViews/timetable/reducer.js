@@ -1,4 +1,4 @@
-import TimetableService from './TimetableServices';
+import TimeTableService from '../timetable/TimetableServices'
 import update from '../../../helpers/update';
 export const TIMETABLE_STARTED = "TIMETABLE_STARTED";
 export const TIMETABLE_SUCCESS = "TIMETABLE_SUCCESS";
@@ -14,16 +14,18 @@ const initialState = {
     },   
 }
 
-export const getTimetable = (model) => {
+export const getLessons = (model) => {
     return (dispatch) => {
         dispatch(getListActions.started());
         
-        TimeTableService.getTimetable(model)
+        TimeTableService.getLessons(model)
             .then((response) => {
-
+             console.log('response', response);
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
+
             .catch(err=> {
+                console.log('ERR', err);
               dispatch(getListActions.failed(err));
             });
     }
@@ -49,7 +51,7 @@ export const getListActions = {
     }
   }
 
-export const timetableReducer = (state = initialState, action) => { 
+export const teacherTimetableReducer = (state = initialState, action) => { 
   let newState = state;
 
   switch (action.type) {
