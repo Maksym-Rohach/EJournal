@@ -69,15 +69,22 @@ class GetMarks extends Component {
     this.props.getSubject();
   }
 
-  componentWillReceiveProps = () => {
-    const{subject} = this.state;
-    //console.log("*************", this.state);
-    this.props.getMarks({subject});
-  }
+  // componentWillReceiveProps = () => {
+  //   console.log("Will state", this.state);
+  //   const {subject} = this.state;
+  //   //console.log("*************", this.state);
+  //   this.props.getMarks({subject});
+  // }
 
   changeSubject=(e)=>{
     console.log("SETSTATE", e.target.value);
-    this.setState({subject: e.target.value, marks:null});
+    let subjectName = e.target.value;
+    this.setState({subject: subjectName});
+    console.log("This state", this.state);
+    console.log("This props", this.props);
+
+    
+    this.props.getMarks({subjectName});
   }
 
       // changeMonth=(e)=>{
@@ -88,6 +95,7 @@ class GetMarks extends Component {
     const {listMarks, listSubject} = this.props;
     //const {subject, marks} = this.state;
     console.log("ListSubject", listSubject);
+    console.log("STATE", this.state);
 
     if(listSubject !== undefined){
       return ( 
@@ -105,7 +113,7 @@ class GetMarks extends Component {
           >
             <MenuItem key={""}>Оберіть предмет</MenuItem>
               {listSubject.map(function (el) {
-                return <MenuItem key={el.name}>{el.name}</MenuItem>;
+                return <MenuItem key={el.name} value={el.name}>{el.name}</MenuItem>;
               })}
           </Select>
           <MDBTable>
