@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import get from "lodash.get";
 import { MDBTable, MDBTableHead, MDBTableBody } from 'mdbreact';
 import { Dropdown } from 'primereact/dropdown';
-import{ ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap'; 
+import{ ButtonDropdown, DropdownItem, DropdownMenu, DropdownToggle, Badge } from 'reactstrap'; 
 import './GetMarksService';
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -31,7 +31,7 @@ function mapBodyTable(data) {
                   {
                       item.marks.map(mark => {
                           return (
-                              <td key={mark}>{mark}</td>
+                              <td key={mark}><Badge color="warning">{mark}</Badge></td>
                           )
                       })
                   }
