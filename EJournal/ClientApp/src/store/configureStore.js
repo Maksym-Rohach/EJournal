@@ -28,6 +28,7 @@ import {addNewsReducer} from '../views/adminViews/AddNews/reducer';
 import {groupNewsReducer} from '../components/groupNews/reducer';
 import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer';
 import {adminNewsReducer} from '../views/adminViews/News/reducer';
+import {setMarksReducer} from '../views/teacherViews/SetMarks/reducer';
 //import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -60,6 +61,7 @@ export default function configureStore(history, initialState) {
     loadDistributionData:loadDistributionDataReducer,
     addNews:addNewsReducer,
     adminNews:adminNewsReducer,
+    setMarks:setMarksReducer
   };
 
   const middleware = [
