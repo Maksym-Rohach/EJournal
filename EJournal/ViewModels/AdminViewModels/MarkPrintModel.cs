@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace EJournal.ViewModels.AdminViewModels
 {
-    public class DropdownModel
+    public class MarkPrintModel
     {
-        public string Label { get; set; }
+        public int Type { get; set; }
         public string Value { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using EJournal.Data.Entities;
 using EJournal.Data.Models;
 using EJournal.ViewModels;
+using EJournal.ViewModels.AdminViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -27,9 +27,10 @@ namespace EJournal.Controllers.AdminControllers
         private readonly IStudents _students;
         private readonly ITeachers _teachers;
         private readonly IGroups _groups;
+        private readonly ILessons _lessons;
         private readonly ISpecialities _specialities;
 
-        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities)
+        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities, ILessons lessons)
         {
             _context = context;
             _userManager = userManager;
@@ -37,6 +38,7 @@ namespace EJournal.Controllers.AdminControllers
             _teachers = teachers;
             _groups = groups;
             _specialities = specialities;
+            _lessons = lessons;
         }
 
         [HttpPost]
@@ -240,85 +242,63 @@ namespace EJournal.Controllers.AdminControllers
         [Route("get/marks")]
         public IActionResult GetMarks([FromBody]GetMarksFiltersModel model)
         {
-            if (model != null)
+
+            AdminMarksTableModel table = new AdminMarksTableModel();
+
+            if (model.GroupId != 0 && model.SubjectId != 0)
             {
-                AdminMarksTableModel table = new AdminMarksTableModel();
-                if (model.SpecialityId != 0)
-                {
-                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
-                    {
-                        Label = t.Name,
-                        Value = t.Id.ToString()
-                    }).ToList();
-                }
-                if (model.GroupId != 0)
-                {
-                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
-                    {
-                        Label = t.Name,
-                        Value = t.Id.ToString()
-                    }).ToList();
-                    table.Subjects = _context.GroupToSubjects.Where(t => t.GroupId == model.GroupId).Select(t => new DropdownModel
-                    {
-                        Label = t.Subject.Name,
-                        Value = t.SubjectId.ToString()
-                    }).ToList();
-                }
-                if (model.SubjectId != 0)
-                {
-                    List<AdminTableMarksRowModel> tableList = new List<AdminTableMarksRowModel>();
-                    int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == model.GroupId).Id;
-                    var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.Lesson.SubjectId == model.SubjectId);
-                    var lessonDates = jourCols.Select(t => t.Lesson.LessonDate).ToList();
-                    lessonDates.OrderByDescending(d => d);
+                List<AdminTableMarksRowModel> tableList = new List<AdminTableMarksRowModel>();
+                int jourId = _context.Journals.FirstOrDefault(t => t.GroupId == model.GroupId).Id;
+                var jourCols = _context.JournalColumns.Where(t => t.JournalId == jourId && t.Lesson.SubjectId == model.SubjectId);
+                var lessonDates = jourCols.Select(t => t.Lesson.LessonDate).ToList();
+                lessonDates.OrderByDescending(d => d);
 
-                    var students = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId).Select(t => t.Student);
-                    foreach (var item in students)
+                var students = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId).Select(t => t.Student);
+                foreach (var item in students)
+                {
+                    var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id);
+                    var marksFormatted = new List<MarkPrintModel>();
+                    foreach (var date in lessonDates)
                     {
-                        var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id);
-                        var marksFormatted = new List<string>();
-                        foreach (var date in lessonDates)
+                        var cell = studMarks.FirstOrDefault(m => m.JournalColumn.Lesson.LessonDate == date);
+                        if (cell != null)
                         {
-                            var cell = studMarks.FirstOrDefault(m => m.JournalColumn.Lesson.LessonDate == date);
                             if (cell.IsPresent == true)
-                                marksFormatted.Add(cell.Value);
+                                marksFormatted.Add(new MarkPrintModel
+                                {
+                                    Value = cell.Value,
+                                    Type = cell.MarkTypeId
+                                });
                             else
-                                marksFormatted.Add("-");
+                                marksFormatted.Add(new MarkPrintModel
+                                {
+                                    Value = "-",
+                                    Type = 0
+                                });
                         }
-                        var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
-                        string name = baseP.Name + " " + baseP.LastName + " " + baseP.Surname;
-                        AdminTableMarksRowModel rowModel = new AdminTableMarksRowModel
-                        {
-                            Name = name,
-                            Marks = marksFormatted
-                        };
-                        tableList.Add(rowModel);
+                        else
+                            marksFormatted.Add(new MarkPrintModel
+                            {
+                                Value = "-",
+                                Type = 0
+                            });
                     }
-                    List<string> cols = new List<string>();
-                    cols.Add("#");
-                    cols.Add("ПІБ");
-                    int lenght = lessonDates.Count;
-                    //Set the count of cols
-                    if (lenght > 7) lenght = 7;
-                    for (int i = 0; i < lenght; i++)
+                    var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
+                    string name = baseP.Name + " " + baseP.LastName + " " + baseP.Surname;
+                    AdminTableMarksRowModel rowModel = new AdminTableMarksRowModel
                     {
-                        cols.Add(lessonDates[i].ToString("dd.MM.yyyy"));
-                    }
-
-                    table.rows = tableList;
-                    table.columns = cols;
-                    table.Groups = _context.Groups.Where(t => t.SpecialityId == model.SpecialityId).Select(t => new DropdownModel
-                    {
-                        Label = t.Name,
-                        Value = t.Id.ToString()
-                    }).ToList();
+                        Name = name,
+                        Marks = marksFormatted
+                    };
+                    tableList.Add(rowModel);
                 }
-                List<DropdownModel> specs = _context.Specialities.Select(t => new DropdownModel
-                {
-                    Label = t.Name,
-                    Value = t.Id.ToString()
-                }).ToList();
-                table.Specialities = specs;
+                List<string> cols = new List<string>();
+                cols.Add("#");
+                cols.Add("ПІБ");
+                cols.AddRange(lessonDates.Select(t => t.ToString("dd.MM.yyyy")));
+
+                table.rows = tableList;
+                table.columns = cols;
 
                 return Ok(table);
             }
@@ -346,6 +326,19 @@ namespace EJournal.Controllers.AdminControllers
                 return Ok(spec);
             else return BadRequest("Error");
         }
+        [HttpPost]
+        [Route("get/groups/dropdown")]
+        public IActionResult GetDropdownGroups([FromBody] GetGroupFiltersModel model)
+        {
+            var gr = _groups.GetGroupsBySpeciality(model.SpecialityId).Select(t => new DropdownModel
+            {
+                Label = t.Name,
+                Value = t.Id.ToString()
+            });
+            if (gr != null)
+                return Ok(gr);
+            else return BadRequest("Error");
+        }
         [HttpGet]
         [Route("get/curators")]
         public IActionResult GetCurators()
@@ -362,7 +355,19 @@ namespace EJournal.Controllers.AdminControllers
             }
             else return BadRequest();
         }
-
+        [HttpPost]
+        [Route("get/lessons")]
+        public IActionResult GetGroupLessons([FromBody] GetLessonsFiltersModel model)
+        {
+            var res = _lessons.GetSubjects(model.GroupId).Select(l => new DropdownModel
+            {
+                Label = l.Name,
+                Value = l.Id.ToString()
+            });
+            if (res != null)
+                return Ok(res);
+            else return BadRequest("Eoorr");
+        }
         [HttpDelete]
         [Route("delete/group/{groupId}")]
         public IActionResult DeleteGroup(int groupId)

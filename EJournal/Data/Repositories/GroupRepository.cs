@@ -62,7 +62,7 @@ namespace EJournal.Data.Repositories
         {
             bool changes = false;
             var group = _context.Groups.FirstOrDefault(g => g.Id == groupId);
-            if(group.Name!=groupName && !String.IsNullOrEmpty(groupName))
+            if (group.Name != groupName && !String.IsNullOrEmpty(groupName))
             {
                 changes = true;
                 group.Name = groupName;
@@ -122,15 +122,17 @@ namespace EJournal.Data.Repositories
         public List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId)
         {
             List<GetGroupShortModel> groups = _context.Groups
-                .Where(x => x.SpecialityId == specialityId && (x.YearFrom.Year == DateTime.Now.Year || x.YearTo.Year == DateTime.Now.Year))
-                .Select(s => new GetGroupShortModel
-                {
-                    Id = s.Id,
-                    Name = s.Name
-                })
-                .ToList();
+              .Where(x => x.SpecialityId == specialityId && (x.YearFrom.Year == DateTime.Now.Year || x.YearTo.Year == DateTime.Now.Year))
+              .Select(s => new GetGroupShortModel
+              {
+                  Id = s.Id,
+                  Name = s.Name
+              })
+              .ToList();
 
             return groups;
+
+
         }
     }
 }

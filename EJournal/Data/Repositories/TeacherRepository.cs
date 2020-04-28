@@ -5,6 +5,7 @@ using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
 using EJournal.Services;
 using EJournal.ViewModels;
+using EJournal.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
