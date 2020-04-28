@@ -26,23 +26,23 @@ class TeacherNavbar extends Component {
   // }
   render() {
     const { login } = this.props;
-    console.log(login);
-    let isAccess = false;
-    if(login.isAuthenticated===undefined){
-        return (
-            <Redirect to="/login" />  
-          );
-    }
-    if(login.isAuthenticated)
-    {
-      const { roles } = login.user;
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i] === 'Curator')
-          isAccess = true;
-        else if(roles[i] === 'Teacher')
-          isAccess = true;
-      }
-    }
+    // console.log(login);
+    // let isAccess = false;
+    // if(login.isAuthenticated===undefined){
+    //     return (
+    //         <Redirect to="/login" />  
+    //       );
+    // }
+    // if(login.isAuthenticated)
+    // {
+    //   const { roles } = login.user;
+    //   for (let i = 0; i < roles.length; i++) {
+    //     if (roles[i] === 'Curator')
+    //       isAccess = true;
+    //     else if(roles[i] === 'Teacher')
+    //       isAccess = true;
+    //   }
+    // }
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -80,7 +80,7 @@ class TeacherNavbar extends Component {
             <DropdownMenu right>
               {/* <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem> */}
               {/* <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem> */}
-              <DropdownItem><i className="fa fa-user"></i>Мій профіль</DropdownItem>
+              <DropdownItem href="/#/teacher/profile"><i className="fa fa-user"></i>Мій профіль</DropdownItem>
               {/* <DropdownItem divider /> */}
               <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>

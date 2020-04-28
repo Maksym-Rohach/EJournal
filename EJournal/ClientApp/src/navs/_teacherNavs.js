@@ -39,7 +39,7 @@ export default {
         children: [
           {
             name: 'Виставлення поточних',
-            url: '/base/breadcrumbs',
+            url: '/teacher/set-marks',
             icon: 'icon-notebook',
           },
           {

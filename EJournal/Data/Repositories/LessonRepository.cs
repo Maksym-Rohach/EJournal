@@ -2,6 +2,7 @@
 using EJournal.Data.Entities;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,11 +44,11 @@ namespace EJournal.Data.Repositories
 
         public IEnumerable<Lesson> GetTeacherLessons(string teacherId, string date, int groupId)
         {
-            var lessons = _context.Lessons.Where(t => t.TeacherId == teacherId);
+            var lessons= _context.Lessons.Where(t => t.TeacherId == teacherId);
             if (date != "")
-                lessons = lessons.Where(t => t.LessonDate == DateTime.Parse(date));
+                lessons=lessons.Where(t=>t.LessonDate.Date == DateTime.Parse(date).Date).Include(x => x.Subject).Include(x => x.Group);
             if (groupId != 0)
-                lessons = lessons.Where(t => t.GroupId == groupId);
+                lessons = lessons.Where(t => t.GroupId == groupId ).Include(x => x.Subject).Include(x => x.Group);
             return lessons;
         }
     }

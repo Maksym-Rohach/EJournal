@@ -31,12 +31,13 @@ namespace EJournal.Controllers.AdminControllers
         [HttpPost("get-subjects")]
         public IActionResult GetSubjects([FromBody] FiltersModel model)
         {
-            var subj = _context.GroupToSubjects.Where(x => x.GroupId == model.GroupId).Select(x => x.Subject);
+            var subj = _context.GroupToSubjects.Where(x => x.GroupId == model.GroupId);
             var res = subj.Select(x => new SubjectsModel()
             {
-                Id = x.Id,
-                Name = x.Name,
-                Teachers = x.TeacherToSubjects.Select(t => new TeacherModel()
+                Id = x.SubjectId,
+                Name = x.Subject.Name,
+                SelectedTeacherId = x.TeacherId,
+                Teachers = x.Subject.TeacherToSubjects.Select(t => new TeacherModel()
                 {
                     Id = t.TeacherId,
                     Name = t.Teacher.BaseProfile.Name + " " + t.Teacher.BaseProfile.Surname + " " + t.Teacher.BaseProfile.LastName
@@ -46,6 +47,14 @@ namespace EJournal.Controllers.AdminControllers
                 Group=model.GroupId.ToString(),
                 Subjects=res
             });
+        }
+        [HttpPost("change-teacher")]
+        public IActionResult ChangeTeacher([FromBody]ChangeTeacherViewModel model)
+        {
+            _context.GroupToSubjects.FirstOrDefault(x => x.GroupId == int.Parse(model.GroupId)
+            && x.SubjectId == int.Parse(model.SubjectId)).TeacherId = model.TeacherId;
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }
