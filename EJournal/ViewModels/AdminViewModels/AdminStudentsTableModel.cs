@@ -9,8 +9,6 @@ namespace EJournal.ViewModels.AdminViewModels
     {
         public List<AdminTableColumnModel> columns { get; set; }
         public List<AdminTableStudentRowModel> rows { get; set; }
-        public List<DropdownModel> Specialities { get; set; }
-        public List<DropdownModel> Groups { get; set; }
 
     }
 }

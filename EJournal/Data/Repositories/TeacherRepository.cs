@@ -100,7 +100,7 @@ namespace EJournal.Data.Repositories
 
         public List<GetTeacherShortModel> GetCurators()
         {
-            var teachers = _context.TeacherProfiles.Where(t=>t.Groups.Count()==0);
+            var teachers = _context.TeacherProfiles.Where(t => t.Groups.Count() == 0);
             if (teachers != null)
             {
                 var us = _userManager.GetUsersInRoleAsync("Curator").Result;
@@ -142,20 +142,33 @@ namespace EJournal.Data.Repositories
 
         public IEnumerable<GetTeacherModel> GetTeachers(string rolename)
         {
-            List<TeacherProfile> temp = new List<TeacherProfile>();
+            if (String.IsNullOrEmpty(rolename))
+                return _context.TeacherProfiles.Select(t => new GetTeacherModel
+                {
+                    Id = t.Id,
+                    Email = t.BaseProfile.DbUser.Email,
+                    PhoneNumber = t.BaseProfile.DbUser.PhoneNumber,
+                    Name = t.BaseProfile.Name,
+                    LastName = t.BaseProfile.LastName,
+                    Surname = t.BaseProfile.Surname,
+                    Adress = t.BaseProfile.Adress,
+                    DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                    Degree = t.Degree
+                });
             var users = _userManager.GetUsersInRoleAsync(rolename).Result;
-            return users.Select(t => new GetTeacherModel
+            var temp= _context.BaseProfiles.Where(b=>users.Any(t=>t.Id== b.Id)).Select(t => new GetTeacherModel
             {
                 Id = t.Id,
-                Email = t.Email,
-                PhoneNumber = t.PhoneNumber,
-                Name = t.BaseProfile.Name,
-                LastName = t.BaseProfile.LastName,
-                Surname = t.BaseProfile.Surname,
-                Adress = t.BaseProfile.Adress,
-                DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
-                Degree = t.BaseProfile.Teacher.Degree
+                Email = t.DbUser.Email,
+                PhoneNumber = t.DbUser.PhoneNumber,
+                Name = t.Name,
+                LastName = t.LastName,
+                Surname = t.Surname,
+                Adress = t.Adress,
+                DateOfBirth = t.DateOfBirth.ToString("dd.MM.yyyy"),
+                Degree = t.Teacher.Degree
             });
+            return temp;
         }
     }
 }

@@ -20,16 +20,12 @@ import { withStyles } from '@material-ui/core/styles';
 import TablePagination from '@material-ui/core/TablePagination';
 
 import './MarksTableStyle.css';
-
-
-
-
 class MarksTable extends Component {
     state = {
         groupId: 0,
         specialityId: 0,
         subjectId: 0,
-        rowsPerPage: 10,
+        rowsPerPage: 8,
         page: 0
     };
     mapBodyTable=(data)=> {

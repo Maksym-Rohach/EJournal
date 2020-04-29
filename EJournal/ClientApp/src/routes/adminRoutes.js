@@ -18,7 +18,7 @@ const Error = React.lazy(() => import('../views/adminViews/Error/Error404'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   //{ path: '/admin/students', exact: true, name: 'Students', component: StudentsTable },
-  { path: '/admin/students/:specialityId?/:groupId?', exact: true, name: 'Students', component: StudentsTable },
+  { path: '/admin/students/:groupId?', exact: true, name: 'Students', component: StudentsTable },
   { path: '/admin/teachers', exact: true, name: 'Teachers', component: TeachersTable },
   { path: '/admin/marks', exact: true, name: 'Marks', component: MarksTable },
   //{ path: '/admin/addstudent', exact: true, name: 'AddStudent', component: AddStudent },

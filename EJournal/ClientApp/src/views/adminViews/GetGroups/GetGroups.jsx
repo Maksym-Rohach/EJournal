@@ -120,7 +120,7 @@ class GetGroups extends Component {
                             <Growl className="mt-5" ref={(el) => this.growl = el} />
                             {this.LoadServerErrors()}
                             <Card>
-                                <a className="aRedirect" href={"/#/admin/students/" + this.state.specialityId + "/" + item.id}>
+                                <a className="aRedirect" href={"/#/admin/students/groupId=" + item.id}>
                                     <CardActionArea>
                                         <CardContent>
                                             <Typography className="default-name" component="h2" variant="h2" >

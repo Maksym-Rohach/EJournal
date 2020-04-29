@@ -11,7 +11,7 @@ namespace EJournal.Data.Interfaces
 {
     public interface ITeachers
     {
-        IEnumerable<GetTeacherModel> GetTeachers(string rolename);
+        IEnumerable<GetTeacherModel> GetTeachers(string rolename="");
         GetTeacherModel GetTeacherById(string id);
         Task<bool> AddTeacherAsync(AddTeacherModel profile);
         List<DropdownModel> GetRolesInDropdownModels();

@@ -22,7 +22,6 @@ namespace EJournal.Controllers.AdminControllers
     [Route("api/[controller]")]
     public class AdminController : ControllerBase
     {
-        private readonly UserManager<DbUser> _userManager;
         private readonly EfDbContext _context;
         private readonly IStudents _students;
         private readonly ITeachers _teachers;
@@ -30,10 +29,9 @@ namespace EJournal.Controllers.AdminControllers
         private readonly ILessons _lessons;
         private readonly ISpecialities _specialities;
 
-        public AdminController(UserManager<DbUser> userManager, EfDbContext context, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities, ILessons lessons)
+        public AdminController(EfDbContext context, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities, ILessons lessons)
         {
             _context = context;
-            _userManager = userManager;
             _students = students;
             _teachers = teachers;
             _groups = groups;
@@ -120,8 +118,8 @@ namespace EJournal.Controllers.AdminControllers
                 return BadRequest();
         }
         [HttpGet]
-        [Route("get/students/{specialityId}/{groupId}")]
-        public IActionResult GetStudents(int specialityId, int groupId)
+        [Route("get/students/groupId={groupId}")]
+        public IActionResult GetStudents(int groupId)
         {
             try
             {
@@ -131,21 +129,9 @@ namespace EJournal.Controllers.AdminControllers
 
                 //var groups = _context.Groups.Where(t => t.Speciality.Name == model.Speciality);
                 //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
-                if (specialityId != 0)
-                {
-                    table.Groups = _context.Groups.Where(t => t.SpecialityId == specialityId).Select(t => new DropdownModel
-                    {
-                        Label = t.Name,
-                        Value = t.Id.ToString()
-                    }).ToList();
-                }
+
                 if (groupId != 0)
                 {
-                    table.Groups = _context.Groups.Where(t => t.SpecialityId == specialityId).Select(t => new DropdownModel
-                    {
-                        Label = t.Name,
-                        Value = t.Id.ToString()
-                    }).ToList();
                     query = _students.GetFirstTenStudents(groupId).AsQueryable();
                 }
 
@@ -165,15 +151,9 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Email",field="email",sort="asc",width=200},
                     new AdminTableColumnModel{label="Address",field="address",sort="asc",width=170}
                 };
-                List<DropdownModel> specs = _context.Specialities.Select(t => new DropdownModel
-                {
-                    Label = t.Name,
-                    Value = t.Id.ToString()
-                }).ToList();
 
                 table.rows = tableList;
                 table.columns = cols;
-                table.Specialities = specs;
                 return Ok(table);
             }
             catch (Exception ex)
@@ -187,29 +167,16 @@ namespace EJournal.Controllers.AdminControllers
         {
             try
             {
-                var query = _context.TeacherProfiles.AsQueryable();
                 List<AdminTableTeacherRowModel> tableList = new List<AdminTableTeacherRowModel>();
-                if (model != null)
-                {
-                    if (!String.IsNullOrEmpty(model.Rolename))
-                    {
-                        List<TeacherProfile> temp = new List<TeacherProfile>();
-                        foreach (var item in _context.TeacherProfiles)
-                        {
-                            DbUser user = _context.Users.FirstOrDefault(t => t.Id == item.Id);
-                            if (_userManager.GetRolesAsync(user).Result.Contains(model.Rolename))
-                                temp.Add(item);
-                        }
-                        query = _context.TeacherProfiles.Where(t => temp.Contains(t)).AsQueryable();
-                    }
-                }
+                var query = _teachers.GetTeachers(model.Rolename);
+
                 tableList = query.Select(t => new AdminTableTeacherRowModel
-                {//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjdmYjZjYTczLWU0ZGYtNDQ0Zi1hOWI1LTI1ZWY0OWFjZTI3OSIsIm5hbWUiOiJkaXJlY3RvciIsInJvbGVzIjoiRGlyZWN0b3IiLCJleHAiOjE1ODUyNjE2MTV9.pmdGudiz0rqOldnAZqUpN8jd--d7n7HFBJJ3748Ec3M
-                    Name = t.BaseProfile.Name + " " + t.BaseProfile.LastName + " " + t.BaseProfile.Surname,
-                    Address = t.BaseProfile.Adress,
-                    DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
-                    Email = t.BaseProfile.DbUser.Email,
-                    Phone = t.BaseProfile.DbUser.PhoneNumber,
+                {
+                    Name = t.Name + " " + t.LastName + " " + t.Surname,
+                    Address = t.Adress,
+                    DateOfBirth = t.DateOfBirth,
+                    Email = t.Email,
+                    Phone = t.PhoneNumber,
                     Degree = t.Degree
                 }).ToList();
                 List<AdminTableColumnModel> cols = new List<AdminTableColumnModel>
@@ -221,16 +188,11 @@ namespace EJournal.Controllers.AdminControllers
                     new AdminTableColumnModel{label="Address",field="address",sort="asc",width=150},
                     new AdminTableColumnModel{label="Degree",field="degree",sort="asc",width=120}
                 };
-                List<DropdownModel> roles = _context.Roles.Where(t => t.Name != "Student").Select(t => new DropdownModel
-                {
-                    Label = t.Name,
-                    Value = t.Name
-                }).ToList();
+
                 AdminTeachersTableModel table = new AdminTeachersTableModel();
                 table.rows = tableList;
                 table.columns = cols;
-                table.Roles = roles;
-
+                //role
                 return Ok(table);
             }
             catch (Exception ex)
