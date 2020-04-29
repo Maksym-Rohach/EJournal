@@ -8,6 +8,7 @@ using EJournal.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EJournal.Controllers.AdminControllers
 {
@@ -31,16 +32,17 @@ namespace EJournal.Controllers.AdminControllers
         [HttpGet("get-spec")]
         public IActionResult GEtBySpec()
         {
-            var gr = _groupRepo.GetGroups().ToList();
-            var sp = _context.Specialities.ToList();
-            //var res = new GetGroupsViewModel()
-            //{
-            //    Specialities = new List<Data.Entities.Speciality> (),
-            //    Groups = new List<Data.Entities.Group> ()
-            //};
-            //res.Specialities = sp;
-            //res.Groups = gr;
-            return Ok(gr);
+            var gr = _context.Groups.AsNoTracking().ToList();
+            var sp = _context.Specialities.AsNoTracking().ToList();
+
+            var res = new GetGroupsViewModel()
+            {
+                Specialities = new List<Data.Entities.Speciality>(),
+                Groups = new List<Data.Entities.Group>()
+            };
+            res.Specialities = sp;
+            res.Groups = gr;
+            return Ok(res);
         }
         [HttpPost("get-subjects")]
         public IActionResult GetSubjects([FromBody] FiltersModel model)
