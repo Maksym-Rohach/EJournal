@@ -1,4 +1,5 @@
 ﻿using EJournal.Data.Entities;
+using EJournal.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace EJournal.Data.Interfaces
     {
         IEnumerable<Lesson> GetLessonsInGroup(int groupId, string date = "");
         IEnumerable<Lesson> GetTeacherLessons(string teacherId,string date="",int groupId=0);
-        IEnumerable<string> GetSubjects();
+        IEnumerable<GetShortSubjectModel> GetSubjects(int groupId=0);
     }
 }

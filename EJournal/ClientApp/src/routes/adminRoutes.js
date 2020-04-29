@@ -10,18 +10,22 @@ const AddStudent = React.lazy(() => import('../views/adminViews/AddStudent'));
 const AddTeacher = React.lazy(() => import('../views/adminViews/AddTeacher'));
 const MyProfile = React.lazy(() => import('../views/adminViews/Profile/MyProfile'));
 const GetGroups = React.lazy(() => import('../views/adminViews/GetGroups'));
+const AddGroup = React.lazy(() => import('../views/adminViews/AddGroup'));
 const LoadDistribution = React.lazy(() => import('../views/adminViews/LoadDistribution'));
 const AddNews = React.lazy(() => import('../views/adminViews/AddNews/AddNews'));
 const News = React.lazy(() => import('../views/adminViews/News'));
 const Error = React.lazy(() => import('../views/adminViews/Error/Error404'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
-  { path: '/admin/students', exact: true, name: 'Students', component: StudentsTable },
+  //{ path: '/admin/students', exact: true, name: 'Students', component: StudentsTable },
+  { path: '/admin/students/:groupId?', exact: true, name: 'Students', component: StudentsTable },
   { path: '/admin/teachers', exact: true, name: 'Teachers', component: TeachersTable },
   { path: '/admin/marks', exact: true, name: 'Marks', component: MarksTable },
-  { path: '/admin/addstudent', exact: true, name: 'AddStudent', component: AddStudent },
+  //{ path: '/admin/addstudent', exact: true, name: 'AddStudent', component: AddStudent },
+  { path: '/admin/addstudent/:groupId?', exact: true, name: 'AddStudent', component: AddStudent },
   { path: '/admin/addteacher', exact: true, name: 'AddTeacher', component: AddTeacher },
   { path: '/admin/getgroups', exact: true, name: 'GetGroups', component: GetGroups },
+  { path: '/admin/addgroup', exact: true, name: 'AddGroup', component: AddGroup },
   { path: '/admin/load-distribution', exact: true, name: 'LoadDistribution', component: LoadDistribution },
   { path: '/admin/add-news', exact: true, name: 'AddNews', component: AddNews },
   { path: '/admin/news', exact: true, name: 'News', component: News },
