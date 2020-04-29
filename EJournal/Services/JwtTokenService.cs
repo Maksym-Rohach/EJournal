@@ -42,7 +42,7 @@ namespace EJournal.Services
             List<Claim> claims = new List<Claim>()
             {
                 new Claim("id",user.Id),
-                new Claim("name",user.UserName),
+                new Claim("name",user.BaseProfile.Name+" "+user.BaseProfile.Surname+" "+user.BaseProfile.LastName),
                 new Claim("image",image)
             };
             foreach(var el in roles)

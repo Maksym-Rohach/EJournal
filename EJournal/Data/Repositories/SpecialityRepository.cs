@@ -18,6 +18,11 @@ namespace EJournal.Data.Repositories
             _context = context;
         }
 
+        public IEnumerable<Speciality> GetAllSpecialities()
+        {
+            return _context.Specialities;
+        }
+
         public List<GetSpecialityModel> GetSpecialitiesByManager(string managerId)
         {
             List<GetSpecialityModel> specialities = _context.Specialities
@@ -31,5 +36,6 @@ namespace EJournal.Data.Repositories
 
             return specialities;
         }
+
     }
 }

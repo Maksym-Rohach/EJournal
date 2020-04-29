@@ -21,8 +21,16 @@ import {homeworkReducer} from '../views/studentViews/homework/reducer';
 import {newsReducer} from '../views/studentViews/news/reducer';
 import {studentCardListReducer} from '../components/StudentCardList/reducer'
 import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
+import {getGroupsReducer} from '../views/adminViews/GetGroups/reducer';
+import {loadDistributionReducer} from '../views/adminViews/LoadDistribution/reducer';
+import {loadDistributionDataReducer} from '../components/loadDistribution/reducer';
+import {addNewsReducer} from '../views/adminViews/AddNews/reducer';
 import {groupNewsReducer} from '../components/groupNews/reducer';
-import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer'
+import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer';
+import {adminNewsReducer} from '../views/adminViews/News/reducer';
+import {addGroupReducer} from '../views/adminViews/AddGroup/reducer';
+
+import {setMarksReducer} from '../views/teacherViews/SetMarks/reducer';
 //import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -50,6 +58,13 @@ export default function configureStore(history, initialState) {
     //groupsSelect: groupsSelectReducer,
     news:newsReducer,
     getSubject:GetSubjectReducer,
+    getGroups:getGroupsReducer,
+    loadDistribution:loadDistributionReducer,
+    loadDistributionData:loadDistributionDataReducer,
+    addNews:addNewsReducer,
+    adminNews:adminNewsReducer,
+    addGroup:addGroupReducer,
+    setMarks:setMarksReducer
   };
 
   const middleware = [

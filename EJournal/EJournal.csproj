@@ -30,7 +30,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\AuthControllers\" />
-    <Folder Include="Controllers\TeacherControllers\" />
     <Folder Include="Uploaded\UsersImages\" />
   </ItemGroup>
 

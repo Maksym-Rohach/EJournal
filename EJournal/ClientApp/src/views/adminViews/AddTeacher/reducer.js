@@ -97,7 +97,6 @@ export const addTeacherReducer = (state = initialState, action) => {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
             //newState = update.set(newState, 'list.success', true);
-            newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.roles', action.payload);
             break;
         }

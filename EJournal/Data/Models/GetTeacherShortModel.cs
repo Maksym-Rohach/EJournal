@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EJournal.ViewModels
+namespace EJournal.Data.Models
 {
-    public class AdminTableMarksRowModel
+    public class GetTeacherShortModel
     {
+        public string Id { get; set; }
         public string Name { get; set; }
-        public List<string> Marks { get; set; }
     }
 }
