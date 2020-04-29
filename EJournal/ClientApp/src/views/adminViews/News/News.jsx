@@ -18,7 +18,7 @@ class News extends React.Component {
     group: "",
   };
   componentDidMount() {
-    this.props.getGroups();
+    this.props.getGroups({speciality:""});
     this.props.getNews();
   }
   load = () => {
@@ -77,7 +77,7 @@ class News extends React.Component {
             style={{minWidth:"170px"}}
             variant="outlined"
           >
-            {groups.map((option) => (
+            {groups.groups.map((option) => (
               <MenuItem key={option.id} value={option.id}>
                 {option.name}
               </MenuItem>
@@ -144,8 +144,8 @@ const mapDispatchToProps = (dispatch) => {
     getGroupNews: (model) => {
       dispatch(getListActions.getGroupNews(model));
     },
-    getGroups: () => {
-      dispatch(getListActions2.getGroups());
+    getGroups: (model) => {
+      dispatch(getListActions2.getGroups(model));
     },
   };
 };

@@ -28,6 +28,20 @@ namespace EJournal.Controllers.AdminControllers
         {
             return Ok(_groupRepo.GetGroups());
         }
+        [HttpGet("get-spec")]
+        public IActionResult GEtBySpec()
+        {
+            var gr = _groupRepo.GetGroups().ToList();
+            var sp = _context.Specialities.ToList();
+            //var res = new GetGroupsViewModel()
+            //{
+            //    Specialities = new List<Data.Entities.Speciality> (),
+            //    Groups = new List<Data.Entities.Group> ()
+            //};
+            //res.Specialities = sp;
+            //res.Groups = gr;
+            return Ok(gr);
+        }
         [HttpPost("get-subjects")]
         public IActionResult GetSubjects([FromBody] FiltersModel model)
         {
