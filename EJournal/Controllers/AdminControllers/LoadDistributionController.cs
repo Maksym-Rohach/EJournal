@@ -29,20 +29,38 @@ namespace EJournal.Controllers.AdminControllers
         {
             return Ok(_groupRepo.GetGroups());
         }
-        [HttpGet("get-spec")]
-        public IActionResult GEtBySpec()
+        [HttpPost("get-spec")]
+        public IActionResult GEtBySpec([FromBody] GetGroupViewModel model)
         {
-            var gr = _context.Groups.AsNoTracking().ToList();
-            var sp = _context.Specialities.AsNoTracking().ToList();
-
-            var res = new GetGroupsViewModel()
+            if (string.IsNullOrEmpty(model.Speciality) || model.Speciality == "0")
             {
-                Specialities = new List<Data.Entities.Speciality>(),
-                Groups = new List<Data.Entities.Group>()
-            };
-            res.Specialities = sp;
-            res.Groups = gr;
-            return Ok(res);
+
+                var gr = _context.Groups.AsNoTracking().ToList();
+                var sp = _context.Specialities.AsNoTracking().ToList();
+
+                var res = new GetGroupsViewModel()
+                {
+                    Specialities = new List<Data.Entities.Speciality>(),
+                    Groups = new List<Data.Entities.Group>()
+                };
+                res.Specialities = sp;
+                res.Groups = gr;
+                return Ok(res);
+            }
+            else
+            {
+                var gr = _context.Groups.AsNoTracking().Where(x => x.SpecialityId == int.Parse(model.Speciality)).ToList();
+                var sp = _context.Specialities.AsNoTracking().ToList();
+
+                var res = new GetGroupsViewModel()
+                {
+                    Specialities = new List<Data.Entities.Speciality>(),
+                    Groups = new List<Data.Entities.Group>()
+                };
+                res.Specialities = sp;
+                res.Groups = gr;
+                return Ok(res);
+            }
         }
         [HttpPost("get-subjects")]
         public IActionResult GetSubjects([FromBody] FiltersModel model)
@@ -59,9 +77,10 @@ namespace EJournal.Controllers.AdminControllers
                     Name = t.Teacher.BaseProfile.Name + " " + t.Teacher.BaseProfile.Surname + " " + t.Teacher.BaseProfile.LastName
                 }).ToList()
             }).ToList();
-            return Ok(new GetSubjectViewModel() {
-                Group=model.GroupId.ToString(),
-                Subjects=res
+            return Ok(new GetSubjectViewModel()
+            {
+                Group = model.GroupId.ToString(),
+                Subjects = res
             });
         }
         [HttpPost("change-teacher")]
