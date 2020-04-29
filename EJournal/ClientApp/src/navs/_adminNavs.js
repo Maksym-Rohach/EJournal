@@ -11,7 +11,7 @@ export default {
       },
       {
         name: 'Переглянути список',
-        url: '/admin/students',
+        url: '/admin/students/groupId=0',
         icon: 'icon-list',
       },
       {
@@ -95,6 +95,25 @@ export default {
       {
         name: 'Переглянути оцінки',
         url: '/admin/marks',
+        icon: 'icon-list',
+      },
+      {
+        title: true,
+        name: 'Робота з групами',
+        wrapper: {            // optional wrapper object
+          element: '',        // required valid HTML5 element tag
+          attributes: {}        // optional valid JS object with JS API naming ex: { className: "my-class", style: { fontFamily: "Verdana" }, id: "my-id"}
+        },
+        class: ''             // optional class names space delimited list for title item ex: "text-center"
+      },
+      {
+        name: 'Переглянути групи',
+        url: '/admin/getgroups',
+        icon: 'icon-list',
+      },
+      {
+        name: 'Додати групу',
+        url: '/admin/addgroup',
         icon: 'icon-list',
       },
       {

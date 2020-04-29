@@ -53,6 +53,15 @@ namespace EJournal.Data.Repositories
                 await _context.SaveChangesAsync();
                 await _context.StudentProfiles.AddAsync(new StudentProfile { Id = prof.Id });
                 await _context.SaveChangesAsync();
+                if (profile.GroupId != 0)
+                {
+                    await _context.GroupsToStudents.AddAsync(new GroupToStudent
+                    {
+                        GroupId=profile.GroupId,
+                        StudentId=user.Id
+                    });
+                    await _context.SaveChangesAsync();
+                }
                 return true;
             }
             catch (Exception ex)
@@ -77,7 +86,7 @@ namespace EJournal.Data.Repositories
 
             List<int> groupsId = new List<int>();
 
-            for(int i = 0; i < specialitiesId.Count; i++)
+            for (int i = 0; i < specialitiesId.Count; i++)
             {
                 List<int> groupId = _context.Groups
                     .Where(x => x.SpecialityId == specialitiesId[i] && (x.YearFrom.Year == DateTime.Now.Year || x.YearTo.Year == DateTime.Now.Year))
@@ -89,14 +98,14 @@ namespace EJournal.Data.Repositories
 
             List<GetStudentInfoWithGroup> allStudents = new List<GetStudentInfoWithGroup>();
 
-            for(int i = 0; i < groupsId.Count; i++)
+            for (int i = 0; i < groupsId.Count; i++)
             {
                 List<GetStudentInfoWithGroup> studentsBySingleGroup = _context.GroupsToStudents
                     .Where(x => x.GroupId == groupsId[i])
                     .Select(s => new GetStudentInfoWithGroup
                     {
                         Id = s.Student.BaseProfile.Id,
-                        Image = s.Student.BaseProfile.Image??_configuration.GetValue<string>("DefaultImage"),
+                        Image = s.Student.BaseProfile.Image ?? _configuration.GetValue<string>("DefaultImage"),
                         Name = s.Student.BaseProfile.Name,
                         Surname = s.Student.BaseProfile.Surname,
                         LastName = s.Student.BaseProfile.LastName,
@@ -110,7 +119,7 @@ namespace EJournal.Data.Repositories
 
                 allStudents.AddRange(studentsBySingleGroup);
             }
-            return allStudents;            
+            return allStudents;
         }
 
         public int GetAverageMarkStudent(string studentId, int subjectId = 0)
@@ -150,7 +159,7 @@ namespace EJournal.Data.Repositories
                         DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
                         Email = t.BaseProfile.DbUser.Email,
                         PhoneNumber = t.BaseProfile.DbUser.PhoneNumber
-                    }); 
+                    });
                 return students;
             }
             //students.OrderByDescending(t => t.DateOfRegister);
