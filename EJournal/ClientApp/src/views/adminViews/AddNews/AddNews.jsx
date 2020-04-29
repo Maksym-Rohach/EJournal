@@ -72,7 +72,7 @@ class AddNews extends React.Component {
             }}
             variant="outlined"
           >
-            {groups.map((option) => (
+            {groups.groups.map((option) => (
               <MenuItem key={option.id} value={option.id}>
                 {option.name}
               </MenuItem>
