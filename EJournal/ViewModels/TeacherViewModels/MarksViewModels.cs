@@ -57,6 +57,7 @@ namespace EJournal.ViewModels.TeacherViewModels
         public string Surname { get; set; }
         public string LastName { get; set; }
         public string Adress { get; set; }
+        public string MarkType { get; set; }
         public string DateOfBirth { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
