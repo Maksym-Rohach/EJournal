@@ -118,7 +118,10 @@ namespace EJournal.Data.Repositories
         {
             return _context.Groups;
         }
-
+        public IEnumerable<Group> GetGroupsByTeacherId(string teacherId)
+        {
+            return _context.GroupToSubjects.Where(x=>x.TeacherId==teacherId).Select(x=>x.Group);
+        }
         public List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId)
         {
             List<GetGroupShortModel> groups = _context.Groups

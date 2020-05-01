@@ -15,6 +15,7 @@ const LoadDistribution = React.lazy(() => import('../views/adminViews/LoadDistri
 const AddNews = React.lazy(() => import('../views/adminViews/AddNews/AddNews'));
 const News = React.lazy(() => import('../views/adminViews/News'));
 const Error = React.lazy(() => import('../views/adminViews/Error/Error404'));
+const ChangeTimetable = React.lazy(() => import('../views/adminViews/ChangeTimetable'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   //{ path: '/admin/students', exact: true, name: 'Students', component: StudentsTable },
@@ -31,6 +32,7 @@ const routes = [
   { path: '/admin/news', exact: true, name: 'News', component: News },
   { path: '/admin/404', exact: true, name: '404', component: Error },
   { path: '/admin/profile', exact: true, name: 'Profile', component: MyProfile },
+  { path: '/admin/change-timetable', exact: true, name: 'ChangeTimetable', component: ChangeTimetable },
 ];
 
 export default routes;
