@@ -31,7 +31,8 @@ namespace EJournal.Controllers.AdminControllers
         [HttpGet("get-teachers")]
         public IActionResult GetTeachers()
         {
-            return Ok(_teachersRepo.GetTeachers());
+            var tea = _teachersRepo.GetTeachers();
+            return Ok(tea);
         }
         [HttpPost("get-groups")]
         public IActionResult GetGroups([FromBody] GetGroupsTimetableViewModel model)
@@ -63,9 +64,10 @@ namespace EJournal.Controllers.AdminControllers
         [HttpPost("get-auditories")]
         public IActionResult GetAuditories([FromBody] GetAuditoriesTimetableViewModel model)
         {
+            int res = 1;
             List<Auditorium> auditoria = _context.Auditoriums.Where(t => t.Number >= _context.GroupsToStudents.Where(x => x.GroupId == int.Parse(model.Group)).Count()).AsNoTracking().ToList();
             foreach (var el in _context.Lessons.Where(x => x.LessonDate.Date >= Convert.ToDateTime(model.DateFrom).Date &&
-                     x.LessonDate.Date <= Convert.ToDateTime(model.DateTo).Date).AsNoTracking())
+                     x.LessonDate.Date <= Convert.ToDateTime(model.DateTo).Date && x.GroupId == int.Parse(model.Group)).AsNoTracking())
             {
                 foreach (var elem in model.DaysOfWeek)
                 {
@@ -75,14 +77,14 @@ namespace EJournal.Controllers.AdminControllers
                         {
                             if (el.LessonNumber == ele)
                             {
-                                auditoria.Remove(auditoria.FirstOrDefault(x => x.Id == el.AuditoriumId));
+                                res = 0;
+                                //auditoria.Remove(auditoria.FirstOrDefault(x => x.Id == el.AuditoriumId));
                             }
                         }
-                        //test = 1;
                     }
                 }
             }
-            if (auditoria.Count == 0)
+            if (res == 0)
             {
                 return BadRequest();
             }
