@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EJournal.ViewModels
+namespace EJournal.ViewModels.AdminViewModels
 {
     public class AddUserModel
     {
         public List<string> Rolename { get; set; }
+        public int GroupId { get; set; }
         //public string Degree { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }

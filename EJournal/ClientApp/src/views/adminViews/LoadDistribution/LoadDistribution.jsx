@@ -2,15 +2,13 @@ import React, { useState } from "react";
 import * as getListActions from "./reducer";
 import { connect } from "react-redux";
 import get from "lodash.get";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import LoadDistributionExpand from "../../../components/loadDistribution/LoadDistributionExpand";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 class LoadDistribution extends React.Component {
   state = {
     group: "",
+    speciality: "0",
   };
   componentDidMount() {
     this.props.getGroups();
@@ -18,12 +16,26 @@ class LoadDistribution extends React.Component {
 
   render() {
     const { groups } = this.props;
-
+    const { speciality } = this.state;
+    const handleChange = (event) => {
+      this.setState({speciality:event.target.value});
+    };
     //console.log(groups);
     if (groups != null) {
       return (
         <React.Fragment>
           <div className="mt-3">
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              value={speciality}
+              onChange={handleChange}
+              className="mb-4"
+              style={{minWidth:"150px"}}
+            >
+              <MenuItem value={0}>Всі</MenuItem>
+              
+            </Select>
             <LoadDistributionExpand groups={groups} />
           </div>
         </React.Fragment>
