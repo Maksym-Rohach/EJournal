@@ -164,6 +164,7 @@ class addTeacher extends Component {
                 identificationCode,
                 dateOfBirth: birthDate,
                 rolename: selectedRoles,
+                groupId:0,
                 //degree: degree
             });
 

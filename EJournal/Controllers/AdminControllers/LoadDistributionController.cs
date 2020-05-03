@@ -8,6 +8,7 @@ using EJournal.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EJournal.Controllers.AdminControllers
 {
@@ -28,15 +29,31 @@ namespace EJournal.Controllers.AdminControllers
         {
             return Ok(_groupRepo.GetGroups());
         }
+        [HttpGet("get-spec")]
+        public IActionResult GEtBySpec()
+        {
+            var gr = _context.Groups.AsNoTracking().ToList();
+            var sp = _context.Specialities.AsNoTracking().ToList();
+
+            var res = new GetGroupsViewModel()
+            {
+                Specialities = new List<Data.Entities.Speciality>(),
+                Groups = new List<Data.Entities.Group>()
+            };
+            res.Specialities = sp;
+            res.Groups = gr;
+            return Ok(res);
+        }
         [HttpPost("get-subjects")]
         public IActionResult GetSubjects([FromBody] FiltersModel model)
         {
-            var subj = _context.GroupToSubjects.Where(x => x.GroupId == model.GroupId).Select(x => x.Subject);
+            var subj = _context.GroupToSubjects.Where(x => x.GroupId == model.GroupId);
             var res = subj.Select(x => new SubjectsModel()
             {
-                Id = x.Id,
-                Name = x.Name,
-                Teachers = x.TeacherToSubjects.Select(t => new TeacherModel()
+                Id = x.SubjectId,
+                Name = x.Subject.Name,
+                SelectedTeacherId = x.TeacherId,
+                Teachers = x.Subject.TeacherToSubjects.Select(t => new TeacherModel()
                 {
                     Id = t.TeacherId,
                     Name = t.Teacher.BaseProfile.Name + " " + t.Teacher.BaseProfile.Surname + " " + t.Teacher.BaseProfile.LastName
@@ -46,6 +63,14 @@ namespace EJournal.Controllers.AdminControllers
                 Group=model.GroupId.ToString(),
                 Subjects=res
             });
+        }
+        [HttpPost("change-teacher")]
+        public IActionResult ChangeTeacher([FromBody]ChangeTeacherViewModel model)
+        {
+            _context.GroupToSubjects.FirstOrDefault(x => x.GroupId == int.Parse(model.GroupId)
+            && x.SubjectId == int.Parse(model.SubjectId)).TeacherId = model.TeacherId;
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }
