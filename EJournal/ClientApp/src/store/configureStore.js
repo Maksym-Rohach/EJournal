@@ -28,7 +28,11 @@ import {addNewsReducer} from '../views/adminViews/AddNews/reducer';
 import {groupNewsReducer} from '../components/groupNews/reducer';
 import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer';
 import {adminNewsReducer} from '../views/adminViews/News/reducer';
-import {seestudentscardsReducer} from '../views/teacherViews/SeeStudentsCards/reducer';
+
+
+
+
+import { seestudentscardsReducer } from '../views/teacherViews/SeeStudentsCards/reducer';
 
 //import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
 // Create browser history to use in the Redux store

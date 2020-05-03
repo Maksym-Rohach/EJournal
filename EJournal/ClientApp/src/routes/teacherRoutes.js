@@ -13,7 +13,12 @@ const routes = [
   { path: '/teacher/clients', exact: true, name: 'Clients', component: PersonsChart },
   { path: '/teacher/comments', exact: true, name: 'Comments', component: CommentsChart },
   { path: '/teacher/getmarks', exact: true, name: 'Marks', component: GetMarksCurator },
-  { path: '/teacher/seestudents', exact: true, name: 'Students', component: SeeStudentsCurator },
+
+
+
+
+
+    { path: '/teacher/seestudents', exact: true, name: 'Students', component: SeeStudentsCurator },
   
 ];
 
