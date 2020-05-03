@@ -15,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace EJournal.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Produces("application/json")]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
@@ -23,13 +23,13 @@ namespace EJournal.Controllers
         private readonly UserManager<DbUser> _userManager;
         private readonly SignInManager<DbUser> _signInManager;       
         private readonly EfDbContext _context;
-        private readonly IHostingEnvironment _env;
+        private readonly IWebHostEnvironment _env;
         private readonly IConfiguration _configuration;
 
         public AccountController(UserManager<DbUser> userManager,
                             SignInManager<DbUser> signInManager,
                             EfDbContext context,
-                            IHostingEnvironment env,
+                            IWebHostEnvironment env,
                             IConfiguration configuration)
         {
             _context = context;
