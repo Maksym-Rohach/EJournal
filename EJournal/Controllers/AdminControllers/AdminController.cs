@@ -117,9 +117,9 @@ namespace EJournal.Controllers.AdminControllers
             else
                 return BadRequest();
         }
-        [HttpGet]
-        [Route("get/students/groupId={groupId}")]
-        public IActionResult GetStudents(int groupId)
+        [HttpPost]
+        [Route("get/students")]
+        public IActionResult GetStudents([FromBody]GetStudentsFiltersModel model)
         {
             try
             {
@@ -127,12 +127,9 @@ namespace EJournal.Controllers.AdminControllers
                 var query = _students.GetFirstTenStudents().AsQueryable();
                 List<AdminTableStudentRowModel> tableList = new List<AdminTableStudentRowModel>();
 
-                //var groups = _context.Groups.Where(t => t.Speciality.Name == model.Speciality);
-                //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
-
-                if (groupId != 0)
+                if (model.GroupId != 0)
                 {
-                    query = _students.GetFirstTenStudents(groupId).AsQueryable();
+                    query = _students.GetFirstTenStudents(model.GroupId).AsQueryable();
                 }
 
                 tableList = query.Select(t => new AdminTableStudentRowModel
@@ -199,6 +196,41 @@ namespace EJournal.Controllers.AdminControllers
             {
                 return BadRequest("Error: " + ex.Message + " asd: " + ex.StackTrace);
             }
+        }
+        [HttpGet]
+        [Route("get/shortteach")]
+        public IActionResult GetShortTeachersInfo()
+        {
+            var teachers = _teachers.GetTeachers();
+            if (teachers != null)
+            {
+                return Ok(teachers.Select(t => new GetShortTeachersModel
+                {
+                    Id = t.Id,
+                    Name = t.Name + " " + t.LastName + " " + t.Surname
+                }));
+            }
+            else return BadRequest("erroore");
+        }
+        [HttpPost]
+        [Route("get/teacher/subjects")]
+        public IActionResult GetTeacherSubjects([FromBody]GetTeacherSubjFiltersModel model)
+        {
+            var subj = _teachers.GetTeacherSubjectsDependencies(model.TeacherId);
+            if (subj != null)
+            {
+                return Ok(subj);
+            }
+            else return BadRequest("erroore");
+        }
+        [HttpPost]
+        [Route("change/teacher/subjects")]
+        public IActionResult ChangeTeacherSubjects([FromBody] EditTeacherSubjFilterModel model)
+        {
+            bool res=_teachers.SetTeacherSubjectsAsync(model).Result;
+            if (res)
+                return Ok("Success");
+            else return BadRequest("Error");
         }
         [HttpPost]
         [Route("get/marks")]

@@ -1,0 +1,10 @@
+.formW {
+  max-height: 700px;
+  padding-left: 20px;
+  /* width:100%; */
+  overflow: auto;
+}
+
+.listW{
+    width:45%;
+}

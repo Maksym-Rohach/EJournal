@@ -13,6 +13,7 @@ const GetGroups = React.lazy(() => import('../views/adminViews/GetGroups'));
 const AddGroup = React.lazy(() => import('../views/adminViews/AddGroup'));
 const LoadDistribution = React.lazy(() => import('../views/adminViews/LoadDistribution'));
 const AddNews = React.lazy(() => import('../views/adminViews/AddNews/AddNews'));
+const SetTeacherSubjects = React.lazy(() => import('../views/adminViews/SetTeacherSubjects/SetTeacherSubjects'));
 const News = React.lazy(() => import('../views/adminViews/News'));
 const Error = React.lazy(() => import('../views/adminViews/Error/Error404'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -29,6 +30,7 @@ const routes = [
   { path: '/admin/load-distribution', exact: true, name: 'LoadDistribution', component: LoadDistribution },
   { path: '/admin/add-news', exact: true, name: 'AddNews', component: AddNews },
   { path: '/admin/news', exact: true, name: 'News', component: News },
+  { path: '/admin/teacher/subjects', exact: true, name: 'SetTeacherSubjects', component: SetTeacherSubjects },
   { path: '/admin/404', exact: true, name: '404', component: Error },
   { path: '/admin/profile', exact: true, name: 'Profile', component: MyProfile },
 ];

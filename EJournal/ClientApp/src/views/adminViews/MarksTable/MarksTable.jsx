@@ -28,7 +28,7 @@ class MarksTable extends Component {
         rowsPerPage: 8,
         page: 0
     };
-    mapBodyTable=(data)=> {
+    mapBodyTable = (data) => {
         let counter = 1;
         let countermark = 1;
         //const{page,rowsPerPage}=this.state;
@@ -42,7 +42,7 @@ class MarksTable extends Component {
                 fontSize: 14,
             },
         }))(TableCell);
-    
+
         const StyledTableRow = withStyles((theme) => ({
             root: {
                 '&:nth-of-type(odd)': {
@@ -50,10 +50,10 @@ class MarksTable extends Component {
                 },
             },
         }))(TableRow);
-    
+
         if (data.rows != undefined) {
             return data.rows.map(item => {
-    
+
                 return (
                     <StyledTableRow key={counter}>
                         <StyledTableCell component="th" scope="row">{counter++}</StyledTableCell>
@@ -72,7 +72,7 @@ class MarksTable extends Component {
         }
     }
 
-    mapHeadTable=(data)=> {
+    mapHeadTable = (data) => {
         //console.log("head " + data.columns);
         const StyledTableCell = withStyles((theme) => ({
             head: {
@@ -83,7 +83,7 @@ class MarksTable extends Component {
                 fontSize: 14,
             },
         }))(TableCell);
-    
+
         let counter = 1;
         if (data.columns != undefined) {
             return data.columns.map(function (item) {
@@ -122,10 +122,19 @@ class MarksTable extends Component {
         this.props.getMarks({ groupId, subjectId });
     }
     handleChangePage = (event, newPage) => {
-        this.setState({page:newPage});
+        this.setState({ page: newPage });
     };
+    groupSelectMap = () => {
+        const { groups } = this.props;
+        if (groups !== undefined) {
+            return groups.map(item => {
+                return (
+                    <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+                )
+            });
+        }
+    }
 
-    
     render() {
         const { data, specialities, groups, lessons } = this.props;
         console.log("RENDER", data);
@@ -156,11 +165,7 @@ class MarksTable extends Component {
                         onChange={this.changeGroup}
                     >
                         {
-                            groups.map(item => {
-                                return (
-                                    <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
-                                )
-                            })
+                            this.groupSelectMap()
                         }
                     </Select>
                 </FormControl>
@@ -194,10 +199,10 @@ class MarksTable extends Component {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    hidden={(data.columns!==undefined)?false:true}
-                    rowsPerPageOptions={8}
+                    hidden={(data.columns !== undefined) ? false : true}
+                    rowsPerPageOptions={[8]}
                     component="div"
-                    count={(data.columns!==undefined)?data.columns.length-2:0}
+                    count={(data.columns !== undefined) ? data.columns.length - 2 : 0}
                     rowsPerPage={this.state.rowsPerPage}
                     page={this.state.page}
                     onChangePage={this.handleChangePage}

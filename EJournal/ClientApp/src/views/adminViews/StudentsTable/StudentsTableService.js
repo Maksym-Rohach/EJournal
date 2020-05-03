@@ -3,7 +3,7 @@ import {serverUrl} from '../../../config';
 
 export default class StudentsTableService {
     static getStudents(model) {
-        return axios.get(`${serverUrl}api/admin/get/students/groupId=${model.groupId}`)
+        return axios.post(`${serverUrl}api/admin/get/students`,model)
     };
     static getSpecialities() {
         return axios.get(`${serverUrl}api/admin/get/specialities`)

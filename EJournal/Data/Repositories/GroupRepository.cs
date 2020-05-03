@@ -96,7 +96,7 @@ namespace EJournal.Data.Repositories
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    CountOfStudents = s.GroupToSubjects.Count(),
+                    CountOfStudents = s.GroupToStudents.Count(),
                     NameOfCurator = s.Teacher.BaseProfile.LastName + " " + s.Teacher.BaseProfile.Name + " " + s.Teacher.BaseProfile.Surname
                 })
                 .ToList();
