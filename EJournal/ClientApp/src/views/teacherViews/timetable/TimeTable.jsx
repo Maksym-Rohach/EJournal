@@ -2,10 +2,11 @@ import React from 'react';
 import * as getListActions from './reducer';
 import { connect } from 'react-redux';
 import get from "lodash.get";
-import { MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardBody, MDBCardHeader } from 'mdbreact';
+import { MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardBody, MDBCardHeader, MDBRow, MDBCol } from 'mdbreact';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Typography from "@material-ui/core/Typography";
+import "./style.css";
 
 function FirstDayOfWeek(DateObject, firstDayOfWeekIndex) {
     let dateObject;
@@ -29,44 +30,100 @@ function FirstDayOfWeek(DateObject, firstDayOfWeekIndex) {
 
 function pad(s) { return (s < 10) ? '0' + s : s; };
 
-function LoadTimetable(teacherTimetable) {
-    let row1 = [];
-    console.log('DDDDDDDDDDDD', teacherTimetable);
+function ComplideRow(tmprow, lessonNumber) {
+    let week = [0, 1, 2, 3, 4, 5, 6];
+    let resRow = [{}, {}, {}, {}, {}, {}, {}];
 
-    if (teacherTimetable != undefined || teacherTimetable.lesson1 != undefined || teacherTimetable.lesson2 != undefined || teacherTimetable.lesson3 != undefined || teacherTimetable.lesson4 != undefined) {
- 
-        row1 = teacherTimetable.lesson1;
-        // for(let i = 0; i < 7; i++){
-        //     console.log('i', row1[i])
-        // }
-        // for (let i = 0; i <= 4; i++) {
-        //     for (let j = 0; j <= 7; j++) {
-                //console.log('SSSSS', teacherTimetable[i].lesson1[j]);
-                // if (teacherTimetable[i].lesson1[j].dayOfWeek == 'Mondey') {
-                //     row1.push(teacherTimetable[i].lesson1[j]);
-                // }
-                // else if (teacherTimetable[i].lesson1[j].dayOfWeek == 'Tuesday') {
-                //     row1.push(teacherTimetable[i].lesson1[j]);
-                // }
-                // else if (teacherTimetable[i].lesson1[j].dayOfWeek == 'Wednesday') {
-                //     row1.push(teacherTimetable[i].lesson1[j]);
-                // }
-                // else if (teacherTimetable[i].lesson1[j].dayOfWeek == 'Thursday') {
-                //     row1.push(teacherTimetable[i].lesson1[j]);
-                // }
-                // else if (teacherTimetable[i].lesson1[j].dayOfWeek == 'Friday') {
-                //     row1.push(teacherTimetable[i].lesson1[j]);
-                // }
-                // else if (teacherTimetable[i].lesson1[j].dayOfWeek == 'Saturday') {
-                //     row1.push(teacherTimetable[i].lesson1[j]);
-                // }
-                // else if (teacherTimetable[i].lesson1[j].dayOfWeek == 'Sunday') {
-                //     row1.push(teacherTimetable[i].lesson1[j]);
-                // }
-        //     }
-        // }
+    for (let i = 0; i < week.length; i++) {
+        tmprow.forEach(les => {
+            if (les.dayOfWeek === week[i] && les.lessonNumber == lessonNumber) {
+                resRow[week[i]] = les;
+            }
+        });
     }
-    //console.log(row1);
+
+    return resRow;
+}
+
+function LoadTimetable(data) {
+
+    let tmprow1_ = [], tmprow2_ = [], tmprow3_ = [], tmprow4_ = [];
+    if (data.timetable != undefined) {
+
+        data.timetable.forEach(element => {
+            if (element.lessonNumber == 1) {
+                tmprow1_.push(element);
+            }
+            else if (element.lessonNumber == 2) {
+                tmprow2_.push(element);
+            }
+            else if (element.lessonNumber == 3) {
+                tmprow3_.push(element);
+            }
+            else if (element.lessonNumber == 4) {
+                tmprow4_.push(element);
+            }
+        });
+
+        let emtyLesson = {
+            lessonNumber: '',
+            lessonDate: '',
+            lessonTimeGap: '',
+            auditoriumNumber: '',
+            subjectName: '',
+            groupName: ''
+        }
+
+        let row1 = [emtyLesson, emtyLesson, emtyLesson, emtyLesson, emtyLesson, emtyLesson, emtyLesson];
+        let row2 = [{ emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }];
+        let row3 = [{ emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }];
+        let row4 = [{ emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }, { emtyLesson }];
+
+        row1 = ComplideRow(tmprow1_, 1);
+        row2 = ComplideRow(tmprow2_, 2);
+        row3 = ComplideRow(tmprow3_, 3);
+        row4 = ComplideRow(tmprow4_, 4);
+
+        console.log('row1', row1);
+
+        let rows = [row1, row2, row3, row4];
+        let lessonNumbers = [1, 2, 3, 4];
+        let counter = 1;
+
+        return rows.map(function (row) {
+            for (let i = 0; i <= lessonNumbers.length; i++) {
+                return (
+                    <tr>
+                        <td>{counter++}</td>
+                        {
+                            row.map(function (el) {
+                                return (
+                                    <td>
+                                        <MDBCard className = 'lesson'>      
+                                            <MDBCardBody>
+                                                <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
+                                                    {el.lessonTimeGap}
+                                                </Typography>
+                                                <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
+                                                    {el.subjectName}
+                                                </Typography>
+                                                <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
+                                                    {el.groupName}
+                                                </Typography>
+                                                <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
+                                                    {el.auditoriumNumber}
+                                                </Typography>
+                                            </MDBCardBody>
+                                        </MDBCard>
+                                    </td>
+                                );
+                            })
+                        }
+                    </tr>
+                );
+            }
+        })
+    }
 }
 
 class Timetable extends React.Component {
@@ -87,8 +144,9 @@ class Timetable extends React.Component {
         }
         let firstDayOfWeek = FirstDayOfWeek(new Date(), 1);
         let today = new Date();
+        let res2_ = firstDayOfWeek.addDays(6);
         let res1 = [pad(firstDayOfWeek.getDate()), pad(firstDayOfWeek.getMonth() + 1), firstDayOfWeek.getFullYear()].join('.');
-        let res2 = [pad(firstDayOfWeek.addDays(6).getDate()), pad(firstDayOfWeek.getMonth() + 1), firstDayOfWeek.getFullYear()].join('.');
+        let res2 = [pad(res2_.getDate()), pad(res2_.getMonth() + 1), res2_.getFullYear()].join('.');
         let res3 = [pad(today.getDate()), pad(today.getMonth() + 1), today.getFullYear()].join('.');
         if (this.state.dateFrom != res1 || this.state.dateTo != res2 || this.state.today != res3) {
             this.setState({ dateFrom: res1, dateTo: res2, today: res3 });
@@ -112,6 +170,8 @@ class Timetable extends React.Component {
         let nextLastDayOfWeek = [pad(nextLastDayOfWeek_.getDate()), pad(nextLastDayOfWeek_.getMonth() + 1), nextLastDayOfWeek_.getFullYear()].join('.');
 
         this.setState({ dateFrom: nextFirstDayOfWeek, dateTo: nextLastDayOfWeek });
+
+        this.props.getLessons({ dateFrom: nextFirstDayOfWeek, dateTo: nextLastDayOfWeek });
     }
     prev = () => {
         Date.prototype.addDays = function (days) {
@@ -129,10 +189,13 @@ class Timetable extends React.Component {
         let prevLastDayOfWeek = [pad(prevLastDayOfWeek_.getDate()), pad(prevLastDayOfWeek_.getMonth() + 1), prevLastDayOfWeek_.getFullYear()].join('.');
 
         this.setState({ dateFrom: prevFirstDayOfWeek, dateTo: prevLastDayOfWeek });
+
+        this.props.getLessons({ dateFrom: prevFirstDayOfWeek, dateTo: prevLastDayOfWeek });
     }
     render() {
         const { dateFrom, dateTo, today } = this.state;
-        const { teacherTimetable } = this.props;
+        const { data } = this.props;
+        console.log('data', data);
         return (
             <MDBCard>
                 <MDBCardHeader className="d-flex flex-row justify-content-between">
@@ -152,23 +215,27 @@ class Timetable extends React.Component {
                     </div>
                 </MDBCardHeader>
                 <MDBCardBody>
-                    <MDBTable>
-                        <MDBTableHead color="primary-color" textWhite>
-                            <tr>
-                                <th>#</th>
-                                <th>ПН</th>
-                                <th>ВТ</th>
-                                <th>СР</th>
-                                <th>ЧТ</th>
-                                <th>ПТ</th>
-                                <th>СБ</th>
-                                <th>НД</th>
-                            </tr>
-                        </MDBTableHead>
-                        <MDBTableBody>
-                            {LoadTimetable(teacherTimetable)}
-                        </MDBTableBody>
-                    </MDBTable>
+                    <MDBRow className='py-3'>
+                        <MDBCol md='12'>
+                            <MDBTable>
+                                <MDBTableHead color="primary-color" textWhite>
+                                    <tr>
+                                        <th style={{ textAlign: "center" }}>#</th>
+                                        <th style={{ textAlign: "center" }}>ПН</th>
+                                        <th style={{ textAlign: "center" }}>ВТ</th>
+                                        <th style={{ textAlign: "center" }}>СР</th>
+                                        <th style={{ textAlign: "center" }}>ЧТ</th>
+                                        <th style={{ textAlign: "center" }}>ПТ</th>
+                                        <th style={{ textAlign: "center" }}>СБ</th>
+                                        <th style={{ textAlign: "center" }}>НД</th>
+                                    </tr>
+                                </MDBTableHead>
+                                <MDBTableBody>
+                                    {LoadTimetable(data)}
+                                </MDBTableBody>
+                            </MDBTable>
+                        </MDBCol>
+                    </MDBRow>
                 </MDBCardBody>
             </MDBCard>
         )
@@ -177,7 +244,7 @@ class Timetable extends React.Component {
 const mapStateToProps = state => {
     console.log('mapStateToProps', state);
     return {
-        teacherTimetable: get(state, 'teacherTimetable.list.data'),
+        data: get(state, 'teacherTimetable.list.data'),
     };
 }
 
@@ -190,32 +257,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Timetable);
-
-
-
-/* <tr>
-            <td>1</td>
-            <td>
-         return teacherTimetable.lesson1.map(function (el) {
-            <MDBCard>
-            <MDBCardHeader>
-            <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
-                    {el.lessonTimeGap}
-                </Typography>
-            </MDBCardHeader>
-            <MDBCardBody>
-            <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
-                    {el.subjectName}
-                </Typography>
-                <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
-                    {el.groupName}
-                </Typography>
-                <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
-                    {el.auditoriumNumber}
-                </Typography>
-            </MDBCardBody>
-        </MDBCard>
-        }
-        });
-        </td>
-        </tr>*/

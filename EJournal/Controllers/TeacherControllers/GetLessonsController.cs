@@ -43,7 +43,11 @@ namespace EJournal.Controllers.TeacherControllers
                 IsLessonBe = " "
             }).ToList();
 
-            return Ok(timetable);
+            var res = new GetTeacherTimetableViewMode()
+            {
+                Timetable = timetable
+            };
+            return Ok(res);
             //List<TeacherTimeTableModel> lesson1_ = new List<TeacherTimeTableModel>();
             //List<TeacherTimeTableModel> lesson2_ = new List<TeacherTimeTableModel>();
             //List<TeacherTimeTableModel> lesson3_ = new List<TeacherTimeTableModel>();

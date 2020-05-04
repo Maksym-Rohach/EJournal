@@ -8,10 +8,7 @@ namespace EJournal.ViewModels
 {
     public class GetTeacherTimetableViewMode
     {
-        public List<TeacherTimeTableModel> lesson1 { get; set; }
-        public List<TeacherTimeTableModel> lesson2 { get; set; }
-        public List<TeacherTimeTableModel> lesson3 { get; set; }
-        public List<TeacherTimeTableModel> lesson4 { get; set; }
+       public List<TeacherTimeTableModel> Timetable { get; set; }
 
     }
 }
