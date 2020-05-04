@@ -57,6 +57,12 @@ class ChangeTimetable extends React.Component {
       ["ПТ", '5'],
       ["СБ", '6'],
     ];
+    let numbers = [
+      '1',
+      '2',
+      '3',
+      '4',
+    ];
     const { dateFrom, daysOfWeek, number, dateTo, group } = this.state;
     //console.log(auditories);
     const handleChangeMultiple = (event) => {
@@ -135,6 +141,17 @@ class ChangeTimetable extends React.Component {
         else{
             arr= arr.filter(function(ele){ return ele != event.target.value; })
             this.setState({ daysOfWeek: arr });
+      }
+    };
+    const handleChangeNumb = (event) => {
+      let arr = this.state.number;
+      if (event.target.checked === true) {
+          arr.push(event.target.value);
+          this.setState({ number: arr });
+        }
+        else{
+            arr= arr.filter(function(ele){ return ele != event.target.value; })
+            this.setState({ number: arr });
       }
     };
     const handleChangeAud = (event) => {
@@ -298,7 +315,7 @@ class ChangeTimetable extends React.Component {
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item lg={3} md={4} xl={2} xs={6}>
+            {/* <Grid item lg={3} md={4} xl={2} xs={6}>
               <FormControl
                 required
                 variant="outlined"
@@ -316,12 +333,12 @@ class ChangeTimetable extends React.Component {
                   <MenuItem value={2}>2</MenuItem>
                   <MenuItem value={3}>3</MenuItem>
                   <MenuItem value={4}>4</MenuItem>
-                  {/* <MenuItem value={5}>5</MenuItem>
-                <MenuItem value={6}>6</MenuItem> */}
+                  
                 </Select>
               </FormControl>
-            </Grid>
-            <Grid item lg={3} md={4} xl={2} xs={6}>
+            </Grid> */}
+
+            {/* <Grid item lg={3} md={4} xl={2} xs={6}>
               <FormControl
                 required
                 variant="outlined"
@@ -343,6 +360,35 @@ class ChangeTimetable extends React.Component {
                   <MenuItem value={6}>СБ</MenuItem>
                 </Select>
               </FormControl>
+            </Grid> */}
+            <Grid item lg={3} md={4} xl={2} xs={6}>
+              <Typography variant="h6" gutterBottom>
+                № Пар
+              </Typography>
+              {numbers.map(function (el) {
+                console.log(number,el)
+                if (number.includes(el)) {
+                  return (
+                    <FormControlLabel
+                      onChange={handleChangeNumb}
+                      control={
+                        <Checkbox checked value={el} color="primary" />
+                      }
+                      label={el}
+                    />
+                  );
+                } else {
+                  return (
+                    <FormControlLabel
+                      onChange={handleChangeNumb}
+                      control={
+                        <Checkbox value={el} color="primary" />
+                      }
+                      label={el}
+                    />
+                  );
+                }
+              })}
             </Grid>
             <Grid item lg={3} md={4} xl={2} xs={6}>
               <Typography variant="h6" gutterBottom>
@@ -371,32 +417,6 @@ class ChangeTimetable extends React.Component {
                   );
                 }
               })}
-
-              {/* <FormControlLabel
-                onChange={handleChangeS}
-                control={<Checkbox value={2} color="primary" />}
-                label="ВТ"
-              />
-              <FormControlLabel
-                onChange={handleChangeS}
-                control={<Checkbox value={3} color="primary" />}
-                label="СР"
-              />
-              <FormControlLabel
-                onChange={handleChangeS}
-                control={<Checkbox value={4} color="primary" />}
-                label="ЧТ"
-              />
-              <FormControlLabel
-                onChange={handleChangeS}
-                control={<Checkbox value={5} color="primary" />}
-                label="ПТ"
-              />
-              <FormControlLabel
-                onChange={handleChangeS}
-                control={<Checkbox value={6} color="primary" />}
-                label="СБ"
-              /> */}
             </Grid>
             <Grid item lg={3} md={4} xl={2} xs={6}>
               <MuiPickersUtilsProvider locale={deLocale} utils={DateFnsUtils}>
