@@ -31,6 +31,8 @@ import {adminNewsReducer} from '../views/adminViews/News/reducer';
 import {addGroupReducer} from '../views/adminViews/AddGroup/reducer';
 import {changeTimetableReducer} from '../views/adminViews/ChangeTimetable/reducer';
 import {setMarksReducer} from '../views/teacherViews/SetMarks/reducer';
+import {seestudentscardsReducer} from '../views/teacherViews/SeeStudentsCards/reducer';
+
 //import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
@@ -64,6 +66,9 @@ export default function configureStore(history, initialState) {
     addNews:addNewsReducer,
     adminNews:adminNewsReducer,
     addGroup:addGroupReducer,
+
+
+    seeStudentsCards:seestudentscardsReducer,
     setMarks:setMarksReducer,
     changeTimetable:changeTimetableReducer,
   };
