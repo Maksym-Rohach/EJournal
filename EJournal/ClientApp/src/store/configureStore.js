@@ -16,9 +16,24 @@ import {changePasswordReducer} from '../components/ChangePassword/reducer';
 import {changeImageReducer} from '../components/ChangeImage/reducer';
 import {profileReducer} from '../components/Profile/reducer';
 import {studentHomePageReducer} from '../views/studentViews/home/reducer';
+import {addTeacherReducer} from '../views/adminViews/AddTeacher/reducer';
 import {homeworkReducer} from '../views/studentViews/homework/reducer';
-import {teacherTimetableReducer} from '../views/teacherViews/timetable/reducer';
+import {newsReducer} from '../views/studentViews/news/reducer';
+import {studentCardListReducer} from '../components/StudentCardList/reducer'
+import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
+import {getGroupsReducer} from '../views/adminViews/GetGroups/reducer';
+import {loadDistributionReducer} from '../views/adminViews/LoadDistribution/reducer';
+import {loadDistributionDataReducer} from '../components/loadDistribution/reducer';
+import {addNewsReducer} from '../views/adminViews/AddNews/reducer';
+import {groupNewsReducer} from '../components/groupNews/reducer';
+import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer';
+import {adminNewsReducer} from '../views/adminViews/News/reducer';
+import {addGroupReducer} from '../views/adminViews/AddGroup/reducer';
 
+import {setMarksReducer} from '../views/teacherViews/SetMarks/reducer';
+import {seestudentscardsReducer} from '../views/teacherViews/SeeStudentsCards/reducer';
+
+//import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
 // Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 export const history = createHistory({ basename: baseUrl });
@@ -37,8 +52,22 @@ export default function configureStore(history, initialState) {
     profile:profileReducer,
     studentHome:studentHomePageReducer,
     addStudent:addStudentReducer,
+    addTeacher:addTeacherReducer,
     homework:homeworkReducer,
-    teacherTimetable:teacherTimetableReducer
+    studentCardList: studentCardListReducer,
+    specialitiesSelect: specialitiesSelectReducer,
+    groupNews:groupNewsReducer,
+    //groupsSelect: groupsSelectReducer,
+    news:newsReducer,
+    getSubject:GetSubjectReducer,
+    getGroups:getGroupsReducer,
+    loadDistribution:loadDistributionReducer,
+    loadDistributionData:loadDistributionDataReducer,
+    addNews:addNewsReducer,
+    adminNews:adminNewsReducer,
+    addGroup:addGroupReducer,
+    setMarks:setMarksReducer
+    seeStudentsCards:seestudentscardsReducer,
   };
 
   const middleware = [

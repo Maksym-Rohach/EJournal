@@ -13,7 +13,13 @@ export default {
       {
         name: 'Домашні завдання',
         url: '/student/homework',
+       // url: '/student/homework/subject=1',
         icon: 'icon-envelope-letter'
+      },
+      {
+        name: 'Новини',
+        url: '/student/news',
+        icon: 'icon-envelope'
       },
     //   {
     //     title: true,

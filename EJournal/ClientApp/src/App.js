@@ -4,12 +4,6 @@ import './App.scss';
 import 'primereact/resources/themes/nova-light/theme.css';
 import 'primereact/resources/primereact.min.css';
 import 'primeicons/primeicons.css';
-// import "./assets/scss/black-dashboard-react.scss";
-// import "./assets/css/black-dashboard-react.css";
-// import "./assets/demo/demo.css";
-// import "./assets/css/nucleo-icons.css";
-// import 'font-awesome/css/font-awesome.min.css';
-
 
 // Pages
 const LoginPage = React.lazy(() => import("./views/defaultViews/LoginPage"));
@@ -41,6 +35,7 @@ class App extends Component {
           <Route path="/teacher" name="Teacher" render={props => <TeacherLayout {...props} />}/>
           <Route path="/manager" name="Manager" render={props => <ManagerLayout {...props} />}/>
 
+          
         </Switch>
       </Suspense>
       </Router> 

@@ -17,23 +17,25 @@ namespace EJournal.Data.EfContext
 
         }
 
-        public DbSet<Auditorium> Auditoriums { get; set; }
-        public DbSet<Group> Groups { get; set; }
-        public DbSet<GroupToStudent> GroupsToStudents { get; set; }
-        public DbSet<Journal> Journals { get; set; }
-        public DbSet<JournalColumn> JournalColumns { get; set; }
-        public DbSet<Lesson> Lessons { get; set; }
-        public DbSet<Mark> Marks { get; set; }
-        public DbSet<MarkType> MarkTypes { get; set; }
-        public DbSet<StudentProfile> StudentProfiles { get; set; }
-        public DbSet<Subject> Subjects { get; set; }
-        public DbSet<TeacherProfile> TeacherProfiles { get; set; }
-        public DbSet<TeacherToSubject> TeacherToSubjects { get; set; }
-        public DbSet<BaseProfile> BaseProfiles { get; set; }
-        public DbSet<Speciality> Specialities { get; set; }
-        public DbSet<GroupToSubject> GroupToSubjects { get; set; }
-        public DbSet<DeductedUser> DeductedUsers { get; set; }
-        public DbSet<DeductionType> DeductionTypes { get; set; }
+        public virtual DbSet<Auditorium> Auditoriums { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<GroupToStudent> GroupsToStudents { get; set; }
+        public virtual DbSet<Journal> Journals { get; set; }
+        public virtual DbSet<JournalColumn> JournalColumns { get; set; }
+        public virtual DbSet<Lesson> Lessons { get; set; }
+        public virtual DbSet<Mark> Marks { get; set; }
+        public virtual DbSet<MarkType> MarkTypes { get; set; }
+        public virtual DbSet<StudentProfile> StudentProfiles { get; set; }
+        public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<TeacherProfile> TeacherProfiles { get; set; }
+        public virtual DbSet<TeacherToSubject> TeacherToSubjects { get; set; }
+        public virtual DbSet<BaseProfile> BaseProfiles { get; set; }
+        public virtual DbSet<Speciality> Specialities { get; set; }
+        public virtual DbSet<GroupToSubject> GroupToSubjects { get; set; }
+        public virtual DbSet<DeductedUser> DeductedUsers { get; set; }
+        public virtual DbSet<DeductionType> DeductionTypes { get; set; }
+        public virtual DbSet<News> News { get; set; }
+        public virtual DbSet<GroupNews> GroupNews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -59,6 +61,8 @@ namespace EJournal.Data.EfContext
             modelBuilder.ApplyConfiguration(new GroupToSubjectConfiguration());
             modelBuilder.ApplyConfiguration(new DeductedUserConfiguration());
             modelBuilder.ApplyConfiguration(new DeductionTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new NewsConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupNewsConfiguration());            
         }
     }
 }

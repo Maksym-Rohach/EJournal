@@ -118,7 +118,9 @@ namespace EJournal
             services.AddTransient<ITeachers, TeacherRepository>();
             services.AddTransient<IMarks, MarkRepository>();
             services.AddTransient<ILessons, LessonRepository>();
-
+            services.AddTransient<ISpecialities, SpecialityRepository>();
+            services.AddTransient<IGroups, GroupRepository>();
+            services.AddTransient<INews, NewsRepository>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSession();
 
