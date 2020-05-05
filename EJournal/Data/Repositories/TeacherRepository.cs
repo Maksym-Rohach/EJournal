@@ -7,6 +7,7 @@ using EJournal.Services;
 using EJournal.ViewModels;
 using EJournal.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -167,7 +168,7 @@ namespace EJournal.Data.Repositories
                 Adress = t.Adress,
                 DateOfBirth = t.DateOfBirth.ToString("dd.MM.yyyy"),
                 Degree = t.Teacher.Degree
-            });
+            }).AsNoTracking();
             return temp;
         }
     }
