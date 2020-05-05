@@ -16,13 +16,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import { Growl } from 'primereact/growl';
 import { MDBBtn } from "mdbreact";
+import ListSubheader from '@material-ui/core/ListSubheader';
 
 import './SetTeachSubjStyles.css';
 
 class SetTeacherSubjects extends Component {
     state = {
         selectedSubjects: [],
-        selectedTeacherId: ''
+        selectedTeacherId: '',
+        isSmtChanged:false
     };
     componentWillReceiveProps = (nextProps) => {
         if (nextProps !== this.props) {
@@ -42,7 +44,6 @@ class SetTeacherSubjects extends Component {
     }
     changeTeacherOnClick = (value) => () => {
         this.setState({ selectedTeacherId: value });
-        //this.setState({ selectedTeacherId: value, selectedSubjects: [] });
         this.props.getTeacherSubjects({ teacherId: value });
         //const { teacherSubjects } = this.props;
         //console.log(teacherSubjects);
@@ -60,15 +61,13 @@ class SetTeacherSubjects extends Component {
     }
     saveChangesOnClick = () => {
         const { selectedSubjects, selectedTeacherId } = this.state;
-        //filter + map
         let where = selectedSubjects.filter(item => item.isActive === true);
         if (where.length > 0) {
             let selected = where.map(item => {
                 return item.subjectName;
             });
             this.props.changeTeacherSubjects({ teacherId: selectedTeacherId, subjects: selected });
-            //growl update
-        }//else //growl lazy
+        }
     }
     render() {
         const { teachers, teacherSubjects } = this.props;
@@ -76,9 +75,15 @@ class SetTeacherSubjects extends Component {
         let counter = 0;
 
         return (
-            <Paper elevation={7} className="p-3 mt-4" >
-                <Grid container justify="space-between">
-                    <List className="listW mt-3" component="nav" aria-label="secondary mailbox folder">
+            <Grid container justify="space-between">
+                <Paper className="listW mt-3" elevation={7}>
+                    <List component="nav" aria-label="secondary mailbox folder"
+                    subheader={
+                        <ListSubheader className="subhead" component="div">
+                          Список вчителів
+                        </ListSubheader>
+                      }
+                    >
                         {
                             teachers.map(item => {
                                 return (
@@ -94,8 +99,10 @@ class SetTeacherSubjects extends Component {
                             })
                         }
                     </List>
+                </Paper>
+                <Paper hidden={this.state.selectedSubjects.length===0}  elevation={10} className="mt-3 pl-4" >
                     <FormControl className="formW mt-2" component="fieldset" >
-                        {/* <FormLabel component="legend">Assign responsibility</FormLabel> */}
+                        <FormLabel className="legend" component="legend">Змінити спеціалізацію</FormLabel>
                         <FormGroup>
                             {
                                 teacherSubjects.map(item => {
@@ -110,14 +117,14 @@ class SetTeacherSubjects extends Component {
                             }
                         </FormGroup>
                     </FormControl>
-                </Grid>
+                </Paper>
                 <Grid container direction="column" alignItems="flex-end" hidden={this.state.selectedTeacherId === ''}>
                     <Growl className="mt-5" ref={(el) => this.growl = el} />
-                    <MDBBtn className="btnSave" onClick={this.saveChangesOnClick} className="mt-5 purple-gradient border-0 px-5 py-2" >
+                    <MDBBtn className="btnSave" onClick={this.saveChangesOnClick} className="mt-4 mb-4 purple-gradient border-0 px-5 py-2" >
                         Save
                     </MDBBtn>
                 </Grid>
-            </Paper>
+            </Grid>
         );
     }
 }

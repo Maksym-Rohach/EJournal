@@ -26,7 +26,8 @@ class MarksTable extends Component {
         specialityId: 0,
         subjectId: 0,
         rowsPerPage: 8,
-        page: 0
+        page: 0,
+        markTypeId: 1
     };
     mapBodyTable = (data) => {
         let counter = 1;
@@ -117,9 +118,9 @@ class MarksTable extends Component {
     }
     changeSubj = (event) => {
         const subjectId = event.target.value;
-        const { groupId } = this.state;
+        const { groupId, markTypeId } = this.state;
         this.setState({ subjectId: subjectId });
-        this.props.getMarks({ groupId, subjectId });
+        this.props.getMarks({ groupId, subjectId, markTypeId });
     }
     handleChangePage = (event, newPage) => {
         this.setState({ page: newPage });

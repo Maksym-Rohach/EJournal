@@ -250,6 +250,7 @@ namespace EJournal.Controllers.AdminControllers
                 var students = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId).Select(t => t.Student);
                 foreach (var item in students)
                 {
+                    //marktype
                     var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id);
                     var marksFormatted = new List<MarkPrintModel>();
                     foreach (var date in lessonDates)
