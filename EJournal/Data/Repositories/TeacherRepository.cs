@@ -168,7 +168,7 @@ namespace EJournal.Data.Repositories
                 Adress = t.Adress,
                 DateOfBirth = t.DateOfBirth.ToString("dd.MM.yyyy"),
                 Degree = t.Teacher.Degree
-            });
+            }).AsNoTracking();
             return temp;
         }
 

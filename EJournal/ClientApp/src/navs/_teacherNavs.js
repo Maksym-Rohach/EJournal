@@ -73,7 +73,7 @@ export default {
       },
       {
         name: 'Перегляд студентів',
-        url: '/buttons',
+        url: '/teacher/seestudents',
         icon: 'icon-eyeglass',
       },
     ],
