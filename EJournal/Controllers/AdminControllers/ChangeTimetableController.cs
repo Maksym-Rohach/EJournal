@@ -88,6 +88,24 @@ namespace EJournal.Controllers.AdminControllers
             {
                 return BadRequest();
             }
+            foreach (var el in _context.Lessons.Where(x => x.LessonDate.Date >= Convert.ToDateTime(model.DateFrom).Date &&
+                     x.LessonDate.Date <= Convert.ToDateTime(model.DateTo).Date ).AsNoTracking())
+            {
+                foreach (var elem in model.DaysOfWeek)
+                {
+                    if ((int)el.LessonDate.DayOfWeek == elem)
+                    {
+                        foreach (var ele in model.Numbers)
+                        {
+                            if (el.LessonNumber == ele)
+                            {
+                                auditoria.Remove(auditoria.FirstOrDefault(x => x.Id == el.AuditoriumId));
+                            }
+                        }
+                    }
+                }
+            }
+            
 
             return Ok(auditoria);
         }
