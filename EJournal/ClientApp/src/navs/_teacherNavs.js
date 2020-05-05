@@ -48,6 +48,11 @@ export default {
             icon: 'icon-calculator',
           },
           {
+            name: 'Виставлення екзаменів',
+            url: '/teacher/getexammarks',
+            icon: 'icon-envelope-letter',
+          },
+          {
             name: 'Перегляд',
             url: '/teacher/getmarks',
             icon: 'icon-eyeglass',

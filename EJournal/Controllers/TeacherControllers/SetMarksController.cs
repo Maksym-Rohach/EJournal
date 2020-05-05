@@ -268,5 +268,38 @@ namespace EJournal.Controllers.TeacherControllers
                 Topic = jornalCol.Topic
             });
         }
+
+        [HttpGet("teacher/getexams")]
+        public IActionResult GetExams()
+        {
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+
+            var exam = new ExamRowModel()
+            {
+                GroupName = "Pr-12",
+                Subject = "Programming",
+                DateOfExam = "02.05.2020"
+            };
+
+            var listExams = new List<ExamRowModel>();
+            listExams.Add(exam);
+
+            var listrows = new GetExamViewModel()
+            {
+                rows = listExams,
+            };
+
+            
+
+            //listrows.rows.Add(new ExamRowModel()
+            //{
+            //    GroupName = exam.GroupName,
+            //    Subject = exam.Subject,
+            //    DateOfExam = exam.DateOfExam
+            //});
+
+            return Ok(listrows);
+        }
     }
 }
