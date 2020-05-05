@@ -37,11 +37,12 @@ namespace EJournal.Controllers.TeacherControllers
                 var claims = User.Claims;
                 var userId = claims.FirstOrDefault().Value;
                 var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId);
-                IEnumerable<GetStudentModel> listStudents = _studentRepository.GetStudents(group.Id);
+                IEnumerable<GetStudentInfoWithGroup> listStudents = _studentRepository.GetStudentsByGroup(group.Id);
                 List<CuratorCardStudentModel> cards = new List<CuratorCardStudentModel>();
 
                 var cards1 = listStudents.Select(t => new CuratorCardStudentModel {
                     Name = t.Name,
+                    Image = t.Image,
                     Adress = t.Adress,
                     DateOfBirth= t.DateOfBirth,
                     Email = t.Email,
@@ -52,7 +53,7 @@ namespace EJournal.Controllers.TeacherControllers
                     AddressOfChummery = "a",
                     Group = group.Name,
                     Progress = "v",
-                    Speciality = "a"
+                    Speciality = t.Speciality
 
                 }).ToList();
                 return Ok(cards1);

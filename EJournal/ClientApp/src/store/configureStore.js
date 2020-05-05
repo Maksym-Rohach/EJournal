@@ -66,7 +66,7 @@ export default function configureStore(history, initialState) {
     addNews:addNewsReducer,
     adminNews:adminNewsReducer,
     addGroup:addGroupReducer,
-    setMarks:setMarksReducer
+    setMarks:setMarksReducer,
     seeStudentsCards:seestudentscardsReducer,
   };
 
