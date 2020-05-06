@@ -202,7 +202,7 @@ class Timetable extends React.Component {
         if (loading === true) {
             return (<Loader />)
         }
-        else {
+        else if (loading === false && data != undefined) {
             return (
                 <MDBCard>
                     <MDBCardHeader className="d-flex flex-row justify-content-between">
@@ -250,9 +250,9 @@ class Timetable extends React.Component {
     }
 }
 const mapStateToProps = state => {
-    // console.log('mapStateToProps', state);
     return {
         data: get(state, 'getLessons.list.data'),
+        loading: get(state, "getLessons.list.loading")
     };
 }
 
