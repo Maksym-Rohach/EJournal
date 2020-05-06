@@ -67,10 +67,11 @@ export default function configureStore(history, initialState) {
     addNews:addNewsReducer,
     adminNews:adminNewsReducer,
     addGroup:addGroupReducer,
-
-
+    getLessons:teacherTimetableReducer,
+    
     seeStudentsCards:seestudentscardsReducer,
-    getLessons:teacherTimetableReducer
+    setMarks:setMarksReducer,
+    changeTimetable:changeTimetableReducer
   };
 
   const middleware = [
