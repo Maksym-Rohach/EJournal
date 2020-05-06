@@ -48,7 +48,7 @@ namespace EJournal.Controllers.TeacherControllers
                     Email = t.Email,
                     Id = t.Id,
                     LastName= t.LastName,
-                    PhoneNumber = t.PhoneNumber,
+                    PhoneNumber = t.PhoneNumber, 
                     Surname= t.Surname,
                     AddressOfChummery = "a",
                     Group = group.Name,
