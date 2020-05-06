@@ -20,12 +20,12 @@ export const getLessons = (model) => {
         
         TimeTableService.getLessons(model)
             .then((response) => {
-             console.log('response', response);
+            // console.log('response', response);
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
 
             .catch(err=> {
-                console.log('ERR', err);
+                //console.log('ERR', err);
               dispatch(getListActions.failed(err));
             });
     }
@@ -38,9 +38,12 @@ export const getListActions = {
         }
     },  
     success: (data) => {
+        //console.log('data/date', data.data.timetable);
         return {
             type: TIMETABLE_SUCCESS,
             payload: data.data
+
+            // .timetable
         }
     },  
     failed: (error) => {

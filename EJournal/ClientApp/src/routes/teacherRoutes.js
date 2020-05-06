@@ -7,6 +7,7 @@ const GetMarksCurator = React.lazy(() => import('../views/teacherViews/GetMarksP
 const Profile = React.lazy(() => import('../views/teacherViews/Profile/MyProfile'));
 const SetMarks = React.lazy(() => import('../views/teacherViews/SetMarks'));
 const SeeStudentsCurator = React.lazy(() => import('../views/teacherViews/SeeStudentsCards'));
+const Timetable = React.lazy(() => import('../views/teacherViews/timetable/TimeTable'))
 
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
@@ -17,6 +18,7 @@ const routes = [
   { path: '/teacher/getmarks', exact: true, name: 'Marks', component: GetMarksCurator },
   { path: '/teacher/set-marks', exact: true, name: 'Marks', component: SetMarks },
   { path: '/teacher/seestudents', exact: true, name: 'Students', component: SeeStudentsCurator },
+  { path: '/teacher/timetable', exact: true, name: 'Timetable', component: Timetable},
   
 ];
 

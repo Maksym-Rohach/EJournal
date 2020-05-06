@@ -1,4 +1,10 @@
-.lesson{
-    width: '10rem';
-    /* height: '12rem'; */
+.hover-cursor :hover{
+    cursor: pointer;
+}
+.subjectName{
+    text-align: center;
+    font-family: Palatino, URW Palladio L, serif;
+}
+.audNumber{
+    text-align: center;
 }

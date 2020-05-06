@@ -6,6 +6,10 @@ import { MDBTable, MDBTableBody, MDBTableHead, MDBCard, MDBCardBody, MDBCardHead
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import Typography from "@material-ui/core/Typography";
+import Card from '@material-ui/core/Card';
+import Box from '@material-ui/core/Box';
+import CardContent from '@material-ui/core/CardContent';
+import Loader from '../../../components/Loader'
 import "./style.css";
 
 function FirstDayOfWeek(DateObject, firstDayOfWeekIndex) {
@@ -37,6 +41,7 @@ function ComplideRow(tmprow, lessonNumber) {
     for (let i = 0; i < week.length; i++) {
         tmprow.forEach(les => {
             if (les.dayOfWeek === week[i] && les.lessonNumber == lessonNumber) {
+                (les.auditoriumNumber += ' ауд.').toString();
                 resRow[week[i]] = les;
             }
         });
@@ -46,7 +51,6 @@ function ComplideRow(tmprow, lessonNumber) {
 }
 
 function LoadTimetable(data) {
-
     let tmprow1_ = [], tmprow2_ = [], tmprow3_ = [], tmprow4_ = [];
     if (data.timetable != undefined) {
 
@@ -87,24 +91,23 @@ function LoadTimetable(data) {
         console.log('row1', row1);
 
         let rows = [row1, row2, row3, row4];
-        let lessonNumbers = [1, 2, 3, 4];
         let counter = 1;
 
         return rows.map(function (row) {
-            for (let i = 0; i <= lessonNumbers.length; i++) {
-                return (
-                    <tr>
-                        <td>{counter++}</td>
-                        {
-                            row.map(function (el) {
-                                return (
-                                    <td>
-                                        <MDBCard className = 'lesson'>      
-                                            <MDBCardBody>
-                                                <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
+            return (
+                <tr style={{ height: "15rem" }}>
+                    <td style={{ width: "16rem" }, { color: '#1a237e' }, { fontSize: '30px' }, { fontWeight: '200' }, { fontFamily: 'Brush Script MT, Brush Script Std, cursive' }}>{counter++}</td>
+                    {
+                        row.map(function (el) {
+                            return (
+                                <td style={{ width: "16rem" }}>
+                                    <Box boxShadow={3} borderColor="primary.main">
+                                        <Card style={{ height: "15rem" }} className='d-flex justify-content-around pt-1'>
+                                            <CardContent>
+                                                <Typography style={{ textAlign: "center" }} variant="h6" color='primary' gutterBottom>
                                                     {el.lessonTimeGap}
                                                 </Typography>
-                                                <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
+                                                <Typography className="subjectName" variant="h6" gutterBottom>
                                                     {el.subjectName}
                                                 </Typography>
                                                 <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
@@ -113,15 +116,16 @@ function LoadTimetable(data) {
                                                 <Typography style={{ textAlign: "center" }} variant="h6" gutterBottom>
                                                     {el.auditoriumNumber}
                                                 </Typography>
-                                            </MDBCardBody>
-                                        </MDBCard>
-                                    </td>
-                                );
-                            })
-                        }
-                    </tr>
-                );
-            }
+                                            </CardContent>
+                                        </Card>
+                                    </Box>
+                                </td>
+
+                            );
+                        })
+                    }
+                </tr>
+            );
         })
     }
 }
@@ -194,57 +198,61 @@ class Timetable extends React.Component {
     }
     render() {
         const { dateFrom, dateTo, today } = this.state;
-        const { data } = this.props;
-        console.log('data', data);
-        return (
-            <MDBCard>
-                <MDBCardHeader className="d-flex flex-row justify-content-between">
-                    <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
-                        Сьогодні : {today}
-                    </Typography>
-                    <div className="d-flex flex-row justify-content-center">
-                        <KeyboardArrowLeft className="hover-cursor" fontSize="large" onClick={this.prev} />
+        const { data, loading } = this.props;
+        if (loading === true) {
+            return (<Loader />)
+        }
+        else {
+            return (
+                <MDBCard>
+                    <MDBCardHeader className="d-flex flex-row justify-content-between">
                         <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
-                            {dateFrom}
+                            Сьогодні : {today}
                         </Typography>
-                        <Typography variant="h6" className="ml-2 mr-2" >-</Typography>
-                        <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
-                            {dateTo}
-                        </Typography>
-                        <KeyboardArrowRight className="hover-cursor" fontSize="large" onClick={this.next} />
-                    </div>
-                </MDBCardHeader>
-                <MDBCardBody>
-                    <MDBRow className='py-3'>
-                        <MDBCol md='12'>
-                            <MDBTable>
-                                <MDBTableHead color="primary-color" textWhite>
-                                    <tr>
-                                        <th style={{ textAlign: "center" }}>#</th>
-                                        <th style={{ textAlign: "center" }}>ПН</th>
-                                        <th style={{ textAlign: "center" }}>ВТ</th>
-                                        <th style={{ textAlign: "center" }}>СР</th>
-                                        <th style={{ textAlign: "center" }}>ЧТ</th>
-                                        <th style={{ textAlign: "center" }}>ПТ</th>
-                                        <th style={{ textAlign: "center" }}>СБ</th>
-                                        <th style={{ textAlign: "center" }}>НД</th>
-                                    </tr>
-                                </MDBTableHead>
-                                <MDBTableBody>
-                                    {LoadTimetable(data)}
-                                </MDBTableBody>
-                            </MDBTable>
-                        </MDBCol>
-                    </MDBRow>
-                </MDBCardBody>
-            </MDBCard>
-        )
+                        <div className="d-flex flex-row justify-content-center">
+                            <KeyboardArrowLeft className="hover-cursor" fontSize="large" onClick={this.prev} />
+                            <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
+                                {dateFrom}
+                            </Typography>
+                            <Typography variant="h6" className="ml-2 mr-2" >-</Typography>
+                            <Typography variant="h6" className="ml-2 mr-2" gutterBottom>
+                                {dateTo}
+                            </Typography>
+                            <KeyboardArrowRight className="hover-cursor" fontSize="large" onClick={this.next} />
+                        </div>
+                    </MDBCardHeader>
+                    <MDBCardBody>
+                        <MDBRow className='py-3'>
+                            <MDBCol md='12'>
+                                <MDBTable>
+                                    <MDBTableHead color="primary-color" textWhite>
+                                        <tr>
+                                            <th style={{ textAlign: "center" }}>#</th>
+                                            <th style={{ textAlign: "center" }}>ПН</th>
+                                            <th style={{ textAlign: "center" }}>ВТ</th>
+                                            <th style={{ textAlign: "center" }}>СР</th>
+                                            <th style={{ textAlign: "center" }}>ЧТ</th>
+                                            <th style={{ textAlign: "center" }}>ПТ</th>
+                                            <th style={{ textAlign: "center" }}>СБ</th>
+                                            <th style={{ textAlign: "center" }}>НД</th>
+                                        </tr>
+                                    </MDBTableHead>
+                                    <MDBTableBody>
+                                        {LoadTimetable(data)}
+                                    </MDBTableBody>
+                                </MDBTable>
+                            </MDBCol>
+                        </MDBRow>
+                    </MDBCardBody>
+                </MDBCard>
+            )
+        }
     }
 }
 const mapStateToProps = state => {
-    console.log('mapStateToProps', state);
+    // console.log('mapStateToProps', state);
     return {
-        data: get(state, 'teacherTimetable.list.data'),
+        data: get(state, 'getLessons.list.data'),
     };
 }
 
