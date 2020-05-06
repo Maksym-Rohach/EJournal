@@ -66,7 +66,6 @@ export default function configureStore(history, initialState) {
     loadDistributionData:loadDistributionDataReducer,
     addNews:addNewsReducer,
     adminNews:adminNewsReducer,
-    addGroup:addGroupReducer,
     getLessons:teacherTimetableReducer,
     
     seeStudentsCards:seestudentscardsReducer,
