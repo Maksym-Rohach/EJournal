@@ -6,7 +6,7 @@ const Timetable = React.lazy(() => import('../views/studentViews/timetable/Timet
 const MyProfile = React.lazy(() => import('../views/studentViews/profile/MyProfile'));
 const Homework = React.lazy(() => import('../views/studentViews/homework/Homework'));
 const News = React.lazy(() => import('../views/studentViews/news/News'));
-const Error = React.lazy(() => import('../views/adminViews/Error/Error404'));
+const Error = React.lazy(() => import('../views/studentViews/Error/Error404'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/student', exact: true, name: 'Home', component: Home },

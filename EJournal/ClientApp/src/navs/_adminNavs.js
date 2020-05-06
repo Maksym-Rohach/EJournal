@@ -127,7 +127,7 @@ export default {
       },
       {
         name: 'Редагувати розклад',
-        url: '',
+        url: '/admin/change-timetable',
         icon: 'icon-calendar',
       },
       {

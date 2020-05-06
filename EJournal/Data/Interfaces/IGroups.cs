@@ -16,5 +16,6 @@ namespace EJournal.Data.Interfaces
         bool EditGroup(string teacherId, int groupId, string groupName);
         bool AddGroup(AddGroupModel model);
         IEnumerable<Group> GetGroups();
+        IEnumerable<Group> GetGroupsByTeacherId(string teacherId);
     }
 }

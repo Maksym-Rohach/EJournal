@@ -16,7 +16,7 @@ export default {
       },
       {
         name: 'Розклад',
-        url: '/teacher/comments',
+        url: '/teacher/timetable',
         icon: 'icon-calendar',
       },
       // {

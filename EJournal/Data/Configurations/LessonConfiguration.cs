@@ -40,12 +40,12 @@ namespace EJournal.Data.Configurations
                 .WithMany(e => e.Lessons)
                 .HasForeignKey(e => e.AuditoriumId);
 
-            builder.HasData(
-                //new Lesson() { Id = 1, AuditoriumId = 10, GroupId = 1, LessonDate = new DateTime (2020, 3, 30), LessonNumber = 1, LessonTimeGap = "8.30 - 9.50", SubjectId = 4 /*TeacherId = "7fe110d7-33cc-4656-9805-60c93e5851ed" */ },
-                //new Lesson() { Id = 2, AuditoriumId = 15, GroupId = 2, LessonDate = new DateTime (2020, 3, 30), LessonNumber = 2, LessonTimeGap = "10.00 - 11.20", SubjectId = 4 /*TeacherId = "7fe110d7-33cc-4656-9805-60c93e5851ed"*/ },
-                //new Lesson() { Id = 3, AuditoriumId = 23, GroupId = 3, LessonDate = new DateTime(2020, 3, 30), LessonNumber = 3, LessonTimeGap = "11.30 - 12.50", SubjectId = 4 /*TeacherId = "7fe110d7-33cc-4656-9805-60c93e5851ed"*/ },
-                //new Lesson() { Id = 4, AuditoriumId = 46, GroupId = 4, LessonDate = new DateTime(2020, 3, 30), LessonNumber = 4, LessonTimeGap = "13.20 - 14.30", SubjectId = 4 /*TeacherId = "7fe110d7-33cc-4656-9805-60c93e5851ed"*/ }
-            );
+            //builder.HasData(
+            //new Lesson() { Id = 1, AuditoriumId = 10, GroupId = 1, LessonDate = new DateTime(2020, 04, 06), LessonNumber = 1, LessonTimeGap = "8.30 - 9.50", SubjectId = 4, TeacherId = "7ec46253-13f6-43c3-990e-8da1696b7813" },
+            //new Lesson() { Id = 2, AuditoriumId = 15, GroupId = 2, LessonDate = new DateTime(2020, 04, 07), LessonNumber = 2, LessonTimeGap = "10.00 - 11.20", SubjectId = 4, TeacherId = "7ec46253-13f6-43c3-990e-8da1696b7813" },
+            //new Lesson() { Id = 3, AuditoriumId = 23, GroupId = 1, LessonDate = new DateTime(2020, 04, 08), LessonNumber = 3, LessonTimeGap = "11.30 - 12.50", SubjectId = 4, TeacherId = "7ec46253-13f6-43c3-990e-8da1696b7813" },
+            //new Lesson() { Id = 4, AuditoriumId = 46, GroupId = 2, LessonDate = new DateTime(2020, 05, 09), LessonNumber = 4, LessonTimeGap = "13.20 - 14.30", SubjectId = 4, TeacherId = "7ec46253-13f6-43c3-990e-8da1696b7813" }
+            //);
         }
     }
 }
