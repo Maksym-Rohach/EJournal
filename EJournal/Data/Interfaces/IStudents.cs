@@ -18,5 +18,6 @@ namespace EJournal.Data.Interfaces
         IEnumerable<GetStudentModel> GetFirstTenStudents(int groupId=0);
         IEnumerable<GetStudentInfoWithGroup> GetAllStudentsBySpecialities(string teacherId);
         IEnumerable<GetStudentInfoWithGroup> GetStudentsByGroup(int groupId);
+        IEnumerable<GetStudentInfoWithGroup> GetStudentsBySpeciality(int specialitId);
     }
 }

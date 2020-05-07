@@ -1,8 +1,8 @@
-import SeeStudentsCardsService from './SeeStudentsCardsService';
+import TimeTableService from '../timetable/TimetableServices'
 import update from '../../../helpers/update';
-export const SEESTUDENTSCARDS_STARTED = "SEESTUDENTSCARDS_STARTED";
-export const SEESTUDENTSCARDS_SUCCESS = "SEESTUDENTSCARDS_SUCCESS";
-export const SEESTUDENTSCARDS_FAILED = "SEESTUDENTSCARDS_FAILED";
+export const TIMETABLE_STARTED = "TIMETABLE_STARTED";
+export const TIMETABLE_SUCCESS = "TIMETABLE_SUCCESS";
+export const TIMETABLE_FAILED = "TIMETABLE_FAILED";
 
 
 const initialState = {
@@ -14,16 +14,18 @@ const initialState = {
     },   
 }
 
-export const seeStudents = () => {
+export const getLessons = (model) => {
     return (dispatch) => {
         dispatch(getListActions.started());
         
-        SeeStudentsCardsService.seeStudents()
+        TimeTableService.getLessons(model)
             .then((response) => {
-                console.log('response', response)
+            // console.log('response', response);
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
+
             .catch(err=> {
+                //console.log('ERR', err);
               dispatch(getListActions.failed(err));
             });
     }
@@ -32,42 +34,45 @@ export const seeStudents = () => {
 export const getListActions = {
     started: () => {
         return {
-            type: SEESTUDENTSCARDS_STARTED
+            type: TIMETABLE_STARTED
         }
     },  
     success: (data) => {
+        //console.log('data/date', data.data.timetable);
         return {
-            type: SEESTUDENTSCARDS_SUCCESS,
+            type: TIMETABLE_SUCCESS,
             payload: data.data
+
+            // .timetable
         }
     },  
     failed: (error) => {
         return {           
-            type: SEESTUDENTSCARDS_FAILED,
+            type: TIMETABLE_FAILED,
             errors: error
         }
     }
   }
 
-export const seestudentscardsReducer = (state = initialState, action) => { 
+export const teacherTimetableReducer = (state = initialState, action) => { 
   let newState = state;
 
   switch (action.type) {
 
-      case SEESTUDENTSCARDS_STARTED: {
+      case TIMETABLE_STARTED: {
           newState = update.set(state, 'list.loading', true);
           newState = update.set(newState, 'list.success', false);
           newState = update.set(newState, 'list.failed', false);
           break;
       }
-      case SEESTUDENTSCARDS_SUCCESS: {
+      case TIMETABLE_SUCCESS: {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.failed', false);
           newState = update.set(newState, 'list.success', true);
           newState = update.set(newState, 'list.data', action.payload);         
           break;
       }
-      case SEESTUDENTSCARDS_FAILED: {
+      case TIMETABLE_FAILED: {
           newState = update.set(state, 'list.loading', false);
           newState = update.set(newState, 'list.success', false);
           newState = update.set(newState, 'list.failed', true);

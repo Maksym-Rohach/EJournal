@@ -5,9 +5,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import * as getListActions from './reducer';
-import { connect } from 'react-redux';
-import get from "lodash.get";
 
 const styles = theme => ({
     accent: {
@@ -20,9 +17,14 @@ const styles = theme => ({
 })
 
 class SpecialitiesSelect extends React.Component {
+    constructor(props){
+        super(props);
+        this.handleChange = this.handleChange.bind(this);
+        this.state = {specialityId: ''}
+    }    
 
-    componentDidMount = () => {
-        this.props.getSpecialitiesSelect();
+    handleChange(e) {
+        this.setState({speciality: e.target.value});
     }
 
     menuItem = () => {
@@ -37,14 +39,16 @@ class SpecialitiesSelect extends React.Component {
     }
 
     render(){
-        const { classes } = this.props;
+        const { classes, children, specialitiesList , ...attributes } = this.props;
+        console.log('spec', specialitiesList);
         return(
             <React.Fragment>
                 <FormControl className={classes.formControl}>
                     <InputLabel id="demo-simple-select-helper-label">Спеціальність</InputLabel>
                         <Select
                             labelId="demo-simple-select-helper-label"
-                            id="demo-simple-select-helper"                    
+                            id="demo-simple-select-helper"
+                            onChange={this.handleChange}                    
                         >
                             {this.menuItem()}
                         </Select>
@@ -52,23 +56,7 @@ class SpecialitiesSelect extends React.Component {
                 </FormControl>
             </React.Fragment>
         );
-        
     }
 }
 
-const mapStateToProps = state => {
-    console.log(state)
-    return {
-        specialitiesList: get(state, 'specialitiesSelect.list.data')
-    };
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getSpecialitiesSelect: () => {
-            dispatch(getListActions.getSpecialitiesSelect());
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SpecialitiesSelect));
+export default withStyles(styles)(SpecialitiesSelect);

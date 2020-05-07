@@ -20,21 +20,16 @@ const styles = theme => ({
 })
 
 class GroupsSelect extends React.Component {
-
-    componentDidMount = () => {
-        //this.props.getGroupsSelect();
+    menuItem = () => {
+        const { specialitiesList } = this.props;
+        return (specialitiesList.map(function (el) {
+            return (
+                <MenuItem key = {el.id}>
+                    {el.name}
+                </MenuItem>
+            );
+        }))
     }
-
-    // menuItem = () => {
-    //     const { specialitiesList } = this.props;
-    //     return (specialitiesList.map(function (el) {
-    //         return (
-    //             <MenuItem key = {el.id}>
-    //                 {el.name}
-    //             </MenuItem>
-    //         );
-    //     }))
-    // }
 
     render(){
         const { classes } = this.props;
@@ -55,19 +50,4 @@ class GroupsSelect extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    console.log(state)
-    return {
-        groupsList: get(state, 'groupsSelect.list.data')
-    };
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getGroupsSelect: (specialityId) => {
-            dispatch(getListActions.getGroupsSelect(specialityId));
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(GroupsSelect));
+export default withStyles(styles)(GroupsSelect);
