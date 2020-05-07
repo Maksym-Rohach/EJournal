@@ -19,7 +19,6 @@ import {studentHomePageReducer} from '../views/studentViews/home/reducer';
 import {addTeacherReducer} from '../views/adminViews/AddTeacher/reducer';
 import {homeworkReducer} from '../views/studentViews/homework/reducer';
 import {newsReducer} from '../views/studentViews/news/reducer';
-import {studentCardListReducer} from '../components/StudentCardList/reducer'
 import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
 import {getGroupsReducer} from '../views/adminViews/GetGroups/reducer';
 import {loadDistributionReducer} from '../views/adminViews/LoadDistribution/reducer';
@@ -34,8 +33,6 @@ import {studentViewReducer} from '../views/managerViews/students/reducer';
 import {seestudentscardsReducer} from '../views/teacherViews/SeeStudentsCards/reducer';
 import {teacherTimetableReducer} from '../views/teacherViews/timetable/reducer';
 
-//import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
-// Create browser history to use in the Redux store
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 export const history = createHistory({ basename: baseUrl });
 
@@ -55,7 +52,6 @@ export default function configureStore(history, initialState) {
     addStudent:addStudentReducer,
     addTeacher:addTeacherReducer,
     homework:homeworkReducer,
-    studentCardList: studentCardListReducer,
     groupNews:groupNewsReducer,
     news:newsReducer,
     getSubject:GetSubjectReducer,
@@ -68,7 +64,7 @@ export default function configureStore(history, initialState) {
     
     seeStudentsCards:seestudentscardsReducer,
     setMarks:setMarksReducer,
-    changeTimetable:changeTimetableReducer
+    changeTimetable:changeTimetableReducer,
     addGroup:addGroupReducer,
     setMarks:setMarksReducer,
     studentsView:studentViewReducer
