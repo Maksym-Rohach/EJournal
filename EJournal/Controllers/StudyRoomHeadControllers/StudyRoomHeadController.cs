@@ -51,7 +51,7 @@ namespace EJournal.Controllers.StudyRoomHeadControllers
         }
 
         [HttpGet]
-        [Route("get/groupsBySpeciality/{specialityId}")]
+        [Route("get/groupsBySpeciality/specialityId={specialityId}")]
         public IActionResult GetGroupsBySpeciality(int specialityId)
         {
             var groups = _groups.GetGroupsBySpeciality(specialityId);
@@ -60,10 +60,19 @@ namespace EJournal.Controllers.StudyRoomHeadControllers
         }
 
         [HttpGet]
-        [Route("get/studentsByGroup/{groupId}")]
+        [Route("get/studentsByGroup/groupId={groupId}")]
         public IActionResult GetStudentsByGroup(int groupId)
         {
             var groups = _students.GetStudentsByGroup(groupId);
+
+            return Ok(groups);
+        }
+
+        [HttpGet]
+        [Route("get/studentsBySpeciality/specialityId={specialityId}")]
+        public IActionResult GetStudentsBySpeciality(int specialityId)
+        {
+            var groups = _students.GetStudentsBySpeciality(specialityId);
 
             return Ok(groups);
         }

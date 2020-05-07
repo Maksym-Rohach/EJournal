@@ -9,10 +9,6 @@ import StudentCard from '../StudentCard/StudentCard'
 export class StudentCardList extends React.Component {
     state = {}
 
-    componentDidMount = () => {
-        this.props.getStudentListCard();
-    }
-    
     card = () => {
         const { studentList } = this.props;
         return (studentList.map(function (el) {
@@ -33,19 +29,4 @@ export class StudentCardList extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    console.log(state)
-    return {
-        studentList: get(state, 'studentCardList.list.data')
-    };
-}
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        getStudentListCard: () => {
-            dispatch(getListActions.getStudentListCard());
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(StudentCardList);
+export default StudentCardList;

@@ -14,9 +14,6 @@ namespace EJournal.Data.Configurations
         {
             builder.Property(e => e.Name)
                 .HasMaxLength(25);
-
-            builder.HasMany(e => e.Lessons)
-                .WithOne(e => e.LessonType);
         }
     }
 }

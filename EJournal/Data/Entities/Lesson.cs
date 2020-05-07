@@ -23,9 +23,6 @@ namespace EJournal.Data.Entities
         public string TeacherId { get; set; }
         public TeacherProfile Teacher { get; set; }
 
-        public int LessonTypeId { get; set; }
-        public LessonType LessonType { get; set; }
-
         public int GroupId { get; set; }
         public Group Group { get; set; }
     }
