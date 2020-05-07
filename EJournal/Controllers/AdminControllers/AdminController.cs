@@ -108,11 +108,12 @@ namespace EJournal.Controllers.AdminControllers
             var groups = _groups.GetAllGroupsInfo();
             if (groups != null)
             {
-                return Ok(groups.Select(t => new DropdownModel
+                var temp = groups.Select(t => new DropdownModel
                 {
                     Label = t.Name,
                     Value = t.Id.ToString()
-                }));
+                });
+                return Ok(temp);
             }
             else
                 return BadRequest();
@@ -232,6 +233,12 @@ namespace EJournal.Controllers.AdminControllers
                 return Ok("Success");
             else return BadRequest("Error");
         }
+        //[HttpGet]
+        //[Route("get/mark/types")]
+        //public IActionResult GetMarkTypes()
+        //{
+
+        //}
         [HttpPost]
         [Route("get/marks")]
         public IActionResult GetMarks([FromBody]GetMarksFiltersModel model)
@@ -250,33 +257,20 @@ namespace EJournal.Controllers.AdminControllers
                 var students = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId).Select(t => t.Student);
                 foreach (var item in students)
                 {
-                    //marktype
-                    var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id);
-                    var marksFormatted = new List<MarkPrintModel>();
+                    var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id&&t.MarkTypeId==model.MarkTypeId);
+                    var marksFormatted = new List<string>();
                     foreach (var date in lessonDates)
                     {
                         var cell = studMarks.FirstOrDefault(m => m.JournalColumn.Lesson.LessonDate == date);
                         if (cell != null)
                         {
                             if (cell.IsPresent == true)
-                                marksFormatted.Add(new MarkPrintModel
-                                {
-                                    Value = cell.Value,
-                                    Type = cell.MarkTypeId
-                                });
+                                marksFormatted.Add(cell.Value);
                             else
-                                marksFormatted.Add(new MarkPrintModel
-                                {
-                                    Value = "-",
-                                    Type = 0
-                                });
+                                marksFormatted.Add("-");
                         }
                         else
-                            marksFormatted.Add(new MarkPrintModel
-                            {
-                                Value = "-",
-                                Type = 0
-                            });
+                            marksFormatted.Add("-");
                     }
                     var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
                     string name = baseP.Name + " " + baseP.LastName + " " + baseP.Surname;
