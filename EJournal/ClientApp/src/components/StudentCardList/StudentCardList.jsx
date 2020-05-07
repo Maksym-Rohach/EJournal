@@ -1,8 +1,5 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
-import * as getListActions from './reducer';
-import { connect } from 'react-redux';
-import get from "lodash.get";
 import StudentCard from '../StudentCard/StudentCard'
 
 
