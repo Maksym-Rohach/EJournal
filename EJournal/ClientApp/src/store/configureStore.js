@@ -26,11 +26,11 @@ import {loadDistributionReducer} from '../views/adminViews/LoadDistribution/redu
 import {loadDistributionDataReducer} from '../components/loadDistribution/reducer';
 import {addNewsReducer} from '../views/adminViews/AddNews/reducer';
 import {groupNewsReducer} from '../components/groupNews/reducer';
-import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer';
 import {adminNewsReducer} from '../views/adminViews/News/reducer';
 import {addGroupReducer} from '../views/adminViews/AddGroup/reducer';
 import {changeTimetableReducer} from '../views/adminViews/ChangeTimetable/reducer';
 import {setMarksReducer} from '../views/teacherViews/SetMarks/reducer';
+import {studentViewReducer} from '../views/managerViews/students/reducer';
 import {seestudentscardsReducer} from '../views/teacherViews/SeeStudentsCards/reducer';
 import {teacherTimetableReducer} from '../views/teacherViews/timetable/reducer';
 
@@ -56,9 +56,7 @@ export default function configureStore(history, initialState) {
     addTeacher:addTeacherReducer,
     homework:homeworkReducer,
     studentCardList: studentCardListReducer,
-    specialitiesSelect: specialitiesSelectReducer,
     groupNews:groupNewsReducer,
-    //groupsSelect: groupsSelectReducer,
     news:newsReducer,
     getSubject:GetSubjectReducer,
     getGroups:getGroupsReducer,
@@ -71,6 +69,9 @@ export default function configureStore(history, initialState) {
     seeStudentsCards:seestudentscardsReducer,
     setMarks:setMarksReducer,
     changeTimetable:changeTimetableReducer
+    addGroup:addGroupReducer,
+    setMarks:setMarksReducer,
+    studentsView:studentViewReducer
   };
 
   const middleware = [

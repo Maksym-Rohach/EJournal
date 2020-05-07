@@ -109,7 +109,7 @@ namespace EJournal.Data.Repositories
                         Name = s.Student.BaseProfile.Name,
                         Surname = s.Student.BaseProfile.Surname,
                         LastName = s.Student.BaseProfile.LastName,
-                        DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString(),
+                        DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
                         Email = s.Student.BaseProfile.DbUser.Email,
                         PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
                         Adress = s.Student.BaseProfile.Adress,
@@ -230,7 +230,29 @@ namespace EJournal.Data.Repositories
                     Name = s.Student.BaseProfile.Name,
                     Surname = s.Student.BaseProfile.Surname,
                     LastName = s.Student.BaseProfile.LastName,
-                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString(),
+                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                    Email = s.Student.BaseProfile.DbUser.Email,
+                    PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
+                    Adress = s.Student.BaseProfile.Adress,
+                    GroupName = s.Group.Name,
+                    Speciality = s.Group.Speciality.Name
+                }).ToList();
+
+            return students;
+        }
+
+        public IEnumerable<GetStudentInfoWithGroup> GetStudentsBySpeciality(int specialityId)
+        {
+            List<GetStudentInfoWithGroup> students = _context.GroupsToStudents
+                .Where(x => x.Group.SpecialityId == specialityId)
+                .Select(s => new GetStudentInfoWithGroup
+                {
+                    Id = s.Student.BaseProfile.Id,
+                    Image = s.Student.BaseProfile.Image ?? _configuration.GetValue<string>("DefaultImage"),
+                    Name = s.Student.BaseProfile.Name,
+                    Surname = s.Student.BaseProfile.Surname,
+                    LastName = s.Student.BaseProfile.LastName,
+                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
                     Email = s.Student.BaseProfile.DbUser.Email,
                     PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
                     Adress = s.Student.BaseProfile.Adress,
