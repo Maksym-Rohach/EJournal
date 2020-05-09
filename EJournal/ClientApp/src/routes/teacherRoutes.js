@@ -16,6 +16,8 @@ const routes = [
   { path: '/teacher/getmarks', exact: true, name: 'Marks', component: GetMarksCurator },
   { path: '/teacher/set-marks', exact: true, name: 'Marks', component: SetMarks },
   { path: '/teacher/getexammarks', exact: true, name: 'Marks', component: SetExamMarks },
+  { path: '/teacher/profile', exact: true, name: 'Marks', component: Profile },
+
 ];
 
 export default routes;

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Bogus.DataSets;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,4 +18,16 @@ namespace EJournal.ViewModels.TeacherViewModels
         public string Subject { get; set; }
         public string DateOfExam { get; set; }
     } 
+
+    public class GetDataViewModel
+    {
+        public List<StudentModel> Students { get; set; }
+    }
+
+    public class StudentModel
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string Image { get; set; }
+    }
 }

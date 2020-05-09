@@ -9,6 +9,7 @@ using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Interfaces;
 using EJournal.Services;
 using EJournal.ViewModels;
+using EJournal.ViewModels.TeacherViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +43,6 @@ namespace EJournal.Controllers.TeacherControllers
             {
                 var claims = User.Claims;
                 var userId = claims.FirstOrDefault().Value;
-                //var curator = _context.TeacherProfiles.FirstOrDefault(x => x.Id == userId);
                 var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId /*&&*/ /*(x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year)*/);
                 List<SubjectsViewModel> subjects = _context.GroupToSubjects.Where(x => x.GroupId == group.Id)
                     .Select(x => new SubjectsViewModel
@@ -63,29 +63,6 @@ namespace EJournal.Controllers.TeacherControllers
         [HttpPost("teacher/getmarks")]
         public IActionResult GetMarksCurator([FromBody] MarksFilterModel model)
         {
-            //try
-            //{
-            //    if (!ModelState.IsValid)
-            //    {
-            //        return "Виберіть предмет або місяць";
-            //    }
-            //    var claims = User.Claims;
-            //    var userId = claims.FirstOrDefault().Value;
-            //    var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year));
-
-            //    var listMarks = new List<IEnumerable<Mark>>();
-            //    for(int i=1; i<=31; i++)
-            //    {
-            //        var data = $"{i}/{model.Month}/{DateTime.Now.Year}";
-            //        var marks = _marks.GetMarksInGroup(group.Id, model.SubjectId, data);
-            //        listMarks.Add(marks);
-            //    }
-            //    return Ok(listMarks);
-            //}
-            //catch(Exception ex)
-            //{
-            //    return BadRequest("Error: " + ex.Message);
-            //}
             if(model == null)
             {
                 return BadRequest("Виберіть предмет або місяць");
@@ -149,6 +126,41 @@ namespace EJournal.Controllers.TeacherControllers
 
                 return Ok(table);
             }
+        }
+
+        [HttpPost("teacher/get-data")]
+        public IActionResult GetData([FromBody]ExamRowModel model)
+        {
+
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+
+            var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId/* && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year)*/);
+
+            var students = _context.GroupsToStudents.Where(t => t.GroupId == group.Id).Select(t => t.Student);
+
+            var studentList = new List<StudentModel>();
+
+            foreach (var item in students)
+            {
+                var baseP = _context.BaseProfiles.FirstOrDefault(x => x.Id == item.Id);
+
+                var studentModel = new StudentModel()
+                {
+                    Id = baseP.Id,
+                    Name = $"{baseP.Name} {baseP.Surname} {baseP.LastName}",
+                    Image = baseP.Image
+                };
+
+                studentList.Add(studentModel);
+            }
+
+            var viewModel = new GetDataViewModel()
+            {
+                Students = studentList,
+            };
+
+            return Ok(viewModel);
         }
     }
 }

@@ -10,6 +10,8 @@ import './GetMarksService';
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import Loader from"../../../components/Loader";
+
 
 function mapHeadTable(data) {
   console.log("head " + data.columns);
@@ -103,12 +105,24 @@ class GetMarks extends Component {
       // }
 
   render() { 
-    const {listMarks, listSubject} = this.props;
-    //const {subject, marks} = this.state;
-    console.log("ListSubject", listSubject);
-    console.log("STATE", this.state);
+    const {listMarks, listSubject, login, loading} = this.props;
+    let isAccess = false;
+    const {roles} = login.user;
+    for (let i = 0; i < roles.length; i++) {
+      if (roles[i] === 'Curator')
+        isAccess = true;
+    }
+    // console.log(login);
+    // //const {subject, marks} = this.state;
+    // console.log("ListSubject", listSubject);
+    // console.log("STATE", this.state);
 
+    if(isAccess === true){
     if(listSubject !== undefined){
+      if(loading === true){
+        return(<Loader/>);
+      }
+      else{
       return ( 
         <React.Fragment>
           <InputLabel>Оберіть предмет:</InputLabel>
@@ -142,6 +156,21 @@ class GetMarks extends Component {
             </MDBTableBody>
           </MDBTable>
         </React.Fragment>
+      );}
+    }
+    else{
+      return(
+        <React.Fragment style={{justifyContent:'center'}}>
+          <Badge>У вашої групи не має пркдметів</Badge>
+        </React.Fragment>
+      );
+    }
+    }
+    else{
+      return(
+        <React.Fragment style={{justifyContent:'center'}}>
+          <Badge>Доступ обмежено</Badge>
+        </React.Fragment>
       );
     }
   }
@@ -151,7 +180,9 @@ const mapStateToProps = state => {
   console.log("mapStateto props", state);
     return {
         listMarks: get(state, 'getSubject.list.marks'),
-        listSubject: get(state, 'getSubject.list.subject') 
+        listSubject: get(state, 'getSubject.list.subject'), 
+        login: get(state, 'login'),
+        loading: get(state, 'getSubject.list.loading'),
     };
   }
   
