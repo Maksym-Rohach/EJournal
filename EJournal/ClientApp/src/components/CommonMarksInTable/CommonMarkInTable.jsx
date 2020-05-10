@@ -67,7 +67,7 @@ class MarkInTable extends Component {
                                     mark = " ";
                                 }
                                 return (
-                                    <StyledTableCell key={countermark++} align="right"><Badge style={{ "font-size": "14px" }} className="mr-3 px-3 py-2" color={colorBadge}>{mark}</Badge></StyledTableCell>
+                                    <StyledTableCell key={countermark++} align="right"><Badge className="mr-3 px-3 py-2" color={colorBadge}>{mark}</Badge></StyledTableCell>
                                 )
                             })
                         }

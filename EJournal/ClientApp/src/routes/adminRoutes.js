@@ -17,6 +17,7 @@ const SetTeacherSubjects = React.lazy(() => import('../views/adminViews/SetTeach
 const News = React.lazy(() => import('../views/adminViews/News'));
 const Error = React.lazy(() => import('../views/adminViews/Error/Error404'));
 const ChangeTimetable = React.lazy(() => import('../views/adminViews/ChangeTimetable'));
+const StudentExams = React.lazy(() => import('../components/StudentExams/StudentExams'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   //{ path: '/admin/students', exact: true, name: 'Students', component: StudentsTable },
@@ -35,6 +36,7 @@ const routes = [
   { path: '/admin/404', exact: true, name: '404', component: Error },
   { path: '/admin/profile', exact: true, name: 'Profile', component: MyProfile },
   { path: '/admin/change-timetable', exact: true, name: 'ChangeTimetable', component: ChangeTimetable },
+  { path: '/admin/student/exams/:studentId', exact: true, name: 'StudentExams', component: StudentExams },
 ];
 
 export default routes;

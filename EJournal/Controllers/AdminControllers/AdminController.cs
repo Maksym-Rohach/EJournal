@@ -28,8 +28,9 @@ namespace EJournal.Controllers.AdminControllers
         private readonly IGroups _groups;
         private readonly ILessons _lessons;
         private readonly ISpecialities _specialities;
+        private readonly IMarks _marks;
 
-        public AdminController(EfDbContext context, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities, ILessons lessons)
+        public AdminController(EfDbContext context, IMarks marks, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities, ILessons lessons)
         {
             _context = context;
             _students = students;
@@ -37,6 +38,7 @@ namespace EJournal.Controllers.AdminControllers
             _groups = groups;
             _specialities = specialities;
             _lessons = lessons;
+            _marks = marks;
         }
 
         [HttpPost]
@@ -233,12 +235,15 @@ namespace EJournal.Controllers.AdminControllers
                 return Ok("Success");
             else return BadRequest("Error");
         }
-        //[HttpGet]
-        //[Route("get/mark/types")]
-        //public IActionResult GetMarkTypes()
-        //{
-
-        //}
+        [HttpGet]
+        [Route("get/mark/types")]
+        public IActionResult GetMarkTypes()
+        {
+            var res=_marks.GetMarkTypes().ToList();
+            if (res != null)
+                return Ok(res);
+            else return BadRequest(res);
+        }
         [HttpPost]
         [Route("get/marks")]
         public IActionResult GetMarks([FromBody]GetMarksFiltersModel model)

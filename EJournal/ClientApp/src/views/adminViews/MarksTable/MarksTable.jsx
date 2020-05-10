@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as getListActions from './reducer';
 import * as getSpecListActions from './reducer';
+import * as getMarkTypeListActions from './reducer';
 import * as getGroupListActions from './reducer';
 import * as getLessonsListActions from './reducer';
 import { connect } from 'react-redux';
@@ -15,6 +16,7 @@ import MuiExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import CommonMarkInTable from "../../../components/CommonMarksInTable/CommonMarkInTable";
+import Loader from "../../../components/Loader";
 
 import './MarksTableStyle.css';
 
@@ -69,7 +71,7 @@ class MarksTable extends Component {
         page: 0,
         expanded: 1
     };
-    
+
     groupSelectMap = () => {
         const { groups } = this.props;
         if (groups !== undefined) {
@@ -103,6 +105,7 @@ class MarksTable extends Component {
     componentDidMount = () => {
         //const { groupId, specialityId, subjectId } = this.state;
         this.props.getSpecialities();
+        this.props.getMarkTypes();
     }
     changeSpec = (event) => {
         const specialityId = event.target.value;
@@ -123,11 +126,11 @@ class MarksTable extends Component {
 
     handleChangeExpansion = (panel) => (event, newExpanded) => {
         if (newExpanded) {
-            this.setState({ expanded: panel });
             const { groupId, subjectId } = this.state;
             if (groupId !== 0 && subjectId !== 0) {
                 this.props.getMarks({ groupId, subjectId, markTypeId: panel });
             }
+            this.setState({ expanded: panel });
         } else {
             this.setState({ expanded: false });
         }
@@ -135,155 +138,124 @@ class MarksTable extends Component {
 
 
     render() {
-        const { data} = this.props;
-        console.log("RENDER", data);
+        const { data, markTypes, loading } = this.props;
+        //console.log("RENDER", data,markTypes);
+        if (loading == false) {
+            return (
+                <React.Fragment>
+                    {
+                        markTypes.map(item => {
+                            if (item.type === 'five-point') {
+                                return (
+                                    <ExpansionPanel key={item.id} square expanded={this.state.expanded === item.id} onChange={this.handleChangeExpansion(item.id)}>
+                                        <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
+                                            <Typography>{item.description}</Typography>
+                                        </ExpansionPanelSummary>
+                                        <ExpansionPanelDetails className="flexx" >
+                                            <div>
+                                                <FormControl className="dropW mx-2 mt-3">
+                                                    <InputLabel id="slabel">Speciality</InputLabel>
+                                                    <Select
+                                                        labelId="slabel"
+                                                        value={this.state.specialityId}
+                                                        onChange={this.changeSpec}
+                                                    >
+                                                        {
+                                                            this.specSelectMap()
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                                <FormControl className="dropW mx-2 mt-3">
+                                                    <InputLabel id="glabel">Griup</InputLabel>
+                                                    <Select
+                                                        labelId="glabel"
+                                                        value={this.state.groupId}
+                                                        onChange={this.changeGroup}
+                                                    >
+                                                        {
+                                                            this.groupSelectMap()
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                                <FormControl className="dropW mx-2 mt-3">
+                                                    <InputLabel id="llabel">Lesson</InputLabel>
+                                                    <Select
+                                                        labelId="llabel"
+                                                        value={this.state.subjectId}
+                                                        onChange={this.changeSubj}
+                                                    >
+                                                        {
+                                                            this.subjSelectMap()
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+                                            <CommonMarkInTable data={data} />
+                                        </ExpansionPanelDetails>
+                                    </ExpansionPanel>
+                                )
+                            }
+                            else {
+                                return (
+                                    <ExpansionPanel key={item.id} square expanded={this.state.expanded === item.id} onChange={this.handleChangeExpansion(item.id)}>
+                                        <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
+                                            <Typography>{item.description}</Typography>
+                                        </ExpansionPanelSummary>
+                                        <ExpansionPanelDetails className="flexx" >
+                                            <div>
+                                                <FormControl className="dropW mx-2 mt-3">
+                                                    <InputLabel id="slabel">Speciality</InputLabel>
+                                                    <Select
+                                                        labelId="slabel"
+                                                        value={this.state.specialityId}
+                                                        onChange={this.changeSpec}
+                                                    >
+                                                        {
+                                                            this.specSelectMap()
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                                <FormControl className="dropW mx-2 mt-3">
+                                                    <InputLabel id="glabel">Griup</InputLabel>
+                                                    <Select
+                                                        labelId="glabel"
+                                                        value={this.state.groupId}
+                                                        onChange={this.changeGroup}
+                                                    >
+                                                        {
+                                                            this.groupSelectMap()
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                                <FormControl className="dropW mx-2 mt-3">
+                                                    <InputLabel id="llabel">Lesson</InputLabel>
+                                                    <Select
+                                                        labelId="llabel"
+                                                        value={this.state.subjectId}
+                                                        onChange={this.changeSubj}
+                                                    >
+                                                        {
+                                                            this.subjSelectMap()
+                                                        }
+                                                    </Select>
+                                                </FormControl>
+                                            </div>
+                                            {/* another component */}
+                                            <CommonMarkInTable data={data} />
+                                        </ExpansionPanelDetails>
+                                    </ExpansionPanel>
+                                )
+                            }
+                        })
+                    }
 
-        return (
-            <React.Fragment>
-                <ExpansionPanel square expanded={this.state.expanded === 1} onChange={this.handleChangeExpansion(1)}>
-                    <ExpansionPanelSummary aria-controls="panel1d-content" id="panel1d-header">
-                        <Typography>Collapsible Group Item #1</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails className="flexx" >
-                        <div>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="slabel">Speciality</InputLabel>
-                                <Select
-                                    labelId="slabel"
-                                    value={this.state.specialityId}
-                                    onChange={this.changeSpec}
-                                >
-                                    {
-                                        this.specSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="glabel">Griup</InputLabel>
-                                <Select
-                                    labelId="glabel"
-                                    value={this.state.groupId}
-                                    onChange={this.changeGroup}
-                                >
-                                    {
-                                        this.groupSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="llabel">Lesson</InputLabel>
-                                <Select
-                                    labelId="llabel"
-                                    value={this.state.subjectId}
-                                    onChange={this.changeSubj}
-                                >
-                                    {
-                                        this.subjSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <CommonMarkInTable data={data} />
-
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel square expanded={this.state.expanded === 2} onChange={this.handleChangeExpansion(2)}>
-                    <ExpansionPanelSummary aria-controls="panel2d-content" id="panel2d-header">
-                        <Typography>Collapsible Group Item #2</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails className="flexx" >
-
-                    <div>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="slabel">Speciality</InputLabel>
-                                <Select
-                                    labelId="slabel"
-                                    value={this.state.specialityId}
-                                    onChange={this.changeSpec}
-                                >
-                                    {
-                                        this.specSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="glabel">Griup</InputLabel>
-                                <Select
-                                    labelId="glabel"
-                                    value={this.state.groupId}
-                                    onChange={this.changeGroup}
-                                >
-                                    {
-                                        this.groupSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="llabel">Lesson</InputLabel>
-                                <Select
-                                    labelId="llabel"
-                                    value={this.state.subjectId}
-                                    onChange={this.changeSubj}
-                                >
-                                    {
-                                        this.subjSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <CommonMarkInTable data={data} />
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel square expanded={this.state.expanded === 3} onChange={this.handleChangeExpansion(3)}>
-                    <ExpansionPanelSummary aria-controls="panel3d-content" id="panel3d-header">
-                        <Typography>Collapsible Group Item #3</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails className="flexx" >
-                    <div>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="slabel">Speciality</InputLabel>
-                                <Select
-                                    labelId="slabel"
-                                    value={this.state.specialityId}
-                                    onChange={this.changeSpec}
-                                >
-                                    {
-                                        this.specSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="glabel">Griup</InputLabel>
-                                <Select
-                                    labelId="glabel"
-                                    value={this.state.groupId}
-                                    onChange={this.changeGroup}
-                                >
-                                    {
-                                        this.groupSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                            <FormControl className="dropW mx-2 mt-3">
-                                <InputLabel id="llabel">Lesson</InputLabel>
-                                <Select
-                                    labelId="llabel"
-                                    value={this.state.subjectId}
-                                    onChange={this.changeSubj}
-                                >
-                                    {
-                                        this.subjSelectMap()
-                                    }
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <CommonMarkInTable data={data} />
-
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-
-            </React.Fragment>
-        );
+                </React.Fragment>
+            );
+        } else {
+            return (
+                <Loader />
+            );
+        }
     }
 }
 
@@ -293,6 +265,8 @@ const mapStateToProps = state => {
         specialities: get(state, 'marks.list.specialities'),
         groups: get(state, 'marks.list.groups'),
         lessons: get(state, 'marks.list.lessons'),
+        markTypes: get(state, 'marks.list.markTypes'),
+        loading: get(state, 'marks.list.loading'),
     };
 }
 
@@ -303,6 +277,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getSpecialities: () => {
             dispatch(getSpecListActions.getSpecialities());
+        },
+        getMarkTypes: () => {
+            dispatch(getMarkTypeListActions.getMarkTypes());
         },
         getGroups: filter => {
             dispatch(getGroupListActions.getGroups(filter));

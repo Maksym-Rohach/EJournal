@@ -33,6 +33,7 @@ import {setMarksReducer} from '../views/teacherViews/SetMarks/reducer';
 import {studentViewReducer} from '../views/managerViews/students/reducer';
 import {seestudentscardsReducer} from '../views/teacherViews/SeeStudentsCards/reducer';
 import {teacherTimetableReducer} from '../views/teacherViews/timetable/reducer';
+import {getStudentsExamsReducer} from '../components/StudentExams/reducer';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 export const history = createHistory({ basename: baseUrl });
@@ -68,7 +69,8 @@ export default function configureStore(history, initialState) {
     addGroup:addGroupReducer,
     setMarks: setMarksReducer,
     setTeacherSubjects: setTeacherSubjectsReducer,
-    studentsView:studentViewReducer
+    studentsView:studentViewReducer,
+    studentExams:getStudentsExamsReducer
   };
 
   const middleware = [
