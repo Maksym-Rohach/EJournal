@@ -157,7 +157,7 @@ namespace EJournal.Data.Repositories
                     Degree = t.Degree
                 });
             var users = _userManager.GetUsersInRoleAsync(rolename).Result;
-            var temp= _context.BaseProfiles.Where(b=>users.Any(t=>t.Id== b.Id)).Select(t => new GetTeacherModel
+            var temp = _context.BaseProfiles.Where(b => users.Any(t => t.Id == b.Id)).Select(t => new GetTeacherModel
             {
                 Id = t.Id,
                 Email = t.DbUser.Email,
@@ -170,6 +170,53 @@ namespace EJournal.Data.Repositories
                 Degree = t.Teacher.Degree
             }).AsNoTracking();
             return temp;
+        }
+
+        public List<GetTeacherSubjectsDependencyModel> GetTeacherSubjectsDependencies(string teacherId)
+        {
+            var subjects = _context.Subjects.Select(s => new GetTeacherSubjectsDependencyModel
+            {
+                SubjectName = s.Name,
+                isActive = s.TeacherToSubjects.Any(t => t.TeacherId == teacherId)
+            });
+            return subjects.ToList();
+        }
+
+        public async Task<bool> SetTeacherSubjectsAsync(EditTeacherSubjFilterModel model)
+        {
+            var tsubjects = _context.TeacherToSubjects/*.AsNoTracking()*/
+               .Where(t => t.TeacherId == model.TeacherId)
+               .Select(t => t.Subject.Name).ToList();
+
+            if (tsubjects != model.Subjects)
+            {
+                var edge = model.Subjects.Except(tsubjects).ToList();
+                var edgeDel = tsubjects.Except(model.Subjects).ToList();
+                var subjects = _context.Subjects/*.AsNoTracking()*/.ToList();
+                if (edge.Count()>0)
+                {
+                    var tmp = subjects.Where(t => edge.Contains(t.Name));
+                    var connect = tmp.Select(t => new TeacherToSubject
+                    {
+                        SubjectId = t.Id,
+                        TeacherId = model.TeacherId
+                    });
+                    await _context.TeacherToSubjects.AddRangeAsync(connect);
+                }
+                if (edgeDel.Count() > 0)
+                {
+                    var tmp = subjects.Where(t => edgeDel.Contains(t.Name));
+                    var connect = tmp.Select(t => new TeacherToSubject
+                    {
+                        SubjectId = t.Id,
+                        TeacherId = model.TeacherId
+                    });
+                    _context.TeacherToSubjects.RemoveRange(connect);
+                }
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

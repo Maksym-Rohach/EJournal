@@ -27,11 +27,13 @@ import {addNewsReducer} from '../views/adminViews/AddNews/reducer';
 import {groupNewsReducer} from '../components/groupNews/reducer';
 import {adminNewsReducer} from '../views/adminViews/News/reducer';
 import {addGroupReducer} from '../views/adminViews/AddGroup/reducer';
+import {setTeacherSubjectsReducer} from '../views/adminViews/SetTeacherSubjects/reducer';
 import {changeTimetableReducer} from '../views/adminViews/ChangeTimetable/reducer';
 import {setMarksReducer} from '../views/teacherViews/SetMarks/reducer';
 import {studentViewReducer} from '../views/managerViews/students/reducer';
 import {seestudentscardsReducer} from '../views/teacherViews/SeeStudentsCards/reducer';
 import {teacherTimetableReducer} from '../views/teacherViews/timetable/reducer';
+import {getStudentsExamsReducer} from '../components/StudentExams/reducer';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 export const history = createHistory({ basename: baseUrl });
@@ -63,11 +65,12 @@ export default function configureStore(history, initialState) {
     getLessons:teacherTimetableReducer,
     
     seeStudentsCards:seestudentscardsReducer,
-    setMarks:setMarksReducer,
     changeTimetable:changeTimetableReducer,
     addGroup:addGroupReducer,
-    setMarks:setMarksReducer,
-    studentsView:studentViewReducer
+    setMarks: setMarksReducer,
+    setTeacherSubjects: setTeacherSubjectsReducer,
+    studentsView:studentViewReducer,
+    studentExams:getStudentsExamsReducer
   };
 
   const middleware = [
