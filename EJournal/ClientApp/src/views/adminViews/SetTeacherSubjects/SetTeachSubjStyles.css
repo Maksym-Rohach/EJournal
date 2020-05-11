@@ -1,0 +1,20 @@
+.formW {
+  max-height: 700px;
+  overflow: auto;
+  padding:0px 15px 15px 15px;
+}
+.subhead{
+  color: blueviolet !important;
+  margin-left:5px;
+  font-weight: 500 !important;
+}
+.legend{
+  color: #d11717 !important; 
+  font-weight: 500 !important;
+  margin-left: 5px;
+  padding-top:5px !important;
+  font-size: 0.875rem !important;
+}
+.listW{
+    width:45% ;
+}

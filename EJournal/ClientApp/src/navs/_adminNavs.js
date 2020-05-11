@@ -11,7 +11,8 @@ export default {
       },
       {
         name: 'Переглянути список',
-        url: '/admin/students/groupId=0',
+        url: '/admin/students',
+        //url: '/admin/students/groupId=0',
         icon: 'icon-list',
       },
       {

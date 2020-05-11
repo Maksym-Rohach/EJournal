@@ -125,7 +125,6 @@ export const getGroupListActions = {
 }
 export const studentTableReducer = (state = initialState, action) => {
     let newState = state;
-
     switch (action.type) {
         case GET_SPEC_STARTED: {
             newState = update.set(state, 'list.loading', true);

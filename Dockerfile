@@ -27,16 +27,16 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x |  bash -
 RUN apt-get install -y nodejs
 
 WORKDIR /src
-COPY ["Ejournal/Ejournal.csproj", "Ejournal/"]
-RUN dotnet restore "Ejournal/Ejournal.csproj"
+COPY ["EJournal/EJournal.csproj", "EJournal/"]
+RUN dotnet restore "EJournal/EJournal.csproj"
 COPY . .
-WORKDIR "/src/Ejournal"
-RUN dotnet build "Ejournal.csproj" -c Release -o /app/build
+WORKDIR "/src/EJournal"
+RUN dotnet build "EJournal.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Ejournal.csproj" -c Release -o /app/publish
+RUN dotnet publish "EJournal.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Ejournal.dll"]
+ENTRYPOINT ["dotnet", "EJournal.dll"]

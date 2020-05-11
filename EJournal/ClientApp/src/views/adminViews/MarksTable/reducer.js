@@ -8,6 +8,10 @@ export const GET_SPEC_STARTED = "GET_SPEC_STARTED";
 export const GET_SPEC_SUCCESS = "GET_SPEC_SUCCESS";
 export const GET_SPEC_FAILED = "GET_SPEC_FAILED";
 
+export const GET_MARK_TYPE_STARTED = "GET_MARK_TYPE_STARTED";
+export const GET_MARK_TYPE_SUCCESS = "GET_MARK_TYPE_SUCCESS";
+export const GET_MARK_TYPE_FAILED = "GET_MARK_TYPE_FAILED";
+
 export const GET_GROUPS_STARTED = "GET_GROUPS_STARTED";
 export const GET_GROUPS_SUCCESS = "GET_GROUPS_SUCCESS";
 export const GET_GROUPS_FAILED = "GET_GROUPS_FAILED";
@@ -22,6 +26,7 @@ const initialState = {
         specialities: [],
         groups: [],
         lessons: [],
+        markTypes:[],
         loading: false,
         success: false,
         failed: false,
@@ -53,6 +58,20 @@ export const getSpecialities = () => {
             .catch(err => {
                 console.log("error " + err);
                 dispatch(getSpecListActions.failed(err));
+            });
+    }
+}
+export const getMarkTypes = () => {
+    return (dispatch) => {
+        dispatch(getMarkTypeListActions.started());
+        MarksTableService.getMarkTypes()
+            .then((response) => {
+                console.log("response", response);
+                dispatch(getMarkTypeListActions.success(response));
+            }, err => { throw err; })
+            .catch(err => {
+                console.log("error " + err);
+                dispatch(getMarkTypeListActions.failed(err));
             });
     }
 }
@@ -124,6 +143,25 @@ export const getSpecListActions = {
     }
 }
 
+export const getMarkTypeListActions = {
+    started: () => {
+        return {
+            type: GET_MARK_TYPE_STARTED
+        }
+    },
+    success: (data) => {
+        return {
+            type: GET_MARK_TYPE_SUCCESS,
+            markTypePayload: data.data
+        }
+    },
+    failed: (error) => {
+        return {
+            type: GET_MARK_TYPE_FAILED,
+            errors: error
+        }
+    }
+}
 export const getGroupListActions = {
     started: () => {
         return {
@@ -167,6 +205,25 @@ export const marksTableReducer = (state = initialState, action) => {
 
     switch (action.type) {
 
+        case GET_MARK_TYPE_STARTED: {
+            newState = update.set(state, 'list.loading', true);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', false);
+            break;
+        }
+        case GET_MARK_TYPE_SUCCESS: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.failed', false);
+            newState = update.set(newState, 'list.success', true);
+            newState = update.set(newState, 'list.markTypes', action.markTypePayload);
+            break;
+        }
+        case GET_MARK_TYPE_FAILED: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', true);
+            break;
+        }
         case GET_SPEC_STARTED: {
             newState = update.set(state, 'list.loading', true);
             newState = update.set(newState, 'list.success', false);
