@@ -14,7 +14,7 @@ namespace EJournal.Data.SeedData
 {
     public class Seed
     {
-        public static async Task SeedData(IServiceProvider services, IHostingEnvironment env, IConfiguration config)
+        public static async Task SeedData(IServiceProvider services, IWebHostEnvironment env, IConfiguration config)
         {
             using (var scope = services.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {

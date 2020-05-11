@@ -25,5 +25,8 @@ namespace EJournal.Data.Entities
 
         public int GroupId { get; set; }
         public Group Group { get; set; }
+
+        public int LessonTypeId { get; set; }
+        public LessonType LessonType { get; set; }
     }
 }
