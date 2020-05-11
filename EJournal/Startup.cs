@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +23,9 @@ using System.IO;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Repositories;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+
 
 namespace EJournal
 { 
@@ -41,14 +43,56 @@ namespace EJournal
         {
             services.AddCors();
 
-            // In production, the React files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddDbContext<EfDbContext>(options =>
+            options.UseSqlServer(
+                Configuration.GetConnectionString("EJornalDataBase")));
+
+            services.AddIdentity<DbUser, DbRole>(options => options.Stores.MaxLengthForKeys = 128)
+                .AddEntityFrameworkStores<EfDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddTransient<IJwtTokenService, JwtTokenService>();
+
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("SecretPhrase")));
+
+            services.Configure<IdentityOptions>(options =>
             {
-                configuration.RootPath = "ClientApp/build";
+                // Default Password settings.
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredUniqueChars = 0;
+                options.User.RequireUniqueEmail = true;
+                //options.Tokens.
             });
-            services.AddScoped<IJwtTokenService, JwtTokenService>();
-            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("gachi-muchi-secret-key"));
-            services.AddDbContext<EfDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EJornalDataBase")));
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+                cfg.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    IssuerSigningKey = signingKey,
+                    ValidateAudience = false,
+                    ValidateIssuer = false,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    // set ClockSkew is zero
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+            services.AddControllersWithViews();
+            services.AddTransient<IStudents, StudentRepository>();
+            services.AddTransient<ITeachers, TeacherRepository>();
+            services.AddTransient<IMarks, MarkRepository>();
+            services.AddTransient<ILessons, LessonRepository>();
+            services.AddTransient<ISpecialities, SpecialityRepository>();
+            services.AddTransient<IGroups, GroupRepository>();
+            services.AddTransient<INews, NewsRepository>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSwaggerGen(c =>
             {
@@ -90,45 +134,19 @@ namespace EJournal
                 }
             });
 
-            services.AddIdentity<DbUser, DbRole>(options =>
-                options.Stores.MaxLengthForKeys = 128)
-                .AddEntityFrameworkStores<EfDbContext>()
-                .AddDefaultTokenProviders();
+           
+            //services.AddSession();
 
-            services.AddAuthentication(options =>
+            // In production, the React files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(cfg =>
-            {
-                cfg.RequireHttpsMetadata = false;
-                cfg.SaveToken = true;
-                cfg.TokenValidationParameters = new TokenValidationParameters()
-                {
-                    IssuerSigningKey = signingKey,
-                    ValidateAudience = false,
-                    ValidateIssuer = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    // set ClockSkew is zero
-                    ClockSkew = TimeSpan.Zero
-                };
+                configuration.RootPath = "ClientApp/build";
             });
-            services.AddTransient<IStudents, StudentRepository>();
-            services.AddTransient<ITeachers, TeacherRepository>();
-            services.AddTransient<IMarks, MarkRepository>();
-            services.AddTransient<ILessons, LessonRepository>();
-            services.AddTransient<ISpecialities, SpecialityRepository>();
-            services.AddTransient<IGroups, GroupRepository>();
-            services.AddTransient<INews, NewsRepository>();
-            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSession();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -138,10 +156,13 @@ namespace EJournal
 
             app.UseCors(
                builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+
+            app.UseAuthentication();
 
             if (env.IsDevelopment())
             {
@@ -150,14 +171,17 @@ namespace EJournal
             else
             {
                 app.UseExceptionHandler("/Error");
-                app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseSpaStaticFiles();
+
+
             app.UseAuthentication();
-            app.UseSession();
+            app.UseRouting();
+            app.UseAuthorization();
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();           
+            app.UseHttpsRedirection();
+          
 
             #region  InitStaticFiles Images
             string pathRoot = InitStaticFiles
@@ -184,11 +208,11 @@ namespace EJournal
             #endregion
 
 
-            app.UseMvc(routes =>
+            app.UseEndpoints(endpoints =>
             {
-                routes.MapRoute(
+                endpoints.MapControllerRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>
