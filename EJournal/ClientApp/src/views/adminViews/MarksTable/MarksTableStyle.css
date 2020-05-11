@@ -1,7 +1,13 @@
 .dropW{
     width:150px;
 }
+.dropBigW{
+    width:230px;
+}
 .flexx{
     display: flex;
     flex-direction: column;
+}
+.aRedirect{
+    text-decoration: none !important;
 }

@@ -362,6 +362,19 @@ namespace EJournal.Controllers.AdminControllers
                 return Ok(res);
             else return BadRequest("Eoorr");
         }
+        [HttpPost]
+        [Route("get/group/students")]
+        public IActionResult GetGroupStudents([FromBody] GetGroupStudentsViewModel model)
+        {
+            var res = _students.GetStudents(model.GroupId).Select(l => new DropdownModel
+            {
+                Label = l.Name+" "+l.LastName,
+                Value = l.Id.ToString()
+            });
+            if (res != null)
+                return Ok(res);
+            else return BadRequest("Eoorr");
+        }
         [HttpDelete]
         [Route("delete/group/{groupId}")]
         public IActionResult DeleteGroup(int groupId)

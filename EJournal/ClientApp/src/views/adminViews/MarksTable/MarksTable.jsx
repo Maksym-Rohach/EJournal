@@ -4,6 +4,7 @@ import * as getSpecListActions from './reducer';
 import * as getMarkTypeListActions from './reducer';
 import * as getGroupListActions from './reducer';
 import * as getLessonsListActions from './reducer';
+import * as getStudentsListActions from './reducer';
 import { connect } from 'react-redux';
 import get from "lodash.get";
 import FormControl from '@material-ui/core/FormControl';
@@ -17,6 +18,8 @@ import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
 import CommonMarkInTable from "../../../components/CommonMarksInTable/CommonMarkInTable";
 import Loader from "../../../components/Loader";
+import { Link } from 'react-router-dom';
+import { MDBBtn } from "mdbreact";
 
 import './MarksTableStyle.css';
 
@@ -67,6 +70,7 @@ class MarksTable extends Component {
         groupId: 0,
         specialityId: 0,
         subjectId: 0,
+        studentId: '',
         rowsPerPage: 8,
         page: 0,
         expanded: 1
@@ -102,6 +106,16 @@ class MarksTable extends Component {
             });
         }
     }
+    studSelectMap = () => {
+        const { students } = this.props;
+        if (students !== undefined) {
+            return students.map(item => {
+                return (
+                    <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+                )
+            });
+        }
+    }
     componentDidMount = () => {
         //const { groupId, specialityId, subjectId } = this.state;
         this.props.getSpecialities();
@@ -116,6 +130,15 @@ class MarksTable extends Component {
         const groupId = event.target.value;
         this.setState({ groupId: groupId });
         this.props.getLessons({ groupId });
+    }
+    changeGroupToStud = (event) => {
+        const groupId = event.target.value;
+        this.setState({ groupId: groupId });
+        this.props.getStudents({ groupId });
+    }
+    changeStudent = (event) => {
+        const studId = event.target.value;
+        this.setState({ studentId: studId });
     }
     changeSubj = (event) => {
         const subjectId = event.target.value;
@@ -170,27 +193,31 @@ class MarksTable extends Component {
                                                     <Select
                                                         labelId="glabel"
                                                         value={this.state.groupId}
-                                                        onChange={this.changeGroup}
+                                                        onChange={this.changeGroupToStud}
                                                     >
                                                         {
                                                             this.groupSelectMap()
                                                         }
                                                     </Select>
                                                 </FormControl>
-                                                <FormControl className="dropW mx-2 mt-3">
-                                                    <InputLabel id="llabel">Lesson</InputLabel>
+                                                <FormControl className="dropBigW mx-2 mt-3">
+                                                    <InputLabel id="studlabel">Specific student</InputLabel>
                                                     <Select
-                                                        labelId="llabel"
-                                                        value={this.state.subjectId}
-                                                        onChange={this.changeSubj}
+                                                        labelId="studlabel"
+                                                        value={this.state.studentId}
+                                                        onChange={this.changeStudent}
                                                     >
                                                         {
-                                                            this.subjSelectMap()
+                                                            this.studSelectMap()
                                                         }
                                                     </Select>
                                                 </FormControl>
                                             </div>
-                                            <CommonMarkInTable data={data} />
+                                            <Link hidden={this.state.studentId===''} className="aRedirect" to={"/admin/student/exams/studentId=" + this.state.studentId}>
+                                                <MDBBtn hidden={this.state.studentId===''} onClick={this.onSubmit} className="mt-5 ripe-malinka-gradient border-0 px-6 py-3" >
+                                                    Переглянути екзамени
+                                                </MDBBtn>
+                                            </Link>
                                         </ExpansionPanelDetails>
                                     </ExpansionPanel>
                                 )
@@ -266,6 +293,7 @@ const mapStateToProps = state => {
         groups: get(state, 'marks.list.groups'),
         lessons: get(state, 'marks.list.lessons'),
         markTypes: get(state, 'marks.list.markTypes'),
+        students: get(state, 'marks.list.students'),
         loading: get(state, 'marks.list.loading'),
     };
 }
@@ -286,6 +314,9 @@ const mapDispatchToProps = (dispatch) => {
         },
         getLessons: filter => {
             dispatch(getLessonsListActions.getLessons(filter));
+        },
+        getStudents: filter => {
+            dispatch(getStudentsListActions.getStudents(filter));
         },
     }
 }

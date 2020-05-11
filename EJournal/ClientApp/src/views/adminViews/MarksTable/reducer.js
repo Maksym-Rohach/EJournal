@@ -20,6 +20,10 @@ export const GET_LESSONS_STARTED = "GET_LESSONS_STARTED";
 export const GET_LESSONS_SUCCESS = "GET_LESSONS_SUCCESS";
 export const GET_LESSONS_FAILED = "GET_LESSONS_FAILED";
 
+export const GET_STUDENTS_STARTED = "GET_STUDENTS_STARTED";
+export const GET_STUDENTS_SUCCESS = "GET_STUDENTS_SUCCESS";
+export const GET_STUDENTS_FAILED = "GET_STUDENTS_FAILED";
+
 const initialState = {
     list: {
         data: [],
@@ -27,6 +31,7 @@ const initialState = {
         groups: [],
         lessons: [],
         markTypes:[],
+        students:[],
         loading: false,
         success: false,
         failed: false,
@@ -103,6 +108,21 @@ export const getLessons = (model) => {
             });
     }
 }
+export const getStudents = (model) => {
+    return (dispatch) => {
+        dispatch(getStudentsListActions.started());
+        MarksTableService.getStudents(model)
+            .then((response) => {
+                console.log("response", response);
+                dispatch(getStudentsListActions.success(response));
+            }, err => { throw err; })
+            .catch(err => {
+                console.log("error " + err);
+                dispatch(getStudentsListActions.failed(err));
+            });
+    }
+}
+
 export const getListActions = {
     started: () => {
         return {
@@ -200,6 +220,25 @@ export const getLessonsListActions = {
         }
     }
 }
+export const getStudentsListActions = {
+    started: () => {
+        return {
+            type: GET_STUDENTS_STARTED
+        }
+    },
+    success: (data) => {
+        return {
+            type: GET_STUDENTS_SUCCESS,
+            studentsPayload: data.data
+        }
+    },
+    failed: (error) => {
+        return {
+            type: GET_STUDENTS_FAILED,
+            errors: error
+        }
+    }
+}
 export const marksTableReducer = (state = initialState, action) => {
     let newState = state;
 
@@ -276,6 +315,25 @@ export const marksTableReducer = (state = initialState, action) => {
             break;
         }
         case GET_LESSONS_FAILED: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', true);
+            break;
+        }
+        case GET_STUDENTS_STARTED: {
+            newState = update.set(state, 'list.loading', true);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', false);
+            break;
+        }
+        case GET_STUDENTS_SUCCESS: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.failed', false);
+            newState = update.set(newState, 'list.success', true);
+            newState = update.set(newState, 'list.students', action.studentsPayload);
+            break;
+        }
+        case GET_STUDENTS_FAILED: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);

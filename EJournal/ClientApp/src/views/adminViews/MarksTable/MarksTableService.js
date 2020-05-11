@@ -17,4 +17,7 @@ export default class MarksTableService {
     static getLessons(model) {
         return axios.post(`${serverUrl}api/admin/get/lessons`,model)
     };
+    static getStudents(model) {
+        return axios.post(`${serverUrl}api/admin/get/group/students`,model)
+    };
 }

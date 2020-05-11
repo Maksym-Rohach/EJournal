@@ -85,6 +85,7 @@ class StudentExams extends Component {
     }
     render() {
         const { exams, loading } = this.props;
+        let keyCounter=1;
         //console.log("RENDER", data,markTypes);
         if (loading == false) {
             if (exams !== [])
@@ -105,8 +106,8 @@ class StudentExams extends Component {
                                         exams.models.map(item => {
                                             if(item.marks!==undefined&&item.marks!==null)
                                             return (
-                                                <TabPanel header={item.yearOfMarks}>
-                                                    <TableContainer className="mt-3" component={Paper}>
+                                                <TabPanel key={keyCounter++} header={item.yearOfMarks}>
+                                                    <TableContainer className="my-3" component={Paper}>
                                                         <Table aria-label="customized table">
                                                             <TableHead>
                                                                 <TableRow>
