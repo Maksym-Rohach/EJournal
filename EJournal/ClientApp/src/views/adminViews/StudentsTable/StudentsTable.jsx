@@ -1,54 +1,93 @@
 import React, { Component } from 'react';
 import * as getListActions from './reducer';
+import * as getSpecialitiesListActions from './reducer';
+import * as getGroupListActions from './reducer';
 import { connect } from 'react-redux';
 import get from "lodash.get";
 import { MDBDataTable } from 'mdbreact';
-import { Dropdown } from 'primereact/dropdown';
-import { Dialog } from 'primereact/dialog';
-import { Accordion, AccordionTab } from 'primereact/accordion';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 
+import './StudentsTableStyle.css';
 class StudentsTable extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      groupId: 0,
-      specialityId: 0,
-    };
+  state = {
+    groupId: 0,
+    specialityId: 0,
+  };
 
-    this.changeSpec = this.changeSpec.bind(this);
-    this.changeGroup = this.changeGroup.bind(this);
-
+  componentWillMount = () => {
+    const paramGr = this.props.match.params.groupId;
+    if (paramGr !== undefined) {
+      let temp = paramGr.split('=').splice(1, 1).toString();
+      if (temp !== "null") {
+        this.setState({ groupId: temp });
+        console.log("sret", temp);
+      }
+    }
+    console.log("will", this.props);
   }
-  
-
   componentDidMount = () => {
-    const { groupId, specialityId } = this.state;
-    this.props.getStudents({ groupId, specialityId });
+    const { groupId } = this.state;
+    this.props.getSpecialities();
+    console.log("get stud", groupId);
+    this.props.getStudents({ groupId });
+    console.log("did", this.props);
   }
-  changeSpec(event) {
-    const groupId= 0;
-    const specialityId=event.value;
-    console.log("spe"+specialityId);
-    this.setState({ groupId: groupId, specialityId: specialityId });
-    this.props.getStudents({ groupId, specialityId });
+  changeSpec = (event) => {
+    const specialityId = event.target.value;
+    this.setState({ specialityId: specialityId });
+    this.props.getGroups({ specialityId });
   }
-  changeGroup(event) {
-    const groupId= event.target.value;
-    const specialityId=this.state.speciality;
-    this.setState({ groupId: groupId, specialityId: specialityId });
-    this.props.getStudents({ groupId, specialityId });
+  changeGroup = (event) => {
+    const groupId = event.target.value;
+    this.setState({ groupId: groupId });
+    this.props.getStudents({ groupId });
+  }
+  groupSelectMap = () => {
+    const { groups } = this.props;
+    if (groups !== undefined) {
+      return groups.map(item => {
+        return (
+          <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+        )
+      });
+    } 
   }
   render() {
-    const { listStudents } = this.props;
-    console.log("RENDER", listStudents);
-    const specs = listStudents.specialities;
-    const groups = listStudents.groups;
-
+    const { listStudents, specialities, groups } = this.props;
+    console.log("RENDER", listStudents, specialities, groups);
     return (
       <React.Fragment>
-        <Dropdown className="mr-2" value={this.state.specialityId} options={specs} onChange={this.changeSpec} placeholder="Оберіть спеціальність" />
-        <Dropdown value={this.state.groupId} options={groups} onChange={this.changeGroup} placeholder="Оберіть групу" />
-        
+        <FormControl className="dropW mx-2 mt-3">
+          <InputLabel id="slabel">Оберіть спеціальність</InputLabel>
+          <Select
+            labelId="slabel"
+            value={this.state.specialityId}
+            onChange={this.changeSpec}
+          >
+            {
+              specialities.map(item => {
+                return (
+                  <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+                )
+              })
+            }
+          </Select>
+        </FormControl>
+        <FormControl className="dropW mx-2 mt-3">
+          <InputLabel id="glabel">Оберіть групу</InputLabel>
+          <Select
+            labelId="glabel"
+            value={this.state.groupId}
+            onChange={this.changeGroup}
+          >
+            {
+              this.groupSelectMap()
+            }
+          </Select>
+        </FormControl>
         <MDBDataTable
           striped
           bordered
@@ -60,8 +99,11 @@ class StudentsTable extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(get(state, 'students.list.groups'));
   return {
     listStudents: get(state, 'students.list.data'),
+    specialities: get(state, 'students.list.specialities'),
+    groups: get(state, 'students.list.groups'),
   };
 }
 
@@ -69,6 +111,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getStudents: filter => {
       dispatch(getListActions.getStudents(filter));
+    },
+    getSpecialities: () => {
+      dispatch(getSpecialitiesListActions.getSpecialities());
+    },
+    getGroups: filter => {
+      dispatch(getGroupListActions.getGroups(filter));
     }
   }
 }

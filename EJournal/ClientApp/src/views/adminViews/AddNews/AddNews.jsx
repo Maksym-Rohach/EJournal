@@ -25,7 +25,7 @@ class AddNews extends React.Component {
     failed: false,
   };
   componentDidMount() {
-    this.props.getGroups();
+    this.props.getGroups({speciality:""});
   }
   componentWillReceiveProps = (nextProps) => {
     if (nextProps !== this.props) {
@@ -72,7 +72,7 @@ class AddNews extends React.Component {
             }}
             variant="outlined"
           >
-            {groups.map((option) => (
+            {groups.groups.map((option) => (
               <MenuItem key={option.id} value={option.id}>
                 {option.name}
               </MenuItem>
@@ -233,8 +233,8 @@ const mapDispatchToProps = (dispatch) => {
     addNews: (model) => {
       dispatch(getListActions.addNews(model));
     },
-    getGroups: () => {
-      dispatch(getListActions2.getGroups());
+    getGroups: (model) => {
+      dispatch(getListActions2.getGroups(model));
     },
   };
 };

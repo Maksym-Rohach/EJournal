@@ -132,18 +132,13 @@ import "./TimeTableStyle.css";
                              );}
                     }
                     else if(numOfDay==5||numOfDay==6){
-                        if(el==31){
-                            
-                            
+                        if(el==31){                           
                             if(numOfDay==6){
                                 let array=[arr[arr.length-2],arr[arr.length-1]];
                                     return( <tr>
                                              {LoadDays(data,array)}
-                                        </tr>);
-                                                              
-                            }
-                            
-                            
+                                        </tr>);                                                             
+                            }                                                     
                             if(numOfDay==5){
                                 let array=[31];
                                 if(array[0]!=undefined){

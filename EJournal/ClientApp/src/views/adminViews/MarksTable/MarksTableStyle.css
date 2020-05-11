@@ -1,0 +1,7 @@
+.dropW{
+    width:150px;
+}
+.flexx{
+    display: flex;
+    flex-direction: column;
+}

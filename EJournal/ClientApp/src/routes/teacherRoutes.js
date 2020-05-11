@@ -6,7 +6,10 @@ const PersonsChart = React.lazy(() => import('../views/adminViews/PersonsChart')
 const GetMarksCurator = React.lazy(() => import('../views/teacherViews/GetMarksPage'));
 const Profile = React.lazy(() => import('../views/teacherViews/Profile/MyProfile'));
 const SetMarks = React.lazy(() => import('../views/teacherViews/SetMarks'));
+const SeeStudentsCurator = React.lazy(() => import('../views/teacherViews/SeeStudentsCards'));
+const Timetable = React.lazy(() => import('../views/teacherViews/timetable/TimeTable'))
 const SetExamMarks = React.lazy(() => import('../views/teacherViews/SetExamMarks'));
+
 
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
@@ -15,6 +18,9 @@ const routes = [
   { path: '/teacher/comments', exact: true, name: 'Comments', component: CommentsChart },
   { path: '/teacher/getmarks', exact: true, name: 'Marks', component: GetMarksCurator },
   { path: '/teacher/set-marks', exact: true, name: 'Marks', component: SetMarks },
+  { path: '/teacher/seestudents', exact: true, name: 'Students', component: SeeStudentsCurator },
+  { path: '/teacher/timetable', exact: true, name: 'Timetable', component: Timetable},
+  
   { path: '/teacher/getexammarks', exact: true, name: 'Marks', component: SetExamMarks },
   { path: '/teacher/profile', exact: true, name: 'Marks', component: Profile },
 

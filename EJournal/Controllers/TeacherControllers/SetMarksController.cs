@@ -90,8 +90,9 @@ namespace EJournal.Controllers.TeacherControllers
                     Adress = x.Adress,
                     Name = x.Name,
                     LastName = x.LastName,
-                    Mark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1).Value,
-                    ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
+                    Mark = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).Value,
+                    MarkType = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).MarkTypeId.ToString(),
+                    //ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
                     IsPresent = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).IsPresent.ToString()
                 });
                 return Ok(new StudentsViewModel()
@@ -118,8 +119,9 @@ namespace EJournal.Controllers.TeacherControllers
                 Adress = x.Adress,
                 Name = x.Name,
                 LastName = x.LastName,
-                Mark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1).Value,
-                ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
+                Mark = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).Value,
+                MarkType = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).MarkTypeId.ToString(),
+                //ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
                 IsPresent = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).IsPresent.ToString()
             });
             return Ok(new StudentsViewModel()
@@ -145,8 +147,9 @@ namespace EJournal.Controllers.TeacherControllers
                 Adress = x.Adress,
                 Name = x.Name,
                 LastName = x.LastName,
-                Mark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1).Value,
-                ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
+                Mark = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).Value,
+                MarkType = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).MarkTypeId.ToString(),
+                //ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
                 IsPresent = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).IsPresent.ToString()
             });
             return Ok(new StudentsViewModel()
@@ -161,8 +164,7 @@ namespace EJournal.Controllers.TeacherControllers
         {
             var jornalCol = _context.JournalColumns.FirstOrDefault(x => x.LessonId == int.Parse(model.LessonId));
             var mark = _context.Marks.FirstOrDefault(x => x.JournalColumn.LessonId == int.Parse(model.LessonId) &&
-             x.StudentId == model.StudentId &&
-             x.MarkTypeId == int.Parse(model.MarkType));
+             x.StudentId == model.StudentId);
             if (mark == null)
             {
                 _context.Marks.Add(new Data.Entities.Mark()
@@ -176,6 +178,7 @@ namespace EJournal.Controllers.TeacherControllers
             }
             else
             {
+                mark.MarkTypeId = int.Parse(model.MarkType);
                 mark.Value = model.Mark;
             }
             _context.SaveChanges();
@@ -189,8 +192,9 @@ namespace EJournal.Controllers.TeacherControllers
                 Adress = x.Adress,
                 Name = x.Name,
                 LastName = x.LastName,
-                Mark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1).Value,
-                ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
+                Mark = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).Value,
+                MarkType = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).MarkTypeId.ToString(),
+                //ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
                 IsPresent = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).IsPresent.ToString()
             });
             return Ok(new StudentsViewModel()
@@ -207,28 +211,27 @@ namespace EJournal.Controllers.TeacherControllers
             var jornalCol = _context.JournalColumns.FirstOrDefault(x => x.LessonId == int.Parse(model.LessonId));
             var mark = _context.Marks.FirstOrDefault(x => x.JournalColumn.LessonId == int.Parse(model.LessonId) &&
              x.StudentId == model.StudentId);
-            if (bool.Parse(model.IsPresent) == false && mark != null)
+            if (mark != null)
             {
-                var marksSt = _context.Marks.Where(x => x.JournalColumn.LessonId == int.Parse(model.LessonId) &&
-             x.StudentId == model.StudentId);
-                foreach (var el in marksSt)
-                {
-                    _context.Marks.Remove(el);
-                    //el.IsPresent = false;
-                    //el.Value = "0";
-                }
+                var markSt = _context.Marks.FirstOrDefault(x => x.JournalColumn.LessonId == int.Parse(model.LessonId) &&
+                    x.StudentId == model.StudentId);
+
+                _context.Marks.Remove(markSt);
+                //el.IsPresent = false;
+                //el.Value = "0";
+
             }
-            if (bool.Parse(model.IsPresent) == true && mark != null)
-            {
-                var marksSt = _context.Marks.Where(x => x.JournalColumn.LessonId == int.Parse(model.LessonId) &&
-             x.StudentId == model.StudentId && x.IsPresent == false);
-                foreach (var el in marksSt)
-                {
-                    _context.Marks.Remove(el);
-                    //el.IsPresent = false;
-                    //el.Value = "0";
-                }
-            }
+            //if (bool.Parse(model.IsPresent) == true && mark != null)
+            //{
+            //    var marksSt = _context.Marks.Where(x => x.JournalColumn.LessonId == int.Parse(model.LessonId) &&
+            // x.StudentId == model.StudentId && x.IsPresent == false);
+            //    foreach (var el in marksSt)
+            //    {
+            //        _context.Marks.Remove(el);
+            //        //el.IsPresent = false;
+            //        //el.Value = "0";
+            //    }
+            //}
             //if (mark == null)
             //{
             _context.Marks.Add(new Data.Entities.Mark()
@@ -257,8 +260,9 @@ namespace EJournal.Controllers.TeacherControllers
                 Adress = x.Adress,
                 Name = x.Name,
                 LastName = x.LastName,
-                Mark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 1).Value,
-                ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
+                Mark = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).Value,
+                MarkType = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).MarkTypeId.ToString(),
+                //ControlMark = marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id && t.MarkTypeId == 3).Value,
                 IsPresent = marks.FirstOrDefault(t => t.StudentId == x.Id) == null ? null : marks.FirstOrDefault(t => t.StudentId == x.Id).IsPresent.ToString()
             });
             return Ok(new StudentsViewModel()

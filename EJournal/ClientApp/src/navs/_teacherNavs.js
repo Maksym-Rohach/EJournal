@@ -16,7 +16,7 @@ export default {
       },
       {
         name: 'Розклад',
-        url: '/teacher/comments',
+        url: '/teacher/timetable',
         icon: 'icon-calendar',
       },
       // {
@@ -78,7 +78,7 @@ export default {
       },
       {
         name: 'Перегляд студентів',
-        url: '/buttons',
+        url: '/teacher/seestudents',
         icon: 'icon-eyeglass',
       },
     ],

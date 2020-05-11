@@ -5,7 +5,9 @@ using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
 using EJournal.Services;
 using EJournal.ViewModels;
+using EJournal.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,14 +78,15 @@ namespace EJournal.Data.Repositories
                 {
                     await _userManager.AddToRoleAsync(user, "StudyRoomHead");
                 }
-                
+
 
                 prof.Id = user.Id;
                 await _context.BaseProfiles.AddAsync(prof);
                 await _context.SaveChangesAsync();
 
-                await _context.TeacherProfiles.AddAsync(new TeacherProfile { 
-                    Id = prof.Id, 
+                await _context.TeacherProfiles.AddAsync(new TeacherProfile
+                {
+                    Id = prof.Id,
                     //Degree = profile.Degree 
                 });
                 await _context.SaveChangesAsync();
@@ -94,6 +97,23 @@ namespace EJournal.Data.Repositories
             {
                 return false;
             }
+        }
+
+        public List<GetTeacherShortModel> GetCurators()
+        {
+            var teachers = _context.TeacherProfiles.Where(t => t.Groups.Count() == 0);
+            if (teachers != null)
+            {
+                var us = _userManager.GetUsersInRoleAsync("Curator").Result;
+                var curators = teachers.Where(t => us.Any(u => u.Id == t.Id));
+                return curators.Select(t => new GetTeacherShortModel
+                {
+                    Id = t.Id,
+                    Name = t.BaseProfile.Name + " " + t.BaseProfile.LastName + " " + t.BaseProfile.Surname
+                }).ToList();
+            }
+
+            return null;
         }
 
         public List<DropdownModel> GetRolesInDropdownModels()
@@ -123,20 +143,80 @@ namespace EJournal.Data.Repositories
 
         public IEnumerable<GetTeacherModel> GetTeachers(string rolename)
         {
-            List<TeacherProfile> temp = new List<TeacherProfile>();
+            if (String.IsNullOrEmpty(rolename))
+                return _context.TeacherProfiles.Select(t => new GetTeacherModel
+                {
+                    Id = t.Id,
+                    Email = t.BaseProfile.DbUser.Email,
+                    PhoneNumber = t.BaseProfile.DbUser.PhoneNumber,
+                    Name = t.BaseProfile.Name,
+                    LastName = t.BaseProfile.LastName,
+                    Surname = t.BaseProfile.Surname,
+                    Adress = t.BaseProfile.Adress,
+                    DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                    Degree = t.Degree
+                });
             var users = _userManager.GetUsersInRoleAsync(rolename).Result;
-            return users.Select(t => new GetTeacherModel
+            var temp = _context.BaseProfiles.Where(b => users.Any(t => t.Id == b.Id)).Select(t => new GetTeacherModel
             {
                 Id = t.Id,
-                Email = t.Email,
-                PhoneNumber = t.PhoneNumber,
-                Name = t.BaseProfile.Name,
-                LastName = t.BaseProfile.LastName,
-                Surname = t.BaseProfile.Surname,
-                Adress = t.BaseProfile.Adress,
-                DateOfBirth = t.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
-                Degree = t.BaseProfile.Teacher.Degree
+                Email = t.DbUser.Email,
+                PhoneNumber = t.DbUser.PhoneNumber,
+                Name = t.Name,
+                LastName = t.LastName,
+                Surname = t.Surname,
+                Adress = t.Adress,
+                DateOfBirth = t.DateOfBirth.ToString("dd.MM.yyyy"),
+                Degree = t.Teacher.Degree
+            }).AsNoTracking();
+            return temp;
+        }
+
+        public List<GetTeacherSubjectsDependencyModel> GetTeacherSubjectsDependencies(string teacherId)
+        {
+            var subjects = _context.Subjects.Select(s => new GetTeacherSubjectsDependencyModel
+            {
+                SubjectName = s.Name,
+                isActive = s.TeacherToSubjects.Any(t => t.TeacherId == teacherId)
             });
+            return subjects.ToList();
+        }
+
+        public async Task<bool> SetTeacherSubjectsAsync(EditTeacherSubjFilterModel model)
+        {
+            var tsubjects = _context.TeacherToSubjects/*.AsNoTracking()*/
+               .Where(t => t.TeacherId == model.TeacherId)
+               .Select(t => t.Subject.Name).ToList();
+
+            if (tsubjects != model.Subjects)
+            {
+                var edge = model.Subjects.Except(tsubjects).ToList();
+                var edgeDel = tsubjects.Except(model.Subjects).ToList();
+                var subjects = _context.Subjects/*.AsNoTracking()*/.ToList();
+                if (edge.Count()>0)
+                {
+                    var tmp = subjects.Where(t => edge.Contains(t.Name));
+                    var connect = tmp.Select(t => new TeacherToSubject
+                    {
+                        SubjectId = t.Id,
+                        TeacherId = model.TeacherId
+                    });
+                    await _context.TeacherToSubjects.AddRangeAsync(connect);
+                }
+                if (edgeDel.Count() > 0)
+                {
+                    var tmp = subjects.Where(t => edgeDel.Contains(t.Name));
+                    var connect = tmp.Select(t => new TeacherToSubject
+                    {
+                        SubjectId = t.Id,
+                        TeacherId = model.TeacherId
+                    });
+                    _context.TeacherToSubjects.RemoveRange(connect);
+                }
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

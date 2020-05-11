@@ -201,7 +201,7 @@ namespace EJournal
                 }
             });
 
-             //await Seed.SeedData(app.ApplicationServices, env, this.Configuration);
+             //Seed.SeedData(app.ApplicationServices, env, this.Configuration);
 
         }
     }

@@ -11,6 +11,11 @@ namespace EJournal.Data.Interfaces
     {
         List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId);
         List<GetGroupInfoModel> GetGroupInfoBySpeciality(int specialityId);
+        List<GetGroupShortModel> GetAllGroupsInfo();
+        bool DeleteGroup(int id);
+        bool EditGroup(string teacherId, int groupId, string groupName);
+        bool AddGroup(AddGroupModel model);
         IEnumerable<Group> GetGroups();
+        IEnumerable<Group> GetGroupsByTeacherId(string teacherId);
     }
 }

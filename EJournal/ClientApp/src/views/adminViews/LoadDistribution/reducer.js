@@ -16,10 +16,10 @@ const initialState = {
     },
 }
 
-export const getGroups = () => {
+export const getGroups = (model) => {
     return (dispatch) => {
         dispatch(getListActions.started());
-        LoadDistributionService.getGroups()
+        LoadDistributionService.getGroups(model)
             .then((response) => {
                 dispatch(getListActions.successGroups(response));
             }, err => { throw err; })
