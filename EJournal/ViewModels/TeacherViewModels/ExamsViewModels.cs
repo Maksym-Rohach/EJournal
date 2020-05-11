@@ -17,6 +17,7 @@ namespace EJournal.ViewModels.TeacherViewModels
         public string GroupName { get; set; }
         public string Subject { get; set; }
         public string DateOfExam { get; set; }
+        public string LessonId { get; set; }
     } 
 
     public class GetDataViewModel
@@ -29,5 +30,12 @@ namespace EJournal.ViewModels.TeacherViewModels
         public string Id { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
+    }
+
+    public class ChangeExamMarkViewModel
+    {
+        public string lessonId { get; set; }
+        public string Mark { get; set; }
+        public string StudentId { get; set; }
     }
 }

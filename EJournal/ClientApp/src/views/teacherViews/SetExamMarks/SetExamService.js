@@ -8,5 +8,9 @@ export default class SetExamService {
 
     static getData(model){
         return axios.post(`${serverUrl}api/marks/teacher/get-data`, model);
+    };
+
+    static changeMarks(model){
+        return axios.post(`${serverUrl}api/marks/teacher/change-marks`, model);
     }
 }

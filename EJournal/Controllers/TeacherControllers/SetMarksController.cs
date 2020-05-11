@@ -279,7 +279,8 @@ namespace EJournal.Controllers.TeacherControllers
             {
                 GroupName = "Pr-12",
                 Subject = "Programming",
-                DateOfExam = "02.05.2020"
+                DateOfExam = "02.05.2020",
+                LessonId = "1"
             };
 
             var listExams = new List<ExamRowModel>();

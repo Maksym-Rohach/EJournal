@@ -11,6 +11,8 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import Loader from"../../../components/Loader";
 import {serverUrl} from '../../../config';
+import { Input } from "reactstrap";
+
 
 
 // function mapBodyTable(data) {
@@ -103,6 +105,7 @@ class SetExamsMarks extends Component {
           else{
             image = item.image;
           }
+          console.log("MARKS", marks);
             return (
                 <tr key={counter}>
                    <th style={{textAlign: "center"}}>{counter++}</th>
@@ -111,16 +114,37 @@ class SetExamsMarks extends Component {
                     <img src={`${serverUrl}UsersImages/50_${image}`} className="img-avatar" alt="user" />  
                    </td>
                    <td style={{textAlign: "center"}}>
-                   {/* <Select
-                      className="mr-3"
-                      value={marks}
-                      //onChange={this.changeSubject}
-                      // onChange={(e) => {
-                      // this.setState({ subject: e.target.value, marks:null });
-                      // }}
-                      // onChange={handleChange}
+                    <Input
+                      //onChange={(e) => handleSelectChange(e,lessonId,3,el.id)}
+                      //onChange={handleChangeSelect(data.group, row.id)}
+                      type="select"
+                      className="control-wrk font-weight-bold"
+                      style={{width:'50%'}}
                     >
-                   </Select> */}
+                      {/* <option disabled selected value={0}></option> */}
+                              {/* {marks.map(function (elem) {
+                                  return (
+                                    <option selected value={elem}>
+                                      {elem}
+                                    </option>
+                                  );
+                                }
+                              )} */}
+                      <option disabled selected value={0}></option>
+                      <option value={1}>1</option>
+                      <option value={2}>2</option>
+                      <option value={3}>3</option>
+                      <option value={4}>4</option>
+                      <option value={5}>5</option>
+                      <option value={6}>6</option>
+                      <option value={7}>7</option>
+                      <option value={8}>8</option>
+                      <option value={9}>9</option>
+                      <option value={10}>10</option>
+                      <option value={11}>11</option>
+                      <option value={12}>12</option>
+
+                    </Input>
                    </td>
                 </tr>
             );
@@ -166,12 +190,12 @@ class SetExamsMarks extends Component {
                   <th style={{textAlign: "center"}}>#</th>
                   <th style={{textAlign: "center"}}>ПІБ</th>
                   <th style={{textAlign: "center"}}></th>
-                  <th style={{textAlign: "center"}}>Оцінка</th>
+                  <th>Оцінка</th>
                 </tr>
               </MDBTableHead>
               <MDBTableBody>
                 {
-                  this.mapBodyStudents(data, marks)
+                  this.mapBodyStudents(data, this.marks)
                 }
               </MDBTableBody>
             </MDBTable>
