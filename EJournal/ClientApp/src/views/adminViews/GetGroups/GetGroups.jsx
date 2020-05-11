@@ -79,14 +79,14 @@ class GetGroups extends Component {
     }
     dialogSaveClick = (event) => {
         this.setState({ openDialog: false });
-        const { changeGroupName, dialogChangeCompleted, changeTeacherId,specialityId } = this.state;
+        const { changeGroupName, dialogChangeCompleted, changeTeacherId, specialityId } = this.state;
         console.log(changeGroupName, changeTeacherId);
         if (changeGroupName !== "" || (dialogChangeCompleted === true && changeTeacherId !== "")) {
             this.props.editGroup({
                 groupId: event.currentTarget.value,
                 groupName: changeGroupName,
                 teacherId: changeTeacherId,
-                specialityId:specialityId
+                specialityId: specialityId
             });
             //this.setState({ changeGroupName: '', dialogChangeCompleted: false, changeTeacherId: '' })
         }
@@ -112,7 +112,7 @@ class GetGroups extends Component {
     }
 
     mapCards(data, teachers) {
-        if (data !== undefined && teachers !== undefined&&this.state.specialityId!==0) {
+        if (data !== undefined && teachers !== undefined && this.state.specialityId !== 0) {
             return (
                 data.map(item => {
                     return (
@@ -120,8 +120,8 @@ class GetGroups extends Component {
                             <Growl className="mt-5" ref={(el) => this.growl = el} />
                             {this.LoadServerErrors()}
                             <Card>
-                                <a className="aRedirect" href={"/#/admin/students/groupId=" + item.id}>
-                                    <CardActionArea>
+                                <Link className="aRedirect" to={"/admin/students/groupId="+item.id}>
+                                    <CardActionArea >
                                         <CardContent>
                                             <Typography className="default-name" component="h2" variant="h2" >
                                                 {item.name}
@@ -137,7 +137,7 @@ class GetGroups extends Component {
                                             </Tooltip>
                                         </CardContent>
                                     </CardActionArea>
-                                </a>
+                                </Link>
                                 <CardActions>
                                     <Tooltip TransitionComponent={Zoom} title="Add student" arrow>
                                         <IconButton component={Link} to={"/admin/addstudent/groupId=" + item.id} aria-label="add student">

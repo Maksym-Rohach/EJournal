@@ -1,186 +1,192 @@
-import StudentsTableService from './StudentsTableService';
+import SetTeacherSubjectsService from './SetTeacherSubjectsService';
 import update from '../../../helpers/update';
-export const STUDENTS_TABLE_STARTED = "STUDENTS_TABLE_STARTED";
-export const STUDENTS_TABLE_SUCCESS = "STUDENTS_TABLE_SUCCESS";
-export const STUDENTS_TABLE_FAILED = "STUDENTS_TABLE_FAILED";
+export const GET_TEACHER_SUBJECTS_STARTED = "GET_TEACHER_SUBJECTS_STARTED";
+export const GET_TEACHER_SUBJECTS_SUCCESS = "GET_TEACHER_SUBJECTS_SUCCESS";
+export const GET_TEACHER_SUBJECTS_FAILED = "GET_TEACHER_SUBJECTS_FAILED";
 
-export const GET_SPEC_STARTED = "GET_SPEC_STARTED";
-export const GET_SPEC_SUCCESS = "GET_SPEC_SUCCESS";
-export const GET_SPEC_FAILED = "GET_SPEC_FAILED";
+export const GET_TEACHERS_STARTED = "GET_TEACHERS_STARTED";
+export const GET_TEACHERS_SUCCESS = "GET_TEACHERS_SUCCESS";
+export const GET_TEACHERS_FAILED = "GET_TEACHERS_FAILED";
 
-export const GET_GROUPS_STARTED = "GET_GROUPS_STARTED";
-export const GET_GROUPS_SUCCESS = "GET_GROUPS_SUCCESS";
-export const GET_GROUPS_FAILED = "GET_GROUPS_FAILED";
+export const CHANGE_TEACH_SUBJ_STARTED = "CHANGE_TEACH_SUBJ_STARTED";
+export const CHANGE_TEACH_SUBJ_SUCCESS = "CHANGE_TEACH_SUBJ_SUCCESS";
+export const CHANGE_TEACH_SUBJ_FAILED = "CHANGE_TEACH_SUBJ_FAILED";
 
 const initialState = {
     list: {
-        data: [],
-        specialities: [],
-        groups: [],
+        teachers: [],
+        teacherSubjects: [],
+        messageResult: {},
+        errors:{},
         loading: false,
         success: false,
         failed: false,
     },
 }
-
-export const getStudents = (model) => {
+export const getTeachers = () => {
     return (dispatch) => {
-        dispatch(getListActions.started());
-        StudentsTableService.getStudents(model)
+        dispatch(getTeachListActions.started());
+        SetTeacherSubjectsService.getTeachers()
             .then((response) => {
                 console.log("response", response);
-                dispatch(getListActions.success(response));
+                dispatch(getTeachListActions.success(response));
             }, err => { throw err; })
             .catch(err => {
-                dispatch(getListActions.failed(err));
+                dispatch(getTeachListActions.failed(err));
             });
     }
 }
-
-export const getSpecialities = () => {
+export const getTeacherSubjects = (model) => {
     return (dispatch) => {
-        dispatch(getSpecialitiesListActions.started());
-        StudentsTableService.getSpecialities()
+        dispatch(getTeachSubjListActions.started());
+        SetTeacherSubjectsService.getTeacherSubjects(model)
             .then((response) => {
                 console.log("response", response);
-                dispatch(getSpecialitiesListActions.success(response));
+                dispatch(getTeachSubjListActions.success(response));
             }, err => { throw err; })
             .catch(err => {
-                console.log("err", err);
-                dispatch(getSpecialitiesListActions.failed(err));
+                dispatch(getTeachSubjListActions.failed(err));
             });
     }
 }
-export const getGroups = (model) => {
+export const changeTeacherSubjects = (model) => {
     return (dispatch) => {
-        dispatch(getGroupListActions.started());
-        StudentsTableService.getGroups(model)
+        dispatch(changeTeachSubjListActions.started());
+        SetTeacherSubjectsService.changeTeacherSubjects(model)
             .then((response) => {
                 console.log("response", response);
-                dispatch(getGroupListActions.success(response));
+                dispatch(changeTeachSubjListActions.success(response));
             }, err => { throw err; })
             .catch(err => {
-                console.log("error " + err);
-                dispatch(getGroupListActions.failed(err));
+                dispatch(changeTeachSubjListActions.failed(err));
             });
     }
 }
-export const getListActions = {
+export const getTeachListActions = {
     started: () => {
         return {
-            type: STUDENTS_TABLE_STARTED
+            type: GET_TEACHERS_STARTED
         }
     },
     success: (data) => {
         return {
-            type: STUDENTS_TABLE_SUCCESS,
-            payload: data.data
+            type: GET_TEACHERS_SUCCESS,
+            teachPayload: data.data
         }
     },
     failed: (error) => {
         return {
-            type: STUDENTS_TABLE_FAILED,
+            type: GET_TEACHERS_FAILED,
             errors: error
         }
     }
 }
 
-export const getSpecialitiesListActions = {
+export const getTeachSubjListActions = {
     started: () => {
         return {
-            type: GET_SPEC_STARTED
+            type: GET_TEACHER_SUBJECTS_STARTED
         }
     },
     success: (data) => {
         return {
-            type: GET_SPEC_SUCCESS,
-            specPayload: data.data
+            type: GET_TEACHER_SUBJECTS_SUCCESS,
+            teachSubjPayload: data.data
         }
     },
     failed: (error) => {
         return {
-            type: GET_SPEC_FAILED,
-            payloadError: error
-        }
-    }
-}
-export const getGroupListActions = {
-    started: () => {
-        return {
-            type: GET_GROUPS_STARTED
-        }
-    },
-    success: (data) => {
-        return {
-            type: GET_GROUPS_SUCCESS,
-            groupPayload: data.data
-        }
-    },
-    failed: (error) => {
-        return {
-            type: GET_GROUPS_FAILED,
+            type: GET_TEACHER_SUBJECTS_FAILED,
             errors: error
         }
     }
 }
-export const studentTableReducer = (state = initialState, action) => {
+export const changeTeachSubjListActions = {
+    started: () => {
+        return {
+            type: CHANGE_TEACH_SUBJ_STARTED
+        }
+    },
+    success: (data) => {
+        return {
+            type: CHANGE_TEACH_SUBJ_SUCCESS,
+            messagePayload: data.data
+        }
+    },
+    failed: (error) => {
+        return {
+            type: CHANGE_TEACH_SUBJ_FAILED,
+            errors: error
+        }
+    }
+}
+
+
+export const setTeacherSubjectsReducer = (state = initialState, action) => {
     let newState = state;
+
     switch (action.type) {
-        case GET_SPEC_STARTED: {
+        case CHANGE_TEACH_SUBJ_STARTED: {
+            newState = update.set(state, 'list.loading', true);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', false);
+            newState = update.set(newState, 'list.messageResult', {});
+            break;
+        }
+        case CHANGE_TEACH_SUBJ_SUCCESS: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.failed', false);
+            newState = update.set(newState, 'list.success', true);
+            newState = update.set(newState, 'list.messageResult', action.messagePayload);
+            break;
+        }
+        case CHANGE_TEACH_SUBJ_FAILED: {
+            newState = update.set(state, 'list.loading', false);
+            newState = update.set(newState, 'list.success', false);
+            newState = update.set(newState, 'list.failed', true);
+            newState = update.set(newState, 'list.errors', action.errors);
+            break;
+        }
+        case GET_TEACHERS_STARTED: {
             newState = update.set(state, 'list.loading', true);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             break;
         }
-        case GET_SPEC_SUCCESS: {
+        case GET_TEACHERS_SUCCESS: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.success', true);
-            newState = update.set(newState, 'list.specialities', action.specPayload);
+            newState = update.set(newState, 'list.teachers', action.teachPayload);
+            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
-        case GET_SPEC_FAILED: {
+        case GET_TEACHERS_FAILED: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);
+            newState = update.set(newState, 'list.errors', action.errors);
             break;
         }
-        case GET_GROUPS_STARTED: {
+        case GET_TEACHER_SUBJECTS_STARTED: {
             newState = update.set(state, 'list.loading', true);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', false);
             break;
         }
-        case GET_GROUPS_SUCCESS: {
+        case GET_TEACHER_SUBJECTS_SUCCESS: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.failed', false);
             newState = update.set(newState, 'list.success', true);
-            newState = update.set(newState, 'list.groups', action.groupPayload);
+            newState = update.set(newState, 'list.teacherSubjects', action.teachSubjPayload);
+            newState = update.set(newState, 'list.messageResult', {});
             break;
         }
-        case GET_GROUPS_FAILED: {
+        case GET_TEACHER_SUBJECTS_FAILED: {
             newState = update.set(state, 'list.loading', false);
             newState = update.set(newState, 'list.success', false);
             newState = update.set(newState, 'list.failed', true);
-            break;
-        }
-        case STUDENTS_TABLE_STARTED: {
-            newState = update.set(state, 'list.loading', true);
-            newState = update.set(newState, 'list.success', false);
-            newState = update.set(newState, 'list.failed', false);
-            break;
-        }
-        case STUDENTS_TABLE_SUCCESS: {
-            newState = update.set(state, 'list.loading', false);
-            newState = update.set(newState, 'list.failed', false);
-            newState = update.set(newState, 'list.success', true);
-            newState = update.set(newState, 'list.data', action.payload);
-            break;
-        }
-        case STUDENTS_TABLE_FAILED: {
-            newState = update.set(state, 'list.loading', false);
-            newState = update.set(newState, 'list.success', false);
-            newState = update.set(newState, 'list.failed', true);
+            newState = update.set(newState, 'list.errors', action.errors);
             break;
         }
         default: {

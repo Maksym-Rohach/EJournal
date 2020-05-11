@@ -8,6 +8,9 @@ export default class MarksTableService {
     static getSpecialities() {
         return axios.get(`${serverUrl}api/admin/get/specialities`)
     };
+    static getMarkTypes() {
+        return axios.get(`${serverUrl}api/admin/get/mark/types`)
+    };
     static getGroups(model) {
         return axios.post(`${serverUrl}api/admin/get/groups/dropdown`,model)
     };

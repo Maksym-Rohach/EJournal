@@ -28,8 +28,9 @@ namespace EJournal.Controllers.AdminControllers
         private readonly IGroups _groups;
         private readonly ILessons _lessons;
         private readonly ISpecialities _specialities;
+        private readonly IMarks _marks;
 
-        public AdminController(EfDbContext context, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities, ILessons lessons)
+        public AdminController(EfDbContext context, IMarks marks, IStudents students, ITeachers teachers, IGroups groups, ISpecialities specialities, ILessons lessons)
         {
             _context = context;
             _students = students;
@@ -37,6 +38,7 @@ namespace EJournal.Controllers.AdminControllers
             _groups = groups;
             _specialities = specialities;
             _lessons = lessons;
+            _marks = marks;
         }
 
         [HttpPost]
@@ -108,18 +110,19 @@ namespace EJournal.Controllers.AdminControllers
             var groups = _groups.GetAllGroupsInfo();
             if (groups != null)
             {
-                return Ok(groups.Select(t => new DropdownModel
+                var temp = groups.Select(t => new DropdownModel
                 {
                     Label = t.Name,
                     Value = t.Id.ToString()
-                }));
+                });
+                return Ok(temp);
             }
             else
                 return BadRequest();
         }
-        [HttpGet]
-        [Route("get/students/groupId={groupId}")]
-        public IActionResult GetStudents(int groupId)
+        [HttpPost]
+        [Route("get/students")]
+        public IActionResult GetStudents([FromBody]GetStudentsFiltersModel model)
         {
             try
             {
@@ -127,12 +130,9 @@ namespace EJournal.Controllers.AdminControllers
                 var query = _students.GetFirstTenStudents().AsQueryable();
                 List<AdminTableStudentRowModel> tableList = new List<AdminTableStudentRowModel>();
 
-                //var groups = _context.Groups.Where(t => t.Speciality.Name == model.Speciality);
-                //var grToStud = _context.GroupsToStudents.Where(t => groups.Contains(t.Group));
-
-                if (groupId != 0)
+                if (model.GroupId != 0)
                 {
-                    query = _students.GetFirstTenStudents(groupId).AsQueryable();
+                    query = _students.GetFirstTenStudents(model.GroupId).AsQueryable();
                 }
 
                 tableList = query.Select(t => new AdminTableStudentRowModel
@@ -200,6 +200,50 @@ namespace EJournal.Controllers.AdminControllers
                 return BadRequest("Error: " + ex.Message + " asd: " + ex.StackTrace);
             }
         }
+        [HttpGet]
+        [Route("get/shortteach")]
+        public IActionResult GetShortTeachersInfo()
+        {
+            var teachers = _teachers.GetTeachers();
+            if (teachers != null)
+            {
+                return Ok(teachers.Select(t => new GetShortTeachersModel
+                {
+                    Id = t.Id,
+                    Name = t.Name + " " + t.LastName + " " + t.Surname
+                }));
+            }
+            else return BadRequest("erroore");
+        }
+        [HttpPost]
+        [Route("get/teacher/subjects")]
+        public IActionResult GetTeacherSubjects([FromBody]GetTeacherSubjFiltersModel model)
+        {
+            var subj = _teachers.GetTeacherSubjectsDependencies(model.TeacherId);
+            if (subj != null)
+            {
+                return Ok(subj);
+            }
+            else return BadRequest("erroore");
+        }
+        [HttpPost]
+        [Route("change/teacher/subjects")]
+        public IActionResult ChangeTeacherSubjects([FromBody] EditTeacherSubjFilterModel model)
+        {
+            bool res=_teachers.SetTeacherSubjectsAsync(model).Result;
+            if (res)
+                return Ok("Success");
+            else return BadRequest("Error");
+        }
+        [HttpGet]
+        [Route("get/mark/types")]
+        public IActionResult GetMarkTypes()
+        {
+            var res=_marks.GetMarkTypes().ToList();
+            if (res != null)
+                return Ok(res);
+            else return BadRequest(res);
+        }
         [HttpPost]
         [Route("get/marks")]
         public IActionResult GetMarks([FromBody]GetMarksFiltersModel model)
@@ -218,32 +262,20 @@ namespace EJournal.Controllers.AdminControllers
                 var students = _context.GroupsToStudents.Where(t => t.GroupId == model.GroupId).Select(t => t.Student);
                 foreach (var item in students)
                 {
-                    var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id);
-                    var marksFormatted = new List<MarkPrintModel>();
+                    var studMarks = _context.Marks.Where(t => jourCols.Contains(t.JournalColumn) && t.StudentId == item.Id&&t.MarkTypeId==model.MarkTypeId);
+                    var marksFormatted = new List<string>();
                     foreach (var date in lessonDates)
                     {
                         var cell = studMarks.FirstOrDefault(m => m.JournalColumn.Lesson.LessonDate == date);
                         if (cell != null)
                         {
                             if (cell.IsPresent == true)
-                                marksFormatted.Add(new MarkPrintModel
-                                {
-                                    Value = cell.Value,
-                                    Type = cell.MarkTypeId
-                                });
+                                marksFormatted.Add(cell.Value);
                             else
-                                marksFormatted.Add(new MarkPrintModel
-                                {
-                                    Value = "-",
-                                    Type = 0
-                                });
+                                marksFormatted.Add("-");
                         }
                         else
-                            marksFormatted.Add(new MarkPrintModel
-                            {
-                                Value = "-",
-                                Type = 0
-                            });
+                            marksFormatted.Add("-");
                     }
                     var baseP = _context.BaseProfiles.FirstOrDefault(t => t.Id == item.Id);
                     string name = baseP.Name + " " + baseP.LastName + " " + baseP.Surname;
