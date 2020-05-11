@@ -12,5 +12,8 @@ namespace EJournal.Data.Entities
 
         public string StudentId { get; set; }
         public StudentProfile Student { get; set; }
+
+        public int SubgroupId { get; set; }
+        public Subgroup Subgroup { get; set; }
     }
 }
