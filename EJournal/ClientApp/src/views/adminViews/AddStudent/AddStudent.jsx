@@ -169,6 +169,7 @@ class addStudent extends Component {
   render() {
     //console.log("s ", this.state.success, " f ", this.state.failed);
     const { groups } = this.props;
+    console.log('groups', groups);
     return (
       <Paper elevation={7} className="p-3 mt-4">
         <div>

@@ -91,7 +91,7 @@ class StudentsTable extends Component {
 const mapStateToProps = state => {
   return {
     listStudents: get(state, 'students.list.data'),
-    specialities: get(state, 'students.list.specialities'),
+    specialities: get(state, 'students.list.'),
     groups: get(state, 'students.list.groups'),
   };
 }

@@ -51,5 +51,14 @@ namespace EJournal.Data.Repositories
                 lessons = lessons.Where(t => t.GroupId == groupId ).Include(x => x.Subject).Include(x => x.Group);
             return lessons;
         }
+
+        public IEnumerable<Subject> GetSubjectByTeacherId(string teacherId, int groupId)
+        {
+            var first = _context.GroupToSubjects.AsQueryable();
+            var second = first.Where(t => t.TeacherId == teacherId && t.GroupId == groupId);
+            var third = second.Select(t => t.Subject);
+            return third;
+           // return _context.TeacherToSubjects.Where(t => t.TeacherId == teacherId).Select(t=>t.Subject).AsNoTracking();
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace EJournal.Data.Interfaces
         IEnumerable<Lesson> GetLessonsInGroup(int groupId, string date = "");
         IEnumerable<Lesson> GetTeacherLessons(string teacherId,string date="",int groupId=0);
         IEnumerable<GetShortSubjectModel> GetSubjects(int groupId=0);
+        IEnumerable<Subject> GetSubjectByTeacherId(string teacherId, int groupId);
     }
 }
