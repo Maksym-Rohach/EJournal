@@ -96,7 +96,7 @@ namespace EJournal.Data.Repositories
                 {
                     Id = s.Id,
                     Name = s.Name,
-                    CountOfStudents = s.GroupToSubjects.Count(),
+                    CountOfStudents = s.GroupToStudents.Count(),
                     NameOfCurator = s.Teacher.BaseProfile.LastName + " " + s.Teacher.BaseProfile.Name + " " + s.Teacher.BaseProfile.Surname
                 })
                 .ToList();
@@ -118,7 +118,10 @@ namespace EJournal.Data.Repositories
         {
             return _context.Groups;
         }
-
+        public IEnumerable<Group> GetGroupsByTeacherId(string teacherId)
+        {
+            return _context.GroupToSubjects.Where(x=>x.TeacherId==teacherId).Select(x=>x.Group);
+        }
         public List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId)
         {
             List<GetGroupShortModel> groups = _context.Groups

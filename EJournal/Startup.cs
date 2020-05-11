@@ -224,9 +224,8 @@ namespace EJournal
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-       
-            //await Seed.SeedData(app.ApplicationServices, env, this.Configuration);
 
+             //Seed.SeedData(app.ApplicationServices, env, this.Configuration);
         }
     }
 }

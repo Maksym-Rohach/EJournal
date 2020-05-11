@@ -19,20 +19,22 @@ import {studentHomePageReducer} from '../views/studentViews/home/reducer';
 import {addTeacherReducer} from '../views/adminViews/AddTeacher/reducer';
 import {homeworkReducer} from '../views/studentViews/homework/reducer';
 import {newsReducer} from '../views/studentViews/news/reducer';
-import {studentCardListReducer} from '../components/StudentCardList/reducer'
 import {GetSubjectReducer} from '../views/teacherViews/GetMarksPage/reducer';
 import {getGroupsReducer} from '../views/adminViews/GetGroups/reducer';
 import {loadDistributionReducer} from '../views/adminViews/LoadDistribution/reducer';
 import {loadDistributionDataReducer} from '../components/loadDistribution/reducer';
 import {addNewsReducer} from '../views/adminViews/AddNews/reducer';
 import {groupNewsReducer} from '../components/groupNews/reducer';
-import {specialitiesSelectReducer} from '../components/SpecialitiesSelect/reducer';
 import {adminNewsReducer} from '../views/adminViews/News/reducer';
 import {addGroupReducer} from '../views/adminViews/AddGroup/reducer';
-
+import {setTeacherSubjectsReducer} from '../views/adminViews/SetTeacherSubjects/reducer';
+import {changeTimetableReducer} from '../views/adminViews/ChangeTimetable/reducer';
 import {setMarksReducer} from '../views/teacherViews/SetMarks/reducer';
-//import {groupsSelectReducer} from '../components/GroupsSelect/reducer'
-// Create browser history to use in the Redux store
+import {studentViewReducer} from '../views/managerViews/students/reducer';
+import {seestudentscardsReducer} from '../views/teacherViews/SeeStudentsCards/reducer';
+import {teacherTimetableReducer} from '../views/teacherViews/timetable/reducer';
+import {getStudentsExamsReducer} from '../components/StudentExams/reducer';
+
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 export const history = createHistory({ basename: baseUrl });
 
@@ -52,10 +54,7 @@ export default function configureStore(history, initialState) {
     addStudent:addStudentReducer,
     addTeacher:addTeacherReducer,
     homework:homeworkReducer,
-    studentCardList: studentCardListReducer,
-    specialitiesSelect: specialitiesSelectReducer,
     groupNews:groupNewsReducer,
-    //groupsSelect: groupsSelectReducer,
     news:newsReducer,
     getSubject:GetSubjectReducer,
     getGroups:getGroupsReducer,
@@ -63,8 +62,15 @@ export default function configureStore(history, initialState) {
     loadDistributionData:loadDistributionDataReducer,
     addNews:addNewsReducer,
     adminNews:adminNewsReducer,
+    getLessons:teacherTimetableReducer,
+    
+    seeStudentsCards:seestudentscardsReducer,
+    changeTimetable:changeTimetableReducer,
     addGroup:addGroupReducer,
-    setMarks:setMarksReducer
+    setMarks: setMarksReducer,
+    setTeacherSubjects: setTeacherSubjectsReducer,
+    studentsView:studentViewReducer,
+    studentExams:getStudentsExamsReducer
   };
 
   const middleware = [

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace EJournal.ViewModels.AdminViewModels
 {
-    public class MarkPrintModel
+    public class GetShortTeachersModel
     {
-        public int Type { get; set; }
-        public string Value { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
     }
 }
