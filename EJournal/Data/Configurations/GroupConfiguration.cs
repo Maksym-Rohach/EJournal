@@ -32,10 +32,14 @@ namespace EJournal.Data.Configurations
             builder.HasMany(e => e.GroupNews)
                 .WithOne(e => e.Group);
 
+            builder.HasMany(e => e.Subgroups)
+                .WithOne(e => e.Group);
+
             builder.HasOne(e => e.Speciality)
                 .WithMany(e => e.Groups)
                 .HasForeignKey(e => e.SpecialityId)
                 .IsRequired();
+
 
             builder.HasData(
                 new Group { Id = 1, Name = "11-П", YearFrom = new System.DateTime (2019, 9, 1), YearTo = new System.DateTime (2023, 5, 23), SpecialityId = 1/*, TeacherId = "7fe110d7-33cc-4656-9805-60c93e5851ed" */},

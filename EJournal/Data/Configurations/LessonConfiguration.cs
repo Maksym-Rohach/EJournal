@@ -39,6 +39,10 @@ namespace EJournal.Data.Configurations
             builder.HasOne(e => e.Auditorium)
                 .WithMany(e => e.Lessons)
                 .HasForeignKey(e => e.AuditoriumId);
+
+            builder.HasOne(e => e.LessonType)
+                .WithMany(e => e.Lessons)
+                .HasForeignKey(e => e.LessonTypeId);
         }
     }
 }
