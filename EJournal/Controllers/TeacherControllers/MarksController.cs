@@ -129,31 +129,36 @@ namespace EJournal.Controllers.TeacherControllers
         }
 
         [HttpPost("teacher/get-data")]
-        public IActionResult GetData([FromBody]ExamRowModel model)
+        public IActionResult GetData([FromBody]GetDataModel model)
         {
 
             var claims = User.Claims;
             var userId = claims.FirstOrDefault().Value;
 
-            var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId/* && (x.YearTo.Year == DateTime.Now.Year || x.YearFrom.Year == DateTime.Now.Year)*/);
+            var groupId = _context.Lessons.FirstOrDefault(x => x.GroupId.ToString() == model.LessonId).GroupId;
 
-            var students = _context.GroupsToStudents.Where(t => t.GroupId == group.Id).Select(t => t.Student);
-
-            var studentList = new List<StudentModel>();
-
-            foreach (var item in students)
+            var students = _context.GroupsToStudents.Where(t => t.GroupId == groupId).Select(t => new StudentModel()
             {
-                var baseP = _context.BaseProfiles.FirstOrDefault(x => x.Id == item.Id);
+                Id = t.Student.Id,
+                Name = $"{t.Student.BaseProfile.Name} {t.Student.BaseProfile.Surname} {t.Student.BaseProfile.LastName}",
+                Image = t.Student.BaseProfile.Image
+            });
 
-                var studentModel = new StudentModel()
-                {
-                    Id = baseP.Id,
-                    Name = $"{baseP.Name} {baseP.Surname} {baseP.LastName}",
-                    Image = baseP.Image
-                };
+            var studentList = students.ToList();
 
-                studentList.Add(studentModel);
-            }
+            //foreach (var item in students)
+            //{
+            //    var baseP = _context.BaseProfiles.FirstOrDefault(x => x.Id == item.Id);
+
+            //    var studentModel = new StudentModel()
+            //    {
+            //        Id = baseP.Id,
+            //        Name = $"{baseP.Name} {baseP.Surname} {baseP.LastName}",
+            //        Image = baseP.Image
+            //    };
+
+            //    studentList.Add(studentModel);
+            //}
 
             var viewModel = new GetDataViewModel()
             {

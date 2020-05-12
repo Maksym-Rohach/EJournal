@@ -61,12 +61,16 @@ class SetExamsMarks extends Component {
       model: null
   }
 
-  onClickRow = (model) => {
+  onClickRow = (e, model) => {
     this.setState({
       data:model,
       model:model
     });
-    this.props.getData(model);
+    let lessonId = model.lessonId;
+    console.log("MODEL", e.target);
+
+    console.log("LESSON ID", lessonId);
+    this.props.getData({lessonId:lessonId});
   }
 
   mapBodyTable = (data) => {

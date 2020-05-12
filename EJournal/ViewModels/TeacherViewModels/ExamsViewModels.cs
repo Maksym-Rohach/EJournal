@@ -20,6 +20,11 @@ namespace EJournal.ViewModels.TeacherViewModels
         public string LessonId { get; set; }
     } 
 
+    public class GetDataModel
+    {
+        public string LessonId { get; set; }
+    }
+
     public class GetDataViewModel
     {
         public List<StudentModel> Students { get; set; }
