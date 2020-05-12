@@ -8,6 +8,7 @@ using EJournal.ViewModels.TeacherViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EJournal.Controllers.TeacherControllers
 {
@@ -279,30 +280,18 @@ namespace EJournal.Controllers.TeacherControllers
             var claims = User.Claims;
             var userId = claims.FirstOrDefault().Value;
 
-            var exam = new ExamRowModel()
-            {
-                GroupName = "Pr-12",
-                Subject = "Programming",
-                DateOfExam = "02.05.2020",
-                LessonId = "1"
-            };
+            var lessonList = _context.Lessons.AsNoTracking().Where(x => x.TeacherId == userId && x.LessonTypeId == 1).Select(d => new ExamRowModel() { 
+                GroupName = d.Group.Name,
+                Subject = d.Subject.Name,
+                DateOfExam = d.LessonDate.ToString("dd/MM/yyyy"),
+                LessonId = d.Id.ToString() 
+                }).ToList();
 
-            var listExams = new List<ExamRowModel>();
-            listExams.Add(exam);
 
             var listrows = new GetExamViewModel()
             {
-                rows = listExams,
+                rows = lessonList,
             };
-
-            
-
-            //listrows.rows.Add(new ExamRowModel()
-            //{
-            //    GroupName = exam.GroupName,
-            //    Subject = exam.Subject,
-            //    DateOfExam = exam.DateOfExam
-            //});
 
             return Ok(listrows);
         }
