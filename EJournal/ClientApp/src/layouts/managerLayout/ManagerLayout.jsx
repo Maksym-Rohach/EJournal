@@ -2,6 +2,10 @@ import React, { Component, Suspense } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import * as router from 'react-router-dom';
 import { Container } from 'reactstrap';
+import get from "lodash.get";
+import { connect } from "react-redux";
+import {serverUrl} from '../../config';
+import { logout } from '../../views/defaultViews/LoginPage/reducer';
 
 import {
   AppAside,
@@ -28,15 +32,19 @@ class ManagerLayout extends Component {
   
     signOut(e) {
       e.preventDefault()
-      this.props.history.push('/login')
+      this.props.logout();
+      this.props.history.push('/')
     }
   
     render() {
+
+      const { login } = this.props;
+
       return (
         <div className="app">
           <AppHeader fixed>
             <Suspense  fallback={this.loading()}>
-              <ManagerNavbar onLogout={e=>this.signOut(e)}/>
+              <ManagerNavbar image={`${serverUrl}UsersImages/50_${login.user.image}`} name={login.user.name} onLogout={e=>this.signOut(e)}/>
             </Suspense>
           </AppHeader>
           <div className="app-body">
@@ -77,5 +85,10 @@ class ManagerLayout extends Component {
     }
   }
   
-  export default ManagerLayout;
-  
+const mapStateToProps = (state) => {
+  return {
+    login: get(state, 'login')
+  };
+}
+
+export default connect(mapStateToProps, { logout }) (ManagerLayout);

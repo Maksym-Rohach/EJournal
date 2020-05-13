@@ -8,5 +8,6 @@ namespace EJournal.Data.Entities.AppUeser
         public BaseProfile BaseProfile { get; set; }
 
         public virtual ICollection<DbUserRole> UserRoles { get; set; }
+        public virtual ICollection<ForgotPasswordCode> ForgotPasswordCodes { get; set; }
     }
 }
