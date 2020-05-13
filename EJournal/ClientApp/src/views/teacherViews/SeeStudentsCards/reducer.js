@@ -14,13 +14,13 @@ const initialState = {
     },   
 }
 
-export const seeStudentsCards = (model) => {
+export const seeStudents = () => {
     return (dispatch) => {
         dispatch(getListActions.started());
         
-        SeeStudentsCardsService.seeStudentsCards(model)
+        SeeStudentsCardsService.seeStudents()
             .then((response) => {
-
+                console.log('response', response)
                 dispatch(getListActions.success(response));               
             }, err=> { throw err; })
             .catch(err=> {

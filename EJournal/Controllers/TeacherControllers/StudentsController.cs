@@ -34,20 +34,21 @@ namespace EJournal.Controllers.TeacherControllers
         {
             //try
             //{
-            var claims = User.Claims;
-            var userId = claims.FirstOrDefault().Value;
-            var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId);
-            IEnumerable<GetStudentInfoWithGroup> listStudents = _studentRepository.GetStudentsByGroup(group.Id);
-            List<CuratorCardStudentModel> cards = new List<CuratorCardStudentModel>();
+                var claims = User.Claims;
+                var userId = claims.FirstOrDefault().Value;
+                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId);
+                IEnumerable<GetStudentInfoWithGroup> listStudents = _studentRepository.GetStudentsByGroup(group.Id);
+                List<CuratorCardStudentModel> cards = new List<CuratorCardStudentModel>();
 
                 var cards1 = listStudents.Select(t => new CuratorCardStudentModel {
                     Name = t.Name,
+                    Image = t.Image,
                     Adress = t.Adress,
                     DateOfBirth= t.DateOfBirth,
                     Email = t.Email,
                     Id = t.Id,
                     LastName= t.LastName,
-                    PhoneNumber = t.PhoneNumber,
+                    PhoneNumber = t.PhoneNumber, 
                     Surname= t.Surname,
                     Group = group.Name,
                     Progress = _studentRepository.GetAverageMarkStudent(t.Id).ToString(),

@@ -11,6 +11,9 @@ namespace EJournal.Data.Configurations
             builder.HasMany(e => e.UserRoles)
                 .WithOne(e => e.User);
 
+            builder.HasMany(e => e.ForgotPasswordCodes)
+                .WithOne(e => e.DbUser);
+
             builder.HasOne(e => e.BaseProfile)
                 .WithOne(e => e.DbUser);
         }

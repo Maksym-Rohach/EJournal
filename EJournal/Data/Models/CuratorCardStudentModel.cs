@@ -8,6 +8,7 @@ namespace EJournal.Data.Models
     public class CuratorCardStudentModel
     {
         public string Id { get; set; }
+        public string Image { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string LastName { get; set; }

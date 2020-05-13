@@ -17,19 +17,23 @@ class StudentsTable extends Component {
     specialityId: 0,
   };
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     const paramGr = this.props.match.params.groupId;
     if (paramGr !== undefined) {
       let temp = paramGr.split('=').splice(1, 1).toString();
       if (temp !== "null") {
         this.setState({ groupId: temp });
-        console.log("sret");
+        console.log("sret", temp);
       }
     }
+    console.log("will", this.props);
+  }
+  componentDidMount = () => {
     const { groupId } = this.state;
-    this.props.getStudents({ groupId });
-    console.log("get stud",groupId);
     this.props.getSpecialities();
+    console.log("get stud", groupId);
+    this.props.getStudents({ groupId });
+    console.log("did", this.props);
   }
   changeSpec = (event) => {
     const specialityId = event.target.value;
@@ -41,9 +45,19 @@ class StudentsTable extends Component {
     this.setState({ groupId: groupId });
     this.props.getStudents({ groupId });
   }
+  groupSelectMap = () => {
+    const { groups } = this.props;
+    if (groups !== undefined) {
+      return groups.map(item => {
+        return (
+          <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
+        )
+      });
+    } 
+  }
   render() {
     const { listStudents, specialities, groups } = this.props;
-    console.log("RENDER", listStudents);
+    console.log("RENDER", listStudents, specialities, groups);
     return (
       <React.Fragment>
         <FormControl className="dropW mx-2 mt-3">
@@ -70,11 +84,7 @@ class StudentsTable extends Component {
             onChange={this.changeGroup}
           >
             {
-              groups.map(item => {
-                return (
-                  <MenuItem key={item.value} value={item.value}>{item.label}</MenuItem>
-                )
-              })
+              this.groupSelectMap()
             }
           </Select>
         </FormControl>
@@ -89,6 +99,7 @@ class StudentsTable extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log(get(state, 'students.list.groups'));
   return {
     listStudents: get(state, 'students.list.data'),
     specialities: get(state, 'students.list.specialities'),

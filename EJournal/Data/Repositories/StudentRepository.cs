@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace EJournal.Data.Repositories
 {
-    public class StudentRepository : IStudents        
+    public class StudentRepository : IStudents
     {
         private readonly UserManager<DbUser> _userManager;
         private readonly EfDbContext _context;
@@ -57,8 +57,8 @@ namespace EJournal.Data.Repositories
                 {
                     await _context.GroupsToStudents.AddAsync(new GroupToStudent
                     {
-                        GroupId=profile.GroupId,
-                        StudentId=user.Id
+                        GroupId = profile.GroupId,
+                        StudentId = user.Id
                     });
                     await _context.SaveChangesAsync();
                 }
@@ -121,7 +121,7 @@ namespace EJournal.Data.Repositories
                         Name = s.Student.BaseProfile.Name,
                         Surname = s.Student.BaseProfile.Surname,
                         LastName = s.Student.BaseProfile.LastName,
-                        DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString(),
+                        DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
                         Email = s.Student.BaseProfile.DbUser.Email,
                         PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
                         Adress = s.Student.BaseProfile.Adress,
@@ -175,6 +175,12 @@ namespace EJournal.Data.Repositories
                 return students;
             }
             //students.OrderByDescending(t => t.DateOfRegister);
+        }
+
+        public Group GetGroupByStudentId(string studentId)
+        {
+            var gr = _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == studentId).GroupId;
+                return _context.Groups.FirstOrDefault(g=>g.Id==gr);
         }
 
         public IEnumerable<string> GetSpecialities()
@@ -242,7 +248,29 @@ namespace EJournal.Data.Repositories
                     Name = s.Student.BaseProfile.Name,
                     Surname = s.Student.BaseProfile.Surname,
                     LastName = s.Student.BaseProfile.LastName,
-                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.Date.ToString(),
+                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
+                    Email = s.Student.BaseProfile.DbUser.Email,
+                    PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
+                    Adress = s.Student.BaseProfile.Adress,
+                    GroupName = s.Group.Name,
+                    Speciality = s.Group.Speciality.Name
+                }).ToList();
+
+            return students;
+        }
+
+        public IEnumerable<GetStudentInfoWithGroup> GetStudentsBySpeciality(int specialityId)
+        {
+            List<GetStudentInfoWithGroup> students = _context.GroupsToStudents
+                .Where(x => x.Group.SpecialityId == specialityId)
+                .Select(s => new GetStudentInfoWithGroup
+                {
+                    Id = s.Student.BaseProfile.Id,
+                    Image = s.Student.BaseProfile.Image ?? _configuration.GetValue<string>("DefaultImage"),
+                    Name = s.Student.BaseProfile.Name,
+                    Surname = s.Student.BaseProfile.Surname,
+                    LastName = s.Student.BaseProfile.LastName,
+                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString("dd.MM.yyyy"),
                     Email = s.Student.BaseProfile.DbUser.Email,
                     PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
                     Adress = s.Student.BaseProfile.Adress,

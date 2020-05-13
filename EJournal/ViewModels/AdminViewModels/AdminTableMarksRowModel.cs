@@ -9,6 +9,6 @@ namespace EJournal.ViewModels.AdminViewModels
     public class AdminTableMarksRowModel
     {
         public string Name { get; set; }
-        public List<MarkPrintModel> Marks { get; set; }
+        public List<string> Marks { get; set; }
     }
 }

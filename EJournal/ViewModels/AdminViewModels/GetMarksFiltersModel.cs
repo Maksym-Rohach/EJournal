@@ -9,5 +9,6 @@ namespace EJournal.ViewModels.AdminViewModels
     {
         public int GroupId { get; set; }
         public int SubjectId { get; set; }
+        public int MarkTypeId { get; set; }
     }
 }
