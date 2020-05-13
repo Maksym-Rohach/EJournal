@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from "../../assets/logo3big.png";
 import logoFull from "../../assets/logo3full.png";
+import "./MLayout.css";
 
 const propTypes = {
   children: PropTypes.node,
@@ -32,7 +33,9 @@ class ManagerNavbar extends Component {
           <UncontrolledDropdown nav direction="down">
             <DropdownToggle nav>
               <img src={image} className="img-avatar" alt={name} />
-              {name}
+              <span className="pad-right">
+                {name}
+              </span>
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem header tag="div" className="text-center"><strong>Акаунт</strong></DropdownItem>
