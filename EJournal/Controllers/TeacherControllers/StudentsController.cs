@@ -34,11 +34,11 @@ namespace EJournal.Controllers.TeacherControllers
         {
             //try
             //{
-                var claims = User.Claims;
-                var userId = claims.FirstOrDefault().Value;
-                var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId);
-                IEnumerable<GetStudentModel> listStudents = _studentRepository.GetStudents(group.Id);
-                List<CuratorCardStudentModel> cards = new List<CuratorCardStudentModel>();
+            var claims = User.Claims;
+            var userId = claims.FirstOrDefault().Value;
+            var group = _context.Groups.FirstOrDefault(x => x.TeacherId == userId);
+            IEnumerable<GetStudentInfoWithGroup> listStudents = _studentRepository.GetStudentsByGroup(group.Id);
+            List<CuratorCardStudentModel> cards = new List<CuratorCardStudentModel>();
 
                 var cards1 = listStudents.Select(t => new CuratorCardStudentModel {
                     Name = t.Name,
@@ -49,10 +49,9 @@ namespace EJournal.Controllers.TeacherControllers
                     LastName= t.LastName,
                     PhoneNumber = t.PhoneNumber,
                     Surname= t.Surname,
-                    AddressOfChummery = "a",
                     Group = group.Name,
-                    Progress = "v",
-                    Speciality = "a"
+                    Progress = _studentRepository.GetAverageMarkStudent(t.Id).ToString(),
+                    Speciality = t.Speciality
 
                 }).ToList();
                 return Ok(cards1);

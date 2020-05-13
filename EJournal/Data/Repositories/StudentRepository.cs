@@ -77,6 +77,18 @@ namespace EJournal.Data.Repositories
             var count = _context.Marks.Where(x => x.StudentId == studentId && x.IsPresent == false && x.JournalColumn.Lesson.GroupId == group.Id && x.JournalColumn.Lesson.LessonDate.Year == DateTime.Now.Year).Count();
             return count;
         }
+        public int GetStudentAverageMark(string studentId)
+        {
+            var allmarks = _context.Marks.Where(x => x.StudentId == studentId && x.MarkTypeId == 4 && x.Value.Length <= 2);
+            var count = allmarks.Count();
+            int avg = 0;
+            foreach(var mark in allmarks)
+            {
+                avg += Int32.Parse(mark.Value);
+            }
+            avg /= count;
+            return avg;
+        }
 
         public IEnumerable<GetStudentInfoWithGroup> GetAllStudentsBySpecialities(string teacherId)
         {
@@ -230,7 +242,7 @@ namespace EJournal.Data.Repositories
                     Name = s.Student.BaseProfile.Name,
                     Surname = s.Student.BaseProfile.Surname,
                     LastName = s.Student.BaseProfile.LastName,
-                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.ToString(),
+                    DateOfBirth = s.Student.BaseProfile.DateOfBirth.Date.ToString(),
                     Email = s.Student.BaseProfile.DbUser.Email,
                     PhoneNumber = s.Student.BaseProfile.DbUser.PhoneNumber,
                     Adress = s.Student.BaseProfile.Adress,
