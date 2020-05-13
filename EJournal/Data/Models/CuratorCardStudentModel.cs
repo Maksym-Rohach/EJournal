@@ -19,6 +19,5 @@ namespace EJournal.Data.Models
         public string Progress { get; set; }
         public string Group { get; set; }
         public string Speciality { get; set; }
-        public string AddressOfChummery{ get; set; }
     }
 }

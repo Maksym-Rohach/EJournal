@@ -50,9 +50,8 @@ namespace EJournal.Controllers.TeacherControllers
                     LastName= t.LastName,
                     PhoneNumber = t.PhoneNumber, 
                     Surname= t.Surname,
-                    AddressOfChummery = "a",
                     Group = group.Name,
-                    Progress = "v",
+                    Progress = _studentRepository.GetAverageMarkStudent(t.Id).ToString(),
                     Speciality = t.Speciality
 
                 }).ToList();

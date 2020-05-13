@@ -13,10 +13,10 @@ const styles = theme => ({
     color: '#009688',    
   },
   media: {
-    height: '12rem',
+    height: '16rem',
   },
   minHeighr: {
-    height: '30rem'
+    height: '35rem',
   }
 })
 
@@ -44,22 +44,22 @@ class StudentCard extends React.Component {
               <Typography variant="body1" color="textSecondary" component="p">
                 Спеціальність: {student.speciality}   
               </Typography>
-              <Typography variant="body1" color="textSecondary" component="p">
+              <Typography variant="body1" color="primary" component="p">
                 Середній балл: {student.progress}   
               </Typography>
-              <Typography className={classes.cardHeight} variant="subtitle2" color="textSecondary" component="p">
+              <Typography className={classes.cardHeight} variant="subtitle2" color="textSecondary"  component="p">
                 Група: {student.group}   
               </Typography>
-              <Typography className={classes.cardHeight} variant="subtitle2" color="textSecondary" component="p">
+              <Typography className={classes.cardHeight} variant="body2" color="textSecondary" component="p">
                 Адреса: {student.adress}   
               </Typography>
               <Typography className={classes.cardHeight} variant="subtitle2" color="textSecondary" component="p">
                 Дата Народження: {student.dateOfBirth}   
               </Typography>
-              <Typography className={classes.cardHeight} variant="subtitle2" color="textSecondary" component="p">
+              <Typography className={classes.cardHeight} variant="body2" color="textSecondary" component="p">
                 EMail: {student.email}   
               </Typography>
-              <Typography className={classes.cardHeight} variant="subtitle2" color="textSecondary" component="p">
+              <Typography className={classes.cardHeight} variant="subtitle2" color="textSecondary"  component="p">
                 Телефон: {student.phoneNumber}   
               </Typography>
             </CardContent>
