@@ -1,5 +1,6 @@
 ﻿using EJournal.Data.Entities;
 using EJournal.Data.Models;
+using EJournal.ViewModels.AdminViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,6 @@ namespace EJournal.Data.Interfaces
         IEnumerable<GetStudentInfoWithGroup> GetStudentsByGroup(int groupId);
         IEnumerable<GetStudentInfoWithGroup> GetStudentsBySpeciality(int specialitId);
         Group GetGroupByStudentId(string studentId);
+        GetSubGroupsViewModel GetSubgroupStudents(int groupId);
     }
 }

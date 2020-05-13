@@ -4,6 +4,7 @@ using EJournal.Data.Entities.AppUeser;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
 using EJournal.Services;
+using EJournal.ViewModels.AdminViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -168,7 +169,7 @@ namespace EJournal.Data.Repositories
         public Group GetGroupByStudentId(string studentId)
         {
             var gr = _context.GroupsToStudents.FirstOrDefault(t => t.StudentId == studentId).GroupId;
-                return _context.Groups.FirstOrDefault(g=>g.Id==gr);
+            return _context.Groups.FirstOrDefault(g => g.Id == gr);
         }
 
         public IEnumerable<string> GetSpecialities()
@@ -243,7 +244,6 @@ namespace EJournal.Data.Repositories
                     GroupName = s.Group.Name,
                     Speciality = s.Group.Speciality.Name
                 }).ToList();
-
             return students;
         }
 
@@ -267,6 +267,51 @@ namespace EJournal.Data.Repositories
                 }).ToList();
 
             return students;
+        }
+
+        public GetSubGroupsViewModel GetSubgroupStudents(int groupId)
+        {
+            var subgr = _context.Subgroups.Where(g => g.GroupId == groupId).Include(t=>t.Group).ToList();
+            GetSubGroupsViewModel model = new GetSubGroupsViewModel();
+            if (subgr.Count() != 0)
+            {
+                Subgroup sub1 = subgr.FirstOrDefault(t => t.Name == t.Group.Name + "-" + groupId + "-1");
+                Subgroup sub2 = subgr.FirstOrDefault(t => t.Name == t.Group.Name + "-" + groupId + "-2");
+                if (sub1 == null)
+                    model.FirstSubGroup = null;
+                else
+                {
+                    model.FirstSubGroup = _context.GroupsToStudents.Where(t => t.SubgroupId == sub1.Id).Select(t => new GetSubgroupStudentModel
+                    {
+                        Id = t.StudentId,
+                        Name = t.Student.BaseProfile.Name + " " + t.Student.BaseProfile.LastName,
+                        Image = t.Student.BaseProfile.Image
+                    }).ToList();
+                }
+
+                if (sub2 == null)
+                    model.SecondSubGroup = null;
+                else
+                {
+                    model.SecondSubGroup = _context.GroupsToStudents.Where(t => t.SubgroupId == sub2.Id).Select(t => new GetSubgroupStudentModel
+                    {
+                        Id = t.StudentId,
+                        Name = t.Student.BaseProfile.Name + " " + t.Student.BaseProfile.LastName,
+                        Image = t.Student.BaseProfile.Image
+                    }).ToList();
+                }
+
+            }
+            else
+            {
+                model.FirstSubGroup = _context.GroupsToStudents.Where(t => t.GroupId == groupId).Select(t => new GetSubgroupStudentModel
+                {
+                    Id = t.StudentId,
+                    Name = t.Student.BaseProfile.Name + " " + t.Student.BaseProfile.LastName,
+                    Image = t.Student.BaseProfile.Image
+                }).ToList();
+            }
+            return model;
         }
     }
 }

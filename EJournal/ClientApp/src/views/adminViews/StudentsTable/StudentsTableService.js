@@ -9,6 +9,7 @@ export default class StudentsTableService {
         return axios.get(`${serverUrl}api/admin/get/specialities`)
     };
     static getGroups(model) {
+        console.log("zapros",model);
         return axios.post(`${serverUrl}api/admin/get/groups/dropdown`,model)
     };
 }

@@ -2,6 +2,7 @@
 using EJournal.Data.Entities;
 using EJournal.Data.Interfaces;
 using EJournal.Data.Models;
+using EJournal.ViewModels.AdminViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -120,7 +121,7 @@ namespace EJournal.Data.Repositories
         }
         public IEnumerable<Group> GetGroupsByTeacherId(string teacherId)
         {
-            return _context.GroupToSubjects.Where(x=>x.TeacherId==teacherId).Select(x=>x.Group);
+            return _context.GroupToSubjects.Where(x => x.TeacherId == teacherId).Select(x => x.Group);
         }
         public List<GetGroupShortModel> GetGroupsBySpeciality(int specialityId)
         {
@@ -132,10 +133,72 @@ namespace EJournal.Data.Repositories
                   Name = s.Name
               })
               .ToList();
-
             return groups;
+        }
 
+        public bool AddSubgroupsWithStudents(SetSubgroupsFilterModel model)
+        {
+            var gr = _context.Groups.FirstOrDefault(g => g.Id == model.GroupId);
+            string shif = gr.Name + "-" + gr.Id;
 
+            if (model.FirstSubgroup != null)
+            {
+                Subgroup subgr = gr.Subgroups.FirstOrDefault(s => s.Name == shif + "-1");
+                if (subgr == null)
+                {
+                    subgr = new Subgroup();
+                    subgr.Name = shif + "-1";
+                    subgr.GroupId = gr.Id;
+
+                    _context.Subgroups.Add(subgr);
+                    _context.SaveChanges();
+                }
+                var temp = _context.GroupsToStudents.Where(t => model.FirstSubgroup.Any(s => s == t.StudentId));
+                foreach (var item in temp)
+                {
+                    item.SubgroupId = subgr.Id;
+                }
+                _context.SaveChanges();
+            }
+            else
+            {
+                var subgr = gr.Subgroups.FirstOrDefault(s => s.Name == shif + "-1");
+                if (subgr != null)
+                {
+                    _context.Subgroups.Remove(subgr);
+                    _context.SaveChanges();
+                }
+            }
+
+            if (model.SecondSubgroup != null)
+            {
+                Subgroup subgr = gr.Subgroups.FirstOrDefault(s => s.Name == shif + "-2");
+                if (subgr == null)
+                {
+                    subgr = new Subgroup();
+                    subgr.Name = shif + "-2";
+                    subgr.GroupId = gr.Id;
+
+                    _context.Subgroups.Add(subgr);
+                    _context.SaveChanges();
+                }
+                var temp = _context.GroupsToStudents.Where(t => model.SecondSubgroup.Any(s => s == t.StudentId));
+                foreach (var item in temp)
+                {
+                    item.SubgroupId = subgr.Id;
+                }
+                _context.SaveChanges();
+            }
+            else
+            {
+                var subgr = gr.Subgroups.FirstOrDefault(s => s.Name == shif + "-2");
+                if (subgr != null)
+                {
+                    _context.Subgroups.Remove(subgr);
+                    _context.SaveChanges();
+                }
+            }
+            return true;
         }
     }
 }

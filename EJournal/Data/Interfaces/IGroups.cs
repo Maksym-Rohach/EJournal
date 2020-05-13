@@ -1,5 +1,6 @@
 ﻿using EJournal.Data.Entities;
 using EJournal.Data.Models;
+using EJournal.ViewModels.AdminViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace EJournal.Data.Interfaces
         bool AddGroup(AddGroupModel model);
         IEnumerable<Group> GetGroups();
         IEnumerable<Group> GetGroupsByTeacherId(string teacherId);
+        bool AddSubgroupsWithStudents(SetSubgroupsFilterModel model);
     }
 }

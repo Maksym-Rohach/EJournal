@@ -409,6 +409,24 @@ namespace EJournal.Controllers.AdminControllers
                 return Ok(res);
             else return BadRequest(res);
         }
+        [HttpPost]
+        [Route("get/subgroups")]
+        public IActionResult GetSubgroups([FromBody] GetSubgroupsFilterModel model)
+        {
+            var res = _students.GetSubgroupStudents(model.GroupId);
+            if (res != null)
+                return Ok(res);
+            else return BadRequest();
+        }
+        [HttpPost]
+        [Route("set/subgroups")]
+        public IActionResult SetSubgroups([FromBody] SetSubgroupsFilterModel model)
+        {
+            var res = _groups.AddSubgroupsWithStudents(model);
+            if (res)
+                return Ok();
+            else return BadRequest();
+        }
         //[HttpDelete("delete/{email}")]
         //public async Task<ContentResult> DeleteUserAsync(string email)
         //{

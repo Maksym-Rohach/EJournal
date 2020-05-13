@@ -21,7 +21,8 @@ class AdminNavbar extends Component {
   render() {
 
     // eslint-disable-next-line
-    const { children, image, ...attributes } = this.props;
+    const { children, image, roles, ...attributes } = this.props;
+    console.log(roles);
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -32,7 +33,7 @@ class AdminNavbar extends Component {
         <AppSidebarToggler className="d-md-down-none" display="lg" />
 
         <Nav className="ml-auto" navbar>
-        <MDBDropdown className="mr-3">
+          <MDBDropdown className="mr-3">
             <MDBDropdownToggle className="dopdown-toggle" nav>
               <img
                 src={image}
@@ -45,6 +46,22 @@ class AdminNavbar extends Component {
               <MDBDropdownItem href="/#/admin/profile">
                 <i className="ml-1 icon-user"></i> Мій профіль
               </MDBDropdownItem>
+              {
+                roles.map(function (item) {
+                  if(item==="Teacher"||item==="Curator")
+                  return (
+                    <MDBDropdownItem href={"/#/teacher"}>   
+                        <i className="ml-1 icon-arrow-right"></i> Перейти як вчитель
+                    </MDBDropdownItem>
+                  )        
+                  else if(item==="StudyRoomHead")
+                  return (
+                    <MDBDropdownItem href={"/#/manager/profile"}>   
+                        <i className="ml-1 icon-arrow-right"></i> Перейти як менеджер
+                    </MDBDropdownItem>
+                  )                       
+                })
+              }
               <MDBDropdownItem href="/#/" onClick={e => this.props.onLogout(e)}>
                 <i className="ml-1 icon-logout"></i> Вихід
               </MDBDropdownItem>
