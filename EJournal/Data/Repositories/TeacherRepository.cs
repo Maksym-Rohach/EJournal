@@ -157,7 +157,7 @@ namespace EJournal.Data.Repositories
                     Degree = t.Degree
                 });
             var users = _userManager.GetUsersInRoleAsync(rolename).Result;
-            var temp = _context.BaseProfiles.Where(b => users.Any(t => t.Id == b.Id)).Select(t => new GetTeacherModel
+            var temp = _context.BaseProfiles.Include(t=>t.DbUser).Include(t=>t.Teacher).Where(b => users.Any(t => t.Id == b.Id)).Select(t => new GetTeacherModel
             {
                 Id = t.Id,
                 Email = t.DbUser.Email,

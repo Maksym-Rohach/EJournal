@@ -143,7 +143,7 @@ namespace EJournal.Data.Repositories
 
             if (model.FirstSubgroup != null)
             {
-                Subgroup subgr = gr.Subgroups.FirstOrDefault(s => s.Name == shif + "-1");
+                var subgr = gr.Subgroups.FirstOrDefault(s => s.Name == shif + "-1");
                 if (subgr == null)
                 {
                     subgr = new Subgroup();
